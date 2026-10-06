@@ -47,6 +47,7 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Vybrané nemovitosti | desktop s myší | sekce se připne a scroll posouvá galerii vodorovně; na dotyku nativní swipe se snapem |
 | Index kategorií | najetí myší | fotka typu nemovitosti sleduje kurzor (quickTo 0,6 s) |
 | Makléři | najetí / fokus / na dotyku doscrollování doprostřed | prolnutí neutrálního portrétu do úsměvu: zpoždění 0,3 s, 1,6 s ease-in-out; návrat 0,9 s |
+| Hero video (TGH) | načtení stránky | fotka hned, video (dron nad Staroměstským náměstím, 20 s smyčka) se prolne po načtení; 1280 px 3,6 MB / 1920 px 7,1 MB podle šířky obrazovky; vypnuté při reduced-motion, úsporném režimu dat a `?nomotion`; tlačítko pauzy (WCAG 2.2.2) |
 | Hlavička | homepage + detail | průhledná nad tmavou fotkou, po odscrollování pevná |
 
 ## Portréty makléřů – úprava výrazu (Magnific)

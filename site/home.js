@@ -4,6 +4,8 @@ const PREMIUM = {
   tgh: {
     // Praha z věže při západu slunce – Magnific stock (premium licence, autor tan4ikk)
     hero: 'assets/hero-praha-2400.jpg', heroSet: 'assets/hero-praha-1280.jpg 1280w, assets/hero-praha-2400.jpg 2400w',
+    // dronový záběr Staroměstského náměstí (20 s, smyčka) – zdroj 0_Prague_Old_Town_1920x1080.mp4 komprimovaný na 7,1 / 3,6 MB
+    video: { sm: 'assets/hero-praha-1280.mp4', lg: 'assets/hero-praha-1920.mp4' },
     final: 'https://www.nextreality-tgh.cz/www/upload/d88ef166/20261006114004877/20261006114004877.1920x1440.shrinkonly.qa-82.jpeg',
     short: 'Praha a okolí',
   },
@@ -21,6 +23,18 @@ function smileOnTouch() {
   if (matchMedia('(hover: hover)').matches) return;
   const io = new IntersectionObserver(ens => ens.forEach(en => en.target.classList.toggle('is-smiling', en.isIntersecting)), { rootMargin: '-35% 0px -35% 0px' });
   $$('.p-agent.has-smile').forEach(el => io.observe(el));
+}
+// hero video: fotka se zobrazí hned, video se prolne až po načtení. Bez videa při ?nomotion,
+// prefers-reduced-motion a úsporném režimu dat – tam zůstane fotka.
+function heroVideo(P) {
+  const v = $('[data-bind="hero-video"]'), btn = $('[data-video-toggle]');
+  v.pause(); v.removeAttribute('src'); v.classList.remove('is-playing'); v.hidden = btn.hidden = true;
+  const skip = !P.video || /[?&]nomotion/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData;
+  if (skip) return;
+  v.src = innerWidth * (devicePixelRatio || 1) > 1600 ? P.video.lg : P.video.sm;
+  v.hidden = false;
+  v.addEventListener('playing', () => { v.classList.add('is-playing'); btn.hidden = false; }, { once: true });
+  v.play().catch(err => { if (err.name === 'NotAllowedError') v.hidden = btn.hidden = true; }); // autoplay zablokovaný → zůstane fotka
 }
 const CATS = [['byt', 'Byty'], ['dum', 'Domy'], ['pozemek', 'Pozemky'], ['komercni', 'Komerční prostory'], ['ostatni', 'Ostatní']];
 let qi = 0;
@@ -46,6 +60,7 @@ window.PAGE = {
     const o = OFFICES[k], P = PREMIUM[k], L = listings();
     document.title = `Reality a nemovitosti ${o.region} | ${o.name}`;
     $$('[data-bind="hero"]').forEach(i => { i.srcset = P.heroSet || ''; i.sizes = '100vw'; i.src = P.hero; });
+    heroVideo(P);
     $$('[data-bind="final"]').forEach(i => (i.src = P.final));
     $$('[data-bind="region"]').forEach(e => (e.textContent = o.region));
     $$('[data-bind="region-short"]').forEach(e => (e.textContent = P.short));
@@ -100,6 +115,12 @@ window.PAGE = {
     return check('Hero = celá obrazovka', null, Math.round(h.height) + ' px') + check('Funkční H1 strop', null, 'editoriál uvolněn (dohoda)');
   },
   init() {
+    $('[data-video-toggle]').addEventListener('click', e => {
+      const v = $('[data-bind="hero-video"]'), b = e.currentTarget, paused = !v.paused;
+      paused ? v.pause() : v.play();
+      b.classList.toggle('is-paused', paused);
+      b.setAttribute('aria-label', paused ? 'Přehrát video' : 'Pozastavit video');
+    });
     $$('[data-deal]').forEach(b => b.addEventListener('click', () => { $$('[data-deal]').forEach(x => x.setAttribute('aria-pressed', x === b)); updateCount(); }));
     $('#f-type').addEventListener('change', updateCount);
     $('#search').addEventListener('submit', e => {

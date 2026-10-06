@@ -6,7 +6,9 @@
 .p-hero { position: relative; min-height: 100svh; display: flex; overflow: hidden; isolation: isolate; }
 @media (min-width: 1024px) { .p-hero { min-height: max(680px, min(100svh, 1000px)); } }
 .p-hero__media { position: absolute; inset: -8% 0; z-index: -1; }
-.p-hero__media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); } /* scale skryje zapečené rohy fotky */
+.p-hero__media :is(img, video) { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); } /* scale skryje zapečené rohy fotky */
+.p-hero__video { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s var(--ease); }
+.p-hero__video.is-playing { opacity: 1; }
 .p-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
   linear-gradient(180deg, rgba(13, 26, 36, .55) 0%, rgba(13, 26, 36, .15) 32%, rgba(13, 26, 36, .35) 62%, rgba(13, 26, 36, .92) 100%),
   linear-gradient(90deg, rgba(13, 26, 36, .55) 0%, rgba(13, 26, 36, 0) 60%); }
@@ -192,3 +194,9 @@
 .p-featured__cta { position: relative; z-index: 2; align-self: flex-start; margin-top: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); font-size: 14px; font-weight: 500; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; transition: border-color var(--dur-ui), gap var(--dur-ui) var(--ease); }
 .p-featured__cta:hover { border-color: var(--ink); gap: var(--s-3); }
 .p-featured__cta .icon { width: 16px; height: 16px; }
+
+/* hero video – pauza (WCAG 2.2.2: pohyb delší než 5 s musí jít zastavit) */
+.p-hero__vctl { position: absolute; right: var(--gutter); top: calc(var(--header-h) + var(--s-6)); z-index: 2; width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--r-pill); border: 1px solid rgba(243, 244, 245, .35); background: rgba(13, 26, 36, .25); backdrop-filter: blur(8px); color: var(--on-ink); cursor: pointer; transition: background var(--dur-ui), border-color var(--dur-ui); }
+.p-hero__vctl:hover { background: rgba(13, 26, 36, .5); border-color: var(--on-ink); }
+.p-hero__vctl .i-play, .p-hero__vctl.is-paused .i-pause { display: none; }
+.p-hero__vctl.is-paused .i-play { display: inline; }

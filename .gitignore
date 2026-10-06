@@ -2,3 +2,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# zdrojové video (31 MB) – na web jde jen komprimovaná verze hero-praha-*.mp4
+site/assets/0_Prague_Old_Town_1920x1080.mp4

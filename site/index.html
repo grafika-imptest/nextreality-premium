@@ -20,7 +20,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
 <main>
   <!-- 01 · TEZE – celoplošná fotka, editoriální nadpis, vyhledávání jako hlavní akce -->
   <section class="p-hero on-ink" data-over-hero aria-labelledby="hero-h">
-    <div class="p-hero__media"><img data-bind="hero" alt="" fetchpriority="high" data-parallax="0.18"></div>
+    <div class="p-hero__media" data-parallax="0.18"><img data-bind="hero" alt="" fetchpriority="high"><video class="p-hero__video" data-bind="hero-video" muted loop playsinline preload="none" aria-hidden="true" hidden></video></div>
     <div class="wide p-hero__in">
       <div class="p-hero__head">
         <span class="t-label eyebrow" data-reveal data-bind="region-short"></span>
@@ -47,6 +47,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
       </div>
     </div>
     <a class="p-hero__scroll" href="#uvod" aria-label="Pokračovat dolů"><span></span></a>
+    <button class="p-hero__vctl" type="button" data-video-toggle aria-label="Pozastavit video" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path class="i-pause" d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/><path class="i-play" d="M8 5l11 7-11 7z" fill="currentColor"/></svg></button>
   </section>
 
   <!-- 02 · ÚVOD – kdo jsme, v jedné větě, a čísla, která to dokládají -->
