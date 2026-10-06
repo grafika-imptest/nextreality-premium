@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developerský projekt | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="projekty">
+<div id="site-header"></div>
+<main>
+  <div class="container detail-top">
+    <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><a data-href="projekty.html">Developerské projekty</a><span aria-hidden="true">/</span><span aria-current="page" id="pr-crumb"></span></nav>
+    <div class="phero"><img id="pr-hero" alt="" fetchpriority="high"></div>
+  </div>
+
+  <div class="container pdetail">
+    <div class="detail__main">
+      <header class="detail__head">
+        <div class="chips"><span class="badge badge--free" id="pr-label"></span></div>
+        <h1 class="t-h1" id="pr-h1"></h1>
+        <p class="detail__loc"><svg class="icon"><use href="#i-pin"/></svg><span id="pr-place"></span><a href="#lokalita">Lokalita</a></p>
+        <p class="pdetail__lead" id="pr-lead"></p>
+        <div class="keyparams" id="pr-facts"></div>
+      </header>
+
+      <section class="dsec" aria-labelledby="h-o"><h2 id="h-o">O projektu</h2><p class="desc" id="pr-desc" style="max-width:var(--text-max)"></p><ul class="benefits" id="pr-benefits"></ul></section>
+
+      <section class="dsec" id="jednotky" aria-labelledby="h-u">
+        <div class="unit-tools"><h2 id="h-u" style="font-size:var(--fs-h3);line-height:var(--lh-h3);color:var(--ink)">Jednotky v nabídce</h2><div class="chips" id="pr-disp" role="group" aria-label="Filtr dispozice"></div></div>
+        <table class="units" id="pr-units">
+          <thead><tr><th scope="col">Jednotka</th><th scope="col" data-sort="area"><button type="button">Plocha <svg class="icon"><use href="#i-sort"/></svg></button></th><th scope="col">Stav</th><th scope="col" class="num" data-sort="price"><button type="button">Cena <svg class="icon"><use href="#i-sort"/></svg></button></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="dmap__note" id="pr-units-note"></p>
+      </section>
+
+      <section class="dsec" id="lokalita" aria-labelledby="h-l"><h2 id="h-l">Lokalita</h2><p style="max-width:var(--text-max)" id="pr-loc"></p><div class="dmap" id="pr-map"></div></section>
+      <section class="dsec" aria-labelledby="h-s"><h2 id="h-s">Standardy</h2><p style="max-width:var(--text-max)" id="pr-std"></p><div class="pimages" id="pr-imgs"></div></section>
+    </div>
+
+    <aside class="aside" aria-label="Ceny a kontakt">
+      <div class="box">
+        <div class="box__price" id="pr-price"></div>
+        <a class="btn btn--primary btn--block" href="#zajem">Mám zájem o projekt</a>
+        <a class="btn btn--secondary btn--block" href="#jednotky">Zobrazit jednotky</a>
+        <p class="ref-no" id="pr-count"></p>
+      </div>
+      <div class="box box--muted"><b style="color:var(--ink)">Hlídat novinky v projektu</b><p class="t-small" style="color:var(--text-muted)">Pošleme vám e-mail, když se uvolní nebo přibude jednotka.</p>
+        <form onsubmit="event.preventDefault();this.innerHTML='<p><b>Hotovo.</b> Novinky vám pošleme.</p>'" style="display:grid;gap:var(--s-2)"><label class="sr-only" for="pr-wd">E-mail</label><input class="input" id="pr-wd" type="email" required placeholder="váš@e-mail.cz"><button class="btn btn--alt">Hlídat projekt</button></form></div>
+    </aside>
+  </div>
+
+  <section class="section section--tint" id="zajem">
+    <div class="container contact">
+      <div><span class="t-label eyebrow">Mám zájem</span><h2 class="t-h2">Domluvte si prohlídku nebo prezentaci projektu</h2><p style="margin-top:var(--s-3);color:var(--text-muted)">Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
+      <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, poptávka je odeslaná</h3><p>Ozveme se nejpozději do 24 hodin.</p></div>'">
+        <div class="form__2">
+          <div class="field"><label for="z-name">Jméno a příjmení *</label><input class="input" id="z-name" autocomplete="name" required></div>
+          <div class="field"><label for="z-tel">Telefon *</label><input class="input" id="z-tel" type="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label for="z-mail">E-mail *</label><input class="input" id="z-mail" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="z-msg">Zpráva</label><textarea class="input" id="z-msg"></textarea></div>
+        <label class="check"><input type="checkbox" required> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+        <div><button class="btn btn--primary">Odeslat poptávku</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/phase3.js"></script>
+<script src="data/phase3-manual.js"></script>
+<script src="core.js"></script>
+<script>
+// Detail projektu – Musílkova 39. Jednotky = reálné aktivní nabídky na adrese projektu (párování podle ulice).
+const P = PROJECT_DETAIL;
+const U = { disp: '', sort: 'price', dir: 1 };
+let pmap;
+const units = () => (LISTINGS.tgh || []).filter(x => x.place === P.street);
+function drawUnits() {
+  let r = units().filter(x => !U.disp || x.disp === U.disp);
+  r = [...r].sort((a, b) => ((a[U.sort] ?? 0) - (b[U.sort] ?? 0)) * U.dir);
+  $('#pr-units tbody').innerHTML = r.map(x => `<tr tabindex="0" data-go="${href('detail.html')}">
+      <td>Byt ${esc(x.disp)}</td><td data-l="Plocha">${x.area} m²</td>
+      <td><span class="badge badge--free">Volný</span></td><td class="num" data-l="">${x.price ? kc(x.price) : 'Cena na vyžádání'}</td></tr>`).join('');
+  $$('#pr-units th[data-sort]').forEach(th => th.toggleAttribute('aria-sort', th.dataset.sort === U.sort) && th.setAttribute('aria-sort', U.dir > 0 ? 'ascending' : 'descending'));
+}
+function drawMap() {
+  const el = $('#pr-map'), u = units()[0];
+  if (consent.get() !== 'yes' || !window.L || !u) { el.innerHTML = blocked('map', 320); pmap = null; return; }
+  if (pmap) return;
+  el.innerHTML = '';
+  pmap = L.map(el, { scrollWheelZoom: false }).setView([u.lat, u.lng], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© OpenStreetMap' }).addTo(pmap);
+  L.marker([u.lat, u.lng], { icon: L.divIcon({ className: 'mpin', html: `<span>${esc(P.n)}</span>`, iconSize: null }) }).addTo(pmap);
+}
+window.PAGE = {
+  note: 'Stav jednotek: všechny aktivní nabídky jsou „Volný“ (rezervované/prodané mapa výpisu nevrací). Fakta projektu: CMS má překlep „podaží“ – v předloze opraveno.',
+  render(k) {
+    document.title = `${P.n} – developerský projekt | ${OFFICES[k].name}`;
+    $('#pr-crumb').textContent = $('#pr-h1').textContent = P.n;
+    $('#pr-hero').src = P.images[0]; $('#pr-hero').alt = P.n;
+    $('#pr-label').textContent = P.label; $('#pr-place').textContent = P.place; $('#pr-lead').textContent = P.lead;
+    $('#pr-facts').innerHTML = P.facts.map(([i, t]) => `<span class="kp">${ico(i)}${esc(t)}</span>`).join('');
+    $('#pr-desc').textContent = P.d;
+    $('#pr-benefits').innerHTML = P.bullets.map(([b, t]) => `<li>${ico('check')}<span><b>${esc(b)}</b> – ${esc(t)}</span></li>`).join('');
+    const all = units(), prices = all.map(x => x.price).filter(Boolean), disps = [...new Set(all.map(x => x.disp))].sort();
+    $('#pr-price').innerHTML = prices.length ? `od ${kc(Math.min(...prices))}<small>do ${kc(Math.max(...prices))} · ${disps.join(', ')}</small>` : 'Cena na vyžádání';
+    $('#pr-count').textContent = `${nab(all.length)} v aktuální nabídce z ${P.units} jednotek projektu`;
+    $('#pr-disp').innerHTML = ['', ...disps].map(d => `<button type="button" class="chip" data-d="${d}" aria-pressed="${U.disp === d}">${d || 'Vše'}</button>`).join('');
+    $('#pr-units-note').textContent = `Ceny a dostupnost podle aktuální nabídky. Projekt má celkem ${P.units} jednotek, v nabídce je ${all.length}.`;
+    $('#pr-loc').textContent = P.location; $('#pr-std').textContent = P.standard;
+    $('#pr-imgs').innerHTML = P.images.slice(1).map(s => `<img src="${esc(s)}" alt="Ukázka standardu" loading="lazy">`).join('');
+    $('#z-msg').value = `Dobrý den, mám zájem o projekt ${P.n}. Prosím o kontakt.`;
+    drawUnits(); drawMap();
+  },
+  init() {
+    document.addEventListener('click', e => {
+      const c = e.target.closest('[data-d]'); if (c) { U.disp = c.dataset.d; $$('#pr-disp .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); drawUnits(); }
+      const th = e.target.closest('th[data-sort]'); if (th) { U.dir = U.sort === th.dataset.sort ? -U.dir : 1; U.sort = th.dataset.sort; drawUnits(); }
+      const tr = e.target.closest('tr[data-go]'); if (tr) location.href = tr.dataset.go;
+    });
+    document.addEventListener('keydown', e => { const tr = e.target.closest?.('tr[data-go]'); if (tr && e.key === 'Enter') location.href = tr.dataset.go; });
+    document.addEventListener('consent', () => { pmap = null; drawMap(); });
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

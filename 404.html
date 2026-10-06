@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stránka nenalezena | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="404">
+<div id="site-header"></div>
+<main>
+  <!-- Dvě varianty: 404 (?variant=) a nemovitost, která už není v nabídce (?variant=sold) – v CMS typicky stará URL inzerátu -->
+  <section class="container notfound" id="nf"></section>
+  <section class="section section--tint">
+    <div class="container">
+      <div class="section-head"><div><span class="t-label eyebrow">Aktuální nabídka</span><h2 class="t-h2" id="nf-h2">Mohlo by vás zajímat</h2></div><a class="btn btn--secondary" data-href="vypis.html">Celá nabídka <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="grid-cards" id="nf-cards"></div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/stars-listings.js"></script>
+<script src="core.js"></script>
+<script>
+window.PAGE = {
+  note: 'Přepnout variantu: ?variant=sold (nemovitost už není v nabídce – místo tvrdé 404 nabídne podobné).',
+  render(k) {
+    const sold = qs.get('variant') === 'sold';
+    const L = window.LISTINGS[dataKey(k)] || [];
+    const pick = sold ? L.filter(x => x.type === 'dum' && !x.rent).slice(0, 4) : L.slice(0, 4);
+    document.title = (sold ? 'Nemovitost už není v nabídce' : 'Stránka nenalezena') + ' | ' + OFFICES[k].name;
+    $('#nf').innerHTML = sold
+      ? `${ico('dum', 'icon notfound__ico')}<span class="badge badge--sold">Prodáno</span><h1>Tato nemovitost už není v nabídce</h1>
+         <p>Byla prodána nebo stažena z nabídky. Podívejte se na podobné nemovitosti, nebo si nastavte hlídacího psa – pošleme vám e-mail, jakmile se objeví něco podobného.</p>
+         <div class="quicklinks"><a class="btn btn--primary" href="${href('vypis.html', '&type=dum')}">Podobné domy</a><a class="btn btn--secondary" href="${href('vypis.html')}">${ico('bell')} Nastavit hlídacího psa</a></div>`
+      : `<div class="notfound__code" aria-hidden="true">404</div><h1>Tuto stránku jsme nenašli</h1>
+         <p>Odkaz je možná zastaralý, nebo se v adrese objevil překlep. Zkuste nemovitost vyhledat, nebo pokračujte některou z cest níže.</p>
+         <form class="search-mini" role="search" onsubmit="event.preventDefault();location.href=href('vypis.html','&loc='+encodeURIComponent(this.q.value))">
+           <div class="input-icon"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="nf-q">Hledat lokalitu</label><input class="input" id="nf-q" name="q" placeholder="Město, čtvrť nebo ulice"></div>
+           <button class="btn btn--primary">Hledat</button></form>
+         <div class="quicklinks"><a class="btn btn--ghost" href="${href('vypis.html')}">Nabídka nemovitostí</a><a class="btn btn--ghost" href="${href('prodat.html')}">Chci prodat</a><a class="btn btn--ghost" href="${href('makleri.html')}">Makléři</a><a class="btn btn--ghost" href="${href('kontakty.html')}">Kontakty</a></div>`;
+    $('#nf-h2').textContent = sold ? 'Podobné nemovitosti' : 'Mohlo by vás zajímat';
+    $('#nf-cards').innerHTML = pick.map(x => card(x)).join('');
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

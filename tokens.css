@@ -1,0 +1,153 @@
+/* ==========================================================================
+   NEXT Reality – PRÉMIOVÁ VERZE · design tokeny
+   Stejné názvy proměnných jako standardní verze (komponenty a logika jsou sdílené),
+   jiné hodnoty + editoriální vrstva (serif display, fluidní typografie jen pro editoriál).
+
+   Pravidla:
+   1. Dvě atmosféry: INK (tmavá – „kino“: hero, prodej, závěr) a PAPER (teplá světlá – „dokument“).
+   2. Brand zelená NEXT #85B929 je jediný akcent. Na INK je čitelná (7,3 : 1), na PAPER jen jako linka/tečka.
+   3. Žádné stíny – struktura z 1px linek. Rádiusy jen dva: 999px (interakce) a 4px (média, karty).
+   4. Funkční stránky (výpis, detail, filtry) drží kompaktní škálu ze zadání: základ 16 px, H1 ≤ 48 px.
+      Velká fluidní typografie (--fs-display*) jen v editoriálních sekcích.
+   ========================================================================== */
+
+:root {
+  /* --- Brand --- */
+  --brand-green: #85b929;
+  --brand-blue: #3187aa;
+  --brand-navy: #0d1a24;
+
+  /* --- Atmosféry --- */
+  --ink: #0d1a24;            /* nadpisy na světlé + tmavé plochy */
+  --ink-2: #14242f;          /* karty a panely na tmavé */
+  --ink-line: #2a3c49;       /* 1px linky na tmavé */
+  --on-ink: #f4f1eb;         /* text na tmavé */
+  --on-ink-muted: #a9b2b8;   /* popisky na tmavé */
+  --paper: #f4f1eb;          /* hlavní světlé pozadí – teplá bílá */
+  --stone: #e9e4da;          /* alternativní světlá sekce */
+
+  /* --- Akcenty (stejné názvy jako standardní verze) --- */
+  --accent: #0d1a24;         /* primární tlačítko na světlé = ink */
+  --accent-hover: #1f3442;
+  --accent-soft: #e4ebd6;    /* zelený nádech – výběr, štítky */
+  --accent-deco: #85b929;    /* brand zelená – akcent, na ink čitelná */
+  --accent-2: #2d5e45;       /* odkazy na světlé (tmavá zeleň) */
+  --accent-2-hover: #1f4532;
+  --accent-2-soft: #e3e8df;
+
+  /* --- Neutrály --- */
+  --text: #2b2f33;
+  --text-muted: #5e6368;
+  --line: #d9d2c5;
+  --line-strong: #b9b1a3;
+  --surface: #f4f1eb;
+  --surface-2: #e9e4da;
+  --surface-dark: #0d1a24;
+
+  /* --- Stavy nabídky (fixní pro všechny kanceláře) --- */
+  --st-free: #256b29;   --st-free-bg: #e4ebd6;
+  --st-reserved: #7a5000; --st-reserved-bg: #f3e7cc;
+  --st-sold: #4e5459;   --st-sold-bg: #e2ddd3;
+  --st-top: #0d1a24;    --st-top-bg: #85b929;
+  --st-last: #8e2a2a;   --st-last-bg: #f2dfd9;
+  --danger: #a3261e;
+  --focus: #2f6fed;
+
+  /* --- Typografie --- */
+  --font: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Instrument Serif", "Times New Roman", Georgia, serif;
+
+  /* funkční škála – mobil */
+  --fs-hero: 32px;  --lh-hero: 38px;
+  --fs-h1: 30px;    --lh-h1: 36px;
+  --fs-h2: 26px;    --lh-h2: 32px;
+  --fs-h3: 20px;    --lh-h3: 26px;
+  --fs-card: 17px;  --lh-card: 24px;
+  --fs-lead: 18px;  --lh-lead: 28px;
+  --fs-body: 16px;  --lh-body: 26px;
+  --fs-small: 14px; --lh-small: 20px;
+  --fs-label: 11px; --lh-label: 16px; --ls-label: .14em;
+  --fs-btn: 15px;
+
+  /* editoriální škála – fluidní, jen homepage a příběhové sekce */
+  --fs-display-xl: clamp(52px, 9vw, 144px);  --lh-display-xl: .92;
+  --fs-display: clamp(40px, 6vw, 96px);      --lh-display: .98;
+  --fs-display-sm: clamp(32px, 3.6vw, 56px); --lh-display-sm: 1.04;
+  --fs-statement: clamp(26px, 3vw, 44px);    --lh-statement: 1.18;
+
+  /* --- Odsazení --- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+  --s-32: 128px; --s-44: 176px;
+  --section-editorial: clamp(96px, 13vw, 200px);
+
+  /* --- Layout --- */
+  --content-max: 1280px;
+  --wide-max: 1600px;
+  --text-max: 720px;
+  --gutter: 20px;
+  --gap: 16px;
+  --section-y: 64px;
+  --header-h: 64px;
+
+  /* --- Komponenty --- */
+  --btn-h: 48px;
+  --input-h: 48px;
+  --r-btn: 999px;
+  --r-card: 4px;
+  --r-input: 999px;
+  --r-box: 4px;
+  --r-pill: 999px;
+  --icon: 20px;
+  --icon-lg: 24px;
+
+  /* --- Bez stínů: jen jemná hloubka pro plovoucí panely --- */
+  --sh-1: none;
+  --sh-2: 0 0 0 1px var(--line);
+  --sh-3: 0 30px 80px -30px rgba(13, 26, 36, .35);
+
+  /* --- Pohyb --- */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-inout: cubic-bezier(.83, 0, .17, 1);
+  --dur-micro: 180ms;
+  --dur-ui: 400ms;
+  --dur-reveal: 1100ms;
+  --dur-cinematic: 1600ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-hero: 40px;  --lh-hero: 46px;
+    --fs-h1: 36px;    --lh-h1: 42px;
+    --fs-h2: 32px;    --lh-h2: 38px;
+    --fs-h3: 22px;    --lh-h3: 30px;
+    --fs-card: 18px;  --lh-card: 26px;
+    --gutter: 32px;
+    --gap: 24px;
+    --section-y: 88px;
+    --header-h: 72px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fs-hero: 48px;  --lh-hero: 52px;   /* funkční strop zadání */
+    --fs-h1: 44px;    --lh-h1: 48px;
+    --fs-h2: 40px;    --lh-h2: 44px;
+    --fs-h3: 24px;    --lh-h3: 32px;
+    --gutter: 48px;
+    --section-y: 120px;
+  }
+}
+
+/* Kanceláře – mění jen logo, fotky, kontakty a případně akcent */
+[data-office="tgh"],
+[data-office="stars"] { }
+
+[data-office="test"] {
+  --accent-deco: #d9a65a;
+  --accent-soft: #f1e6d3;
+  --accent-2: #7a4b1c; --accent-2-hover: #5e3814; --accent-2-soft: #efe5d8;
+  --ink: #1d1612; --brand-navy: #1d1612; --surface-dark: #1d1612; --accent: #1d1612; --accent-hover: #3a2c23;
+  --ink-2: #271e19; --ink-line: #43362d; --st-top-bg: #d9a65a; --st-top: #1d1612;
+}

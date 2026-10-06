@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detail nemovitosti | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="detail">
+<div id="site-header"></div>
+
+<main>
+  <!-- PRÉMIOVÝ DETAIL: filmová hlavička přes celou šířku – fotka, H1, lokalita a cena v jednom záběru -->
+  <section class="d-hero on-ink" data-over-hero aria-labelledby="d-h1">
+    <div class="d-hero__media"><img id="dh-img" alt="" fetchpriority="high" data-parallax="0.12"></div>
+    <div class="wide d-hero__in">
+      <nav class="crumbs" aria-label="Drobečková navigace">
+        <a data-href="index.html">Domů</a><span aria-hidden="true">/</span>
+        <a data-href="vypis.html">Nabídka nemovitostí</a><span aria-hidden="true">/</span>
+        <a data-href="vypis.html" data-q="&type=dum">Domy</a><span aria-hidden="true">/</span>
+        <span aria-current="page" id="crumb-cur"></span>
+      </nav>
+      <div class="d-hero__bottom">
+        <div class="d-hero__title">
+          <div class="chips" id="d-status"></div>
+          <h1 class="detail__h1" id="d-h1" data-split="now"></h1>
+          <p class="detail__loc"><svg class="icon"><use href="#i-pin"/></svg><span id="d-loc"></span><a href="#poloha">Zobrazit na mapě</a></p>
+        </div>
+        <div class="d-hero__side" data-reveal data-delay=".4">
+          <span class="d-hero__price" id="dh-price"></span>
+          <div class="d-hero__cta"><a class="btn btn--primary" href="#zajem">Mám zájem</a><button class="btn btn--secondary" data-lb="0"><svg class="icon"><use href="#i-play"/></svg>Video</button><button class="btn btn--secondary" data-lb="1" id="dh-all"><svg class="icon"><use href="#i-image"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="d-subnav" aria-label="Sekce nemovitosti">
+    <div class="wide"><a href="#prehled">Přehled</a><a href="#galerie">Galerie</a><a href="#h-par">Parametry</a><a href="#h-desc">Popis</a><a href="#h-penb">Energie</a><a href="#poloha">Poloha</a><a href="#h-calc">Hypotéka</a><span class="d-subnav__price" id="sn-price"></span><a class="d-subnav__cta btn btn--primary" href="#zajem">Mám zájem</a></div>
+  </nav>
+
+  <div class="container detail">
+    <div class="detail__main">
+      <section class="d-overview" id="prehled" aria-label="Přehled">
+        <p class="statement d-overview__lead" id="d-lead" data-words></p>
+        <dl class="d-facts" id="d-facts" data-reveal-group></dl>
+        <div class="keyparams" id="d-key" hidden></div>
+      </section>
+
+      <section class="dsec" id="galerie" aria-labelledby="h-gal">
+        <h2 id="h-gal">Galerie</h2>
+        <div class="gallery" id="gallery"></div>
+      </section>
+
+      <section class="dsec" aria-labelledby="h-par">
+        <h2 id="h-par">Parametry a vybavení</h2>
+        <ul class="equip" id="d-equip"></ul>
+        <dl class="ptable" id="d-params"></dl>
+      </section>
+
+      <section class="dsec" aria-labelledby="h-desc">
+        <h2 id="h-desc">Popis nemovitosti</h2>
+        <div class="desc is-collapsed" id="d-desc"></div>
+        <button class="btn btn--secondary desc-toggle" id="d-desc-btn" aria-expanded="false" aria-controls="d-desc">Zobrazit celý popis <svg class="icon"><use href="#i-chev-down"/></svg></button>
+      </section>
+
+      <section class="dsec" aria-labelledby="h-plan">
+        <h2 id="h-plan">Půdorys</h2>
+        <div id="d-plan"></div>
+      </section>
+
+      <section class="dsec" aria-labelledby="h-penb">
+        <h2 id="h-penb">Průkaz energetické náročnosti budovy</h2>
+        <div class="penb" id="d-penb"></div>
+      </section>
+
+      <section class="dsec" id="poloha" aria-labelledby="h-map">
+        <h2 id="h-map">Poloha</h2>
+        <div class="dmap" id="d-map"></div>
+        <p class="dmap__note" id="d-map-note"></p>
+      </section>
+
+      <section class="dsec" aria-labelledby="h-calc">
+        <h2 id="h-calc">Hypoteční kalkulačka</h2>
+        <form class="calc" id="calc" onsubmit="event.preventDefault()">
+          <div class="calc__grid">
+            <div class="field"><label for="c-own">Vlastní zdroje</label><div class="input-suffix"><input class="input" id="c-own" inputmode="numeric" value="20"><span>%</span></div></div>
+            <div class="field"><label for="c-rate">Úroková sazba</label><div class="input-suffix"><input class="input" id="c-rate" inputmode="decimal" value="4,5"><span>% p. a.</span></div></div>
+            <div class="field"><label for="c-years">Doba splácení</label><div class="input-suffix"><input class="input" id="c-years" inputmode="numeric" value="30"><span>let</span></div></div>
+          </div>
+          <div class="calc__out"><span>Orientační měsíční splátka</span><b id="c-out"></b></div>
+          <p class="calc__note">Výpočet je pouze orientační. Sazba je ilustrativní – upravte ji podle aktuální nabídky banky.</p>
+        </form>
+      </section>
+    </div>
+
+    <aside class="aside" aria-label="Cena a kontakt">
+      <div class="box" id="price-box">
+        <div class="box__price" id="d-price"></div>
+        <a class="btn btn--primary btn--block" href="#zajem">Mám zájem</a>
+        <a class="btn btn--secondary btn--block" id="d-call"><svg class="icon"><use href="#i-phone"/></svg><span></span></a>
+        <div class="box__actions">
+          <button class="btn btn--secondary" aria-pressed="false" data-toggle="Uloženo"><svg class="icon"><use href="#i-heart"/></svg><span>Uložit</span></button>
+          <button class="btn btn--secondary" aria-pressed="false" data-toggle="Hlídáme cenu"><svg class="icon"><use href="#i-bell"/></svg><span>Hlídat cenu</span></button>
+          <button class="btn btn--secondary" aria-pressed="false" data-toggle="V porovnání"><svg class="icon"><use href="#i-compare"/></svg><span>Porovnat</span></button>
+          <button class="btn btn--secondary" id="d-share"><svg class="icon"><use href="#i-share"/></svg><span>Sdílet</span></button>
+        </div>
+        <p class="ref-no" id="d-ref"></p>
+      </div>
+      <div class="box">
+        <div class="agent-mini" id="d-agent"></div>
+        <div class="agent-links" id="d-agent-links"></div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="section section--tint" id="zajem">
+    <div class="container contact">
+      <div>
+        <span class="t-label eyebrow">Mám zájem</span>
+        <h2 class="t-h2">Domluvte si prohlídku</h2>
+        <p style="margin-top:var(--s-3);color:var(--text-muted)">Nejpozději do 24 hodin se ozveme nazpátek.</p>
+        <div class="agent-mini" style="margin-top:var(--s-6)" id="d-agent-2"></div>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, poptávka je odeslaná</h3><p>Makléř se vám ozve nejpozději do 24 hodin.</p></div>'">
+        <div class="form__2">
+          <div class="field"><label for="z-name">Jméno a příjmení *</label><input class="input" id="z-name" autocomplete="name" required></div>
+          <div class="field"><label for="z-tel">Telefon *</label><input class="input" id="z-tel" type="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label for="z-mail">E-mail *</label><input class="input" id="z-mail" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="z-msg">Zpráva</label><textarea class="input" id="z-msg"></textarea></div>
+        <label class="check"><input type="checkbox" required> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+        <div><button class="btn btn--primary">Odeslat poptávku</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="similar">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="t-h2">Podobné nemovitosti</h2>
+        <a class="btn btn--secondary" data-href="vypis.html" data-q="&type=dum">Všechny domy <svg class="icon"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="grid-cards" id="similar"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<!-- Lepící lišta: mobil dole vždy, desktop nahoře po odscrollování cenového boxu -->
+<div class="stickybar" id="stickybar">
+  <div class="container stickybar__in">
+    <span class="stickybar__title" id="sb-title"></span>
+    <span class="stickybar__price" id="sb-price"></span>
+    <span class="stickybar__cta">
+      <a class="icon-btn" id="sb-call" aria-label="Zavolat makléři"><svg class="icon icon--lg"><use href="#i-phone"/></svg></a>
+      <a class="btn btn--primary" href="#zajem">Mám zájem</a>
+    </span>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Galerie">
+  <div class="lightbox__bar"><span id="lb-count"></span><button class="icon-btn" id="lb-close" aria-label="Zavřít galerii"><svg class="icon icon--lg"><use href="#i-x"/></svg></button></div>
+  <div class="lightbox__stage" id="lb-stage">
+    <button class="lightbox__nav lightbox__nav--prev" id="lb-prev" aria-label="Předchozí"><svg class="icon icon--lg"><use href="#i-chev-left"/></svg></button>
+    <div id="lb-media" style="display:contents"></div>
+    <button class="lightbox__nav lightbox__nav--next" id="lb-next" aria-label="Další"><svg class="icon icon--lg"><use href="#i-chev-right"/></svg></button>
+  </div>
+  <div class="lightbox__thumbs" id="lb-thumbs"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/detail-bzany.js"></script>
+<script src="core.js"></script>
+<script src="detail.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Makléři | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="makleri">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero page-hero--light">
+    <div class="container">
+      <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Makléři</span></nav>
+      <h1>Kdo se postará o váš obchod</h1>
+      <p id="mk-lead"></p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:var(--s-8)">
+    <div class="container">
+      <form class="agent-filters" role="search" onsubmit="event.preventDefault()">
+        <div class="field"><label for="mk-q">Jméno makléře</label><div class="input-icon"><svg class="icon"><use href="#i-search"/></svg><input class="input" id="mk-q" placeholder="Např. Kubát" autocomplete="off"></div></div>
+        <div class="field" id="mk-office-f"><label for="mk-office">Kancelář</label><select class="select" id="mk-office"></select></div>
+      </form>
+      <p class="results-bar__info" id="mk-info" aria-live="polite" style="margin-bottom:var(--s-4)"></p>
+      <div class="grid-agents" id="mk-grid"></div>
+      <div class="empty" id="mk-empty" hidden></div>
+    </div>
+  </section>
+  <section class="section section--dark">
+    <div class="container sell">
+      <div><span class="t-label eyebrow">Kariéra</span><h2 class="t-h2">Chcete se k nám přidat?</h2>
+        <p class="t-lead" style="margin-top:var(--s-3);color:rgba(255,255,255,.85);max-width:56ch">Staňte se součástí týmu NEXT REALITY a pracujte v prostředí, kde se spojuje profesionalita, osobní přístup a moderní technologie.</p></div>
+      <div><a class="btn btn--primary" href="#">Zjistit více o kariéře <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="data/phase3.js"></script>
+<script src="core.js"></script>
+<script>
+// Přehled makléřů – reálná data z /makleri (TGH 33 makléřů ze 7 kanceláří, Stars 7)
+const agentCard = a => `<article class="agent">
+  <div class="agent__photo">${a.img ? `<img src="${esc(a.img)}" alt="" loading="lazy">` : ico('user', 'icon icon--lg')}</div>
+  <div class="agent__body">
+    <span class="agent__office">${esc(a.office)}</span>
+    <h2 class="agent__name"><a href="${href('makler.html', a.slug ? '&slug=' + a.slug : '&name=' + encodeURIComponent(a.n))}">${esc(a.n)}</a></h2>
+    <p class="agent__role">${esc(a.r)}</p>
+    <div class="agent__contact">
+      ${a.tel ? `<a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}<span>${esc(a.tel)}</span></a>` : ''}
+      ${a.mail ? `<a href="mailto:${esc(a.mail)}">${ico('mail')}<span>${esc(a.mail)}</span></a>` : ''}
+    </div>
+  </div></article>`;
+const list = () => BROKERS[dataKey(office)] || [];
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function draw() {
+  const q = norm($('#mk-q').value.trim()), of = $('#mk-office').value;
+  const r = list().filter(a => (!q || norm(a.n).includes(q)) && (!of || a.office === of));
+  $('#mk-grid').innerHTML = r.map(agentCard).join('');
+  $('#mk-info').textContent = r.length + (r.length === 1 ? ' makléř' : r.length < 5 && r.length ? ' makléři' : ' makléřů');
+  $('#mk-empty').hidden = !!r.length;
+  $('#mk-empty').innerHTML = `<div class="empty__in">${ico('empty', 'icon empty__ico')}<h2 class="t-h3">Takového makléře jsme nenašli</h2><p>Zkuste jiné jméno, nebo vyberte všechny kanceláře.</p><button class="btn btn--secondary" type="button" onclick="$('#mk-q').value='';$('#mk-office').value='';draw()">Zobrazit všechny makléře</button></div>`;
+  setTimeout(runChecks, 100);
+}
+window.PAGE = {
+  note: 'TGH je holding 7 kanceláří → filtr kanceláře. Stars má jednu kancelář → filtr se skryje. Detail má v předloze jen Zdeněk Kubát.',
+  render(k) {
+    const offices = [...new Set(list().map(a => a.office))];
+    $('#mk-office').innerHTML = '<option value="">Všechny kanceláře</option>' + offices.map(o => `<option>${esc(o)}</option>`).join('');
+    $('#mk-office-f').hidden = offices.length < 2;
+    if (qs.get('branch') && offices.includes(qs.get('branch'))) $('#mk-office').value = qs.get('branch');
+    $('#mk-lead').textContent = `${list().length} makléřů${offices.length > 1 ? ` v ${offices.length} kancelářích` : ''}. Vyberte si odborníka, který zná vaši lokalitu.`;
+    document.title = `Makléři | ${OFFICES[k].name}`;
+    draw();
+  },
+  checks() { const t = $$('#mk-grid .agent').map(c => Math.round(c.getBoundingClientRect().top)); const hs = $$('#mk-grid .agent').filter(c => Math.round(c.getBoundingClientRect().top) === t[0]).map(c => c.offsetHeight); return check('Stejná výška karet', hs.length ? new Set(hs).size === 1 : null, [...new Set(hs)].join('/') + ' px'); },
+  init() { $('#mk-q').addEventListener('input', draw); $('#mk-office').addEventListener('change', draw); },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Makléř | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="makleri">
+<div id="site-header"></div>
+<main>
+  <div class="container profile">
+    <aside class="profile__card" aria-label="Kontakt na makléře">
+      <a class="back" data-href="makleri.html"><svg class="icon"><use href="#i-arrow-left"/></svg>Všichni makléři</a>
+      <div class="profile__photo"><img id="pf-img" alt=""></div>
+      <div><h1 id="pf-name"></h1><p class="profile__role" id="pf-role"></p></div>
+      <div class="agent-links" id="pf-links"></div>
+      <a class="btn btn--primary btn--block" href="#kontakt-maklere">Domluvit konzultaci</a>
+      <a class="btn btn--secondary btn--block" data-href="prodat.html#odhad">Odhad ceny zdarma</a>
+    </aside>
+    <div class="profile__main">
+      <blockquote class="motto" id="pf-motto"></blockquote>
+      <div class="stats-row" id="pf-stats"></div>
+      <section class="profile__bio" aria-labelledby="h-bio"><h2 class="t-h3" id="h-bio">O mně</h2><div id="pf-bio" style="display:grid;gap:var(--s-4)"></div></section>
+      <section aria-labelledby="h-off">
+        <div class="section-head" style="margin-bottom:var(--s-4)"><h2 class="t-h3" id="h-off">Moje aktuální nemovitosti v nabídce</h2></div>
+        <div class="grid-cards grid-cards--3" id="pf-cards"></div>
+      </section>
+    </div>
+  </div>
+
+  <section class="section section--tint" id="kontakt-maklere">
+    <div class="container contact">
+      <div><span class="t-label eyebrow">Kontakt</span><h2 class="t-h2">Dejte mi vědět, s čím vám můžu pomoct</h2>
+        <p style="margin-top:var(--s-3);color:var(--text-muted)">Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
+      <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, zpráva je odeslaná</h3><p>Ozvu se vám nejpozději do 24 hodin.</p></div>'">
+        <div class="form__2">
+          <div class="field"><label for="k-name">Jméno a příjmení *</label><input class="input" id="k-name" autocomplete="name" required></div>
+          <div class="field"><label for="k-tel">Telefon *</label><input class="input" id="k-tel" type="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label for="k-mail">E-mail *</label><input class="input" id="k-mail" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="k-msg">Zajímá vás něco konkrétního?</label><textarea class="input" id="k-msg"></textarea></div>
+        <label class="check"><input type="checkbox" required> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+        <div><button class="btn btn--primary">Odeslat zprávu</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/phase3.js"></script>
+<script src="data/phase3-manual.js"></script>
+<script src="core.js"></script>
+<script>
+// Detail makléře – profil + jeho aktuální nabídky (spárované s daty výpisu podle URL nabídky)
+window.PAGE = {
+  note: 'Předloha má plná data jen pro Zdeňka Kubáta (TGH). Jiný makléř ze seznamu ukáže kontakty a prázdný stav bio.',
+  render() {
+    const slug = qs.get('slug') || 'zdenek-kubat';
+    const all = [...(BROKERS.tgh || []), ...(BROKERS.stars || [])];
+    const base = (qs.get('name') && all.find(b => b.n === qs.get('name'))) || all.find(b => b.slug === slug) || all.find(b => b.slug === 'zdenek-kubat');
+    const D = base.slug === BROKER_DETAIL.slug ? BROKER_DETAIL : null;
+    document.title = `${base.n} – ${base.r} | ${base.office}`;
+    $('#pf-img').src = D?.portrait || base.img; $('#pf-img').alt = base.n;
+    $('#pf-name').textContent = base.n;
+    $('#pf-role').textContent = `${base.r} · ${base.office}`;
+    $('#pf-links').innerHTML = `${base.tel ? `<a href="tel:${base.tel.replace(/\s/g, '')}">${ico('phone')}${esc(base.tel)}</a>` : ''}${base.mail ? `<a href="mailto:${esc(base.mail)}">${ico('mail')}${esc(base.mail)}</a>` : ''}`;
+    $('#pf-motto').hidden = !D?.motto;
+    if (D?.motto) $('#pf-motto').innerHTML = `${ico('quote')}${esc(D.motto)}`;
+    $('#pf-bio').innerHTML = D?.bio?.length ? D.bio.map(p => `<p>${esc(p)}</p>`).join('') : `<div class="dempty">${ico('user')}<div><b>Makléř zatím nemá vyplněný profil</b><span>Kontaktujte ho přímo telefonem nebo e-mailem.</span></div></div>`;
+    const mine = D ? (LISTINGS.tgh || []).filter(x => D.hrefs.includes(x.href)) : [];
+    $('#pf-cards').closest('section').hidden = !D;
+    $('#pf-cards').innerHTML = mine.length ? mine.map(x => card(x)).join('') : `<div class="dempty" style="grid-column:1/-1">${ico('dum')}<div><b>Žádná nemovitost v aktuální nabídce</b><span>Nové nabídky se tu objeví automaticky.</span></div></div>`;
+    $('#pf-stats').innerHTML = D ? `<div><b>${mine.length}</b><span>nemovitostí v nabídce</span></div><div><b>${esc(base.office.replace('NEXT REALITY ', ''))}</b><span>kancelář</span></div>` : '';
+    $('#k-msg').placeholder = `Zpráva pro: ${base.n}`;
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>
