@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developerské projekty | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="projekty">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero page-hero--light">
+    <div class="container">
+      <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Developerské projekty</span></nav>
+      <h1>Developerské projekty</h1>
+      <p>Objevte developerské projekty, které přinášejí moderní bydlení, promyšlenou architekturu a atraktivní lokality. Nabízíme nové byty pro vlastní bydlení i investici.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:var(--s-8)">
+    <div class="container">
+      <p class="results-bar__info" id="pj-info" style="margin-bottom:var(--s-4)"></p>
+      <div class="grid-projects" id="pj-grid"></div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="data/phase3.js"></script>
+<script src="core.js"></script>
+<script>
+// Přehled projektů – TGH 16 projektů z /developerske-projekty, Stars 3 projekty z homepage
+window.PAGE = {
+  note: 'Fakta projektu (počet jednotek, termín…) jsou volný text z CMS – karta je proto řeší jako zalamovací štítky. Detail v předloze: Musílkova 39.',
+  render(k) {
+    const list = k === 'stars' ? OFFICES.stars.projects.map(p => ({ ...p, label: 'V prodeji', facts: [] })) : PROJECTS.tgh;
+    document.title = `Developerské projekty | ${OFFICES[k].name}`;
+    $('#pj-info').textContent = `${list.length} projektů`;
+    $('#pj-grid').innerHTML = list.map(p => {
+      return `<article class="project">
+        <div class="project__media">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : ''}<div class="pcard__badges"><span class="badge badge--free">${esc(p.label || 'V prodeji')}</span></div></div>
+        <div class="project__body">
+          <h2 class="t-h3"><a href="${href('projekt.html', p.slug ? '&slug=' + p.slug : '')}">${esc(p.n)}</a></h2>
+          ${p.d ? `<p>${esc(p.d)}</p>` : ''}
+          ${p.facts?.length ? `<div class="project__facts">${p.facts.map(f => `<span class="param">${esc(f)}</span>`).join('')}</div>` : ''}
+        </div></article>`;
+    }).join('');
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

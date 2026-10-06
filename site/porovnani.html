@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porovnání variant | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+<style>
+  .cmp-tools { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: end; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); margin-top: var(--s-6); }
+  .cmp__col { display: grid; gap: var(--s-2); min-width: 0; }
+  .cmp__frame { position: relative; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--r-card); background: var(--surface-2); }
+  .cmp__frame iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; }
+  .cmp__res { margin-top: var(--s-6); }
+  .cmp__res table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .cmp__res th, .cmp__res td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+  .ok { color: var(--st-free); font-weight: 700; } .bad { color: var(--danger); font-weight: 700; }
+</style>
+</head>
+<body data-page="porovnani">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero page-hero--light">
+    <div class="container">
+      <nav class="crumbs"><a href="prehled.html">Přehled předlohy</a><span aria-hidden="true">/</span><span aria-current="page">Porovnání variant</span></nav>
+      <h1>Porovnání barevných variant</h1>
+      <p>Přejímací test ze zadání: homepage a výpis ve dvou barevných variantách. Pokud přebarvení vyžaduje zásah do layoutu, systém není hotový. Stránka porovná pozice a výšky všech sekcí obou variant automaticky.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:var(--s-8)">
+    <div class="container">
+      <form class="cmp-tools" onsubmit="event.preventDefault()">
+        <div class="field"><label for="cmp-page">Stránka</label><select class="select" id="cmp-page"><option value="index.html">Homepage</option><option value="vypis.html">Výpis</option><option value="detail.html">Detail</option><option value="prodat.html">Chci prodat</option></select></div>
+        <div class="field"><label for="cmp-w">Šířka</label><select class="select" id="cmp-w"><option>1440</option><option>768</option><option>375</option></select></div>
+        <div class="field"><label for="cmp-a">Varianta A</label><select class="select" id="cmp-a"><option value="tgh">TGH</option><option value="stars">Stars</option><option value="test">Test přebarvení</option></select></div>
+        <div class="field"><label for="cmp-b">Varianta B</label><select class="select" id="cmp-b"><option value="test" selected>Test přebarvení</option><option value="tgh">TGH</option><option value="stars">Stars</option></select></div>
+      </form>
+      <div class="cmp" id="cmp"></div>
+      <div class="cmp__res" id="cmp-res" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+// Načte obě varianty do iframu ve skutečné šířce, zmenší je pro zobrazení a porovná geometrii sekcí.
+function load(src, w) {
+  return new Promise(res => {
+    const f = document.createElement('iframe');
+    f.setAttribute('scrolling', 'no'); f.width = w; f.height = 4000; f.src = src; f.title = src;
+    f.onload = () => setTimeout(() => res(f), 900);
+    f._wrap = document.createElement('div'); f._wrap.className = 'cmp__frame'; f._wrap.appendChild(f);
+    load.target.appendChild(f._wrap);
+  });
+}
+function geo(f) {
+  const d = f.contentDocument;
+  return [...d.querySelectorAll('main > section, main > div, .hero, .section, .list-head, .filterwrap, .results, .detail, .detail-top')].map(s => ({ id: s.id || s.className.split(' ')[0], top: Math.round(s.getBoundingClientRect().top), h: Math.round(s.offsetHeight) }));
+}
+async function run() {
+  const pg = $('#cmp-page').value, w = +$('#cmp-w').value, A = $('#cmp-a').value, B = $('#cmp-b').value;
+  const box = $('#cmp'); box.innerHTML = '';
+  $('#cmp-res').innerHTML = '<p class="t-small">Měřím…</p>';
+  const cols = [A, B].map(k => { const c = document.createElement('div'); c.className = 'cmp__col'; c.innerHTML = `<b>${({ tgh: 'TGH', stars: 'Stars', test: 'Test přebarvení' })[k]}</b>`; box.appendChild(c); return c; });
+  const frames = [];
+  for (const [i, k] of [A, B].entries()) { load.target = cols[i]; frames.push(await load(`${pg}?office=${k}&clean`, w)); }
+  const colW = cols[0].clientWidth, scale = Math.min(1, colW / w), viewH = w < 768 ? 720 : Math.min(900, w * 0.62);
+  frames.forEach(f => { f.style.transform = `scale(${scale})`; f._wrap.style.height = viewH * scale + 'px'; f._wrap.style.width = w * scale + 'px'; f._wrap.style.maxWidth = '100%'; });
+  const [ga, gb] = frames.map(geo);
+  const rows = ga.map((s, i) => { const t = gb[i]; const same = t && Math.abs(s.top - t.top) <= 2 && Math.abs(s.h - t.h) <= 2; return { s, t, same }; });
+  const diff = rows.filter(r => !r.same).length;
+  $('#cmp-res').innerHTML = `<p><b class="${diff ? 'bad' : 'ok'}">${diff ? `${diff} sekcí se liší` : 'Layout je shodný'}</b> – ${rows.length} sekcí, tolerance 2 px. ${A === 'stars' || B === 'stars' ? 'Pozor: Stars má jiný obsah (texty, počty), rozdíly výšek jsou proto očekávané – čistý test barev je TGH ↔ Test přebarvení.' : ''}</p>
+    <table><thead><tr><th>Sekce</th><th>A: pozice / výška</th><th>B: pozice / výška</th><th></th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.s.id)}</td><td>${r.s.top} / ${r.s.h} px</td><td>${r.t ? r.t.top + ' / ' + r.t.h + ' px' : '–'}</td><td class="${r.same ? 'ok' : 'bad'}">${r.same ? '✓' : '≠'}</td></tr>`).join('')}</tbody></table>`;
+}
+window.PAGE = {
+  note: 'Iframy se načítají ve skutečné šířce a jen se zmenší – měří se reálný layout, ne zmenšenina.',
+  render() {},
+  checks() { return ''; },
+  init() { $$('.cmp-tools select').forEach(s => s.addEventListener('change', run)); setTimeout(run, 50); },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

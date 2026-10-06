@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kontakty | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="kontakty">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero page-hero--light">
+    <div class="container">
+      <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Kontakty</span></nav>
+      <h1 id="ct-h1">Kde nás najdete</h1>
+      <p id="ct-lead"></p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:var(--s-8)">
+    <div class="container" id="ct-main"></div>
+  </section>
+  <section class="section section--tint" id="kontakt">
+    <div class="container contact">
+      <div><span class="t-label eyebrow">Napište nám</span><h2 class="t-h2">Jsme tu pro vás</h2><p style="margin-top:var(--s-3);color:var(--text-muted)">Osobně s vámi projdeme každý detail. Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
+      <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, zpráva je odeslaná</h3><p>Ozveme se nejpozději do 24 hodin.</p></div>'">
+        <div class="form__2">
+          <div class="field"><label for="c-name">Jméno a příjmení *</label><input class="input" id="c-name" autocomplete="name" required></div>
+          <div class="field"><label for="c-tel">Telefon *</label><input class="input" id="c-tel" type="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label for="c-mail">E-mail *</label><input class="input" id="c-mail" type="email" autocomplete="email" required></div>
+        <div class="field" id="c-branch-f"><label for="c-branch">Kancelář</label><select class="select" id="c-branch"></select></div>
+        <div class="field"><label for="c-msg">Zajímá vás něco konkrétního?</label><textarea class="input" id="c-msg"></textarea></div>
+        <label class="check"><input type="checkbox" required> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+        <div><button class="btn btn--primary">Odeslat zprávu</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="data/phase3.js"></script>
+<script src="core.js"></script>
+<script>
+// Kontakty – TGH: 7 poboček z /kancelare; Stars: jedna kancelář + právní údaje a účty z /kontakty (6. 10. 2026)
+const STARS_LEGAL = {
+  ico: '09683810',
+  note: 'Kancelář je nezávisle provozována společností Gamp reality servis s.r.o. IČ: 09683810 a využívá ochrannou známku NEXT REALITY. Makléři této kanceláře jsou samostatní podnikatelé podnikající na základě živnostenského listu.',
+  accounts: [['Gamp reality servis s.r.o.', '4156583319/5500'], ['Gamp reality rent s.r.o.', '4156583378/5500'], ['Absolut Reality a finance s.r.o.', '3288652377/5500']],
+};
+const mapy = a => 'https://mapy.cz/zakladni?q=' + encodeURIComponent(a);
+window.PAGE = {
+  note: 'Mapa poboček chybí záměrně: pobočky nemají v CMS souřadnice. Odkaz „Navigovat“ hledá adresu na Mapy.cz.',
+  render(k) {
+    const o = OFFICES[k];
+    document.title = `Kontakty | ${o.name}`;
+    if (k === 'stars') {
+      $('#ct-h1').textContent = 'Kontakty';
+      $('#ct-lead').textContent = 'Chcete prodat, koupit nebo pronajmout nemovitost? Navštivte nás v kanceláři nebo nás kontaktujte.';
+      const team = BROKERS.stars.slice(0, 8);
+      $('#ct-main').innerHTML = `<div class="office-card">
+          <div style="display:grid;gap:var(--s-4);align-content:start">
+            <h2 class="t-h2">${esc(o.name)}</h2>
+            <p class="detail__loc" style="color:var(--ink)">${ico('pin')}<span>${esc(o.address)}</span></p>
+            <div><a class="btn btn--secondary" href="${mapy(o.address)}" target="_blank" rel="noopener">${ico('nav')} Navigovat</a></div>
+            <div class="legal"><span><b>IČ:</b> ${STARS_LEGAL.ico}</span><span>${esc(STARS_LEGAL.note)}</span></div>
+          </div>
+          <div class="box box--muted"><b style="color:var(--ink)">${ico('bank')} Účty pro rezervační poplatky</b>
+            <dl class="ptable" style="grid-template-columns:1fr">${STARS_LEGAL.accounts.map(([n, a]) => `<div><dt>${esc(n)}</dt><dd>${esc(a)}</dd></div>`).join('')}</dl></div>
+        </div>
+        <div class="section-head" style="margin-top:var(--s-12)"><h2 class="t-h2">Chcete kontaktovat někoho konkrétního?</h2><a class="btn btn--secondary" href="${href('makleri.html')}">Všichni makléři ${ico('arrow')}</a></div>
+        <div class="grid-agents">${team.map(a => `<article class="agent"><div class="agent__photo"><img src="${esc(a.img)}" alt="" loading="lazy"></div><div class="agent__body"><h3 class="agent__name">${esc(a.n)}</h3><p class="agent__role">${esc(a.r)}</p><div class="agent__contact"><a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}<span>${esc(a.tel)}</span></a><a href="mailto:${esc(a.mail)}">${ico('mail')}<span>${esc(a.mail)}</span></a></div></div></article>`).join('')}</div>`;
+      $('#c-branch-f').hidden = true;
+    } else {
+      const br = BRANCHES.tgh;
+      $('#ct-h1').textContent = 'Kde nás najdete';
+      $('#ct-lead').textContent = `Kontaktujte některou z našich ${br.length} kanceláří. Vyberte si odborníka z vašeho kraje.`;
+      $('#ct-main').innerHTML = `<div class="branches">${br.map(b => `<article class="branch">
+          <div class="branch__img"><img src="${esc(b.img)}" alt="" loading="lazy"></div>
+          <div class="branch__body"><h3>${esc(b.n)}</h3><p>${ico('pin')}<span>${esc(b.address)}</span></p></div>
+          <div class="branch__actions"><a class="btn btn--secondary" href="${mapy(b.address)}" target="_blank" rel="noopener">${ico('nav')} Navigovat</a><a class="btn btn--ghost" href="${href('makleri.html', '&branch=' + encodeURIComponent(b.n))}">Makléři pobočky</a></div>
+        </article>`).join('')}</div>`;
+      $('#c-branch').innerHTML = '<option value="">Nevím, poraďte mi</option>' + br.map(b => `<option>${esc(b.n)}</option>`).join('');
+      $('#c-branch-f').hidden = false;
+    }
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

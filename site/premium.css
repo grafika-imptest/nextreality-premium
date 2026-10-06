@@ -1,0 +1,249 @@
+/* ==========================================================================
+   NEXT Reality – PRÉMIOVÁ VERZE · vizuální vrstva
+   Načítá se jako poslední (po components.css a pages.css) a přestyluje sdílené komponenty.
+   Logika, markup a data jsou shodné se standardní verzí – liší se jazyk, ne funkce.
+   ========================================================================== */
+
+html { background: var(--paper); }
+body { background: var(--paper); color: var(--text); }
+::selection { background: var(--accent-deco); color: var(--ink); }
+
+/* --- Typografie ------------------------------------------------------------ */
+.t-hero, .t-h1, .t-h2, .page-hero h1, .detail__h1, .profile h1, .notfound h1,
+.sg-sec > h2, .doc h2, .hub h2 {
+  font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em;
+}
+.t-h3 { font-weight: 500; letter-spacing: -.005em; }
+.t-label, .eyebrow { font-size: var(--fs-label); letter-spacing: var(--ls-label); font-weight: 600; }
+.eyebrow { display: inline-flex; align-items: center; gap: var(--s-3); color: var(--text-muted); }
+.eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.section--dark .eyebrow, .on-ink .eyebrow { color: var(--accent-deco); }
+em, .serif-em { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+
+/* editoriální velikosti */
+.d-xl { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display-xl); line-height: var(--lh-display-xl); letter-spacing: -.025em; }
+.d { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: -.02em; }
+.d-sm { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: -.015em; }
+.statement { font-family: var(--font-display); font-size: var(--fs-statement); line-height: var(--lh-statement); letter-spacing: -.01em; }
+
+/* --- Atmosféry ------------------------------------------------------------- */
+.on-ink, .section--dark { background: var(--ink); color: var(--on-ink); }
+.on-ink :is(h1, h2, h3, .t-h2, .t-h3, .d, .d-sm, .d-xl), .section--dark :is(.t-h2, .t-h3) { color: var(--on-ink); }
+.on-ink p, .section--dark p { color: var(--on-ink-muted); }
+.section--tint { background: var(--stone); }
+.wide { width: 100%; max-width: calc(var(--wide-max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* --- Tlačítka --------------------------------------------------------------- */
+.btn { border-radius: var(--r-btn); font-weight: 500; letter-spacing: .01em; padding-inline: var(--s-6); transition: background var(--dur-micro), color var(--dur-micro), border-color var(--dur-micro); }
+.btn .icon { transition: transform var(--dur-ui) var(--ease); }
+.btn:hover .icon { transform: translateX(3px); }
+.btn--primary { background: var(--ink); color: var(--paper); }
+.btn--primary:hover { background: var(--accent-hover); }
+.btn--secondary { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+.btn--secondary:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn--ghost { color: var(--ink); padding-inline: 0; border-radius: 0; background: linear-gradient(currentColor, currentColor) 0 calc(100% - 10px) / 0 1px no-repeat; transition: background-size var(--dur-ui) var(--ease); }
+.btn--ghost:hover { text-decoration: none; background-size: 100% 1px; color: var(--ink); }
+.btn--alt { background: var(--accent-deco); color: var(--ink); }
+.btn--alt:hover { background: #97c93c; }
+:is(.on-ink, .section--dark, .hero, .estimate-ink) .btn--primary { background: var(--paper); color: var(--ink); }
+:is(.on-ink, .section--dark, .hero) .btn--primary:hover { background: #fff; }
+:is(.on-ink, .section--dark, .hero) .btn--secondary, .btn--on-dark.btn--secondary { background: transparent; color: var(--on-ink); border-color: rgba(244, 241, 235, .4); }
+:is(.on-ink, .section--dark, .hero) .btn--secondary:hover { border-color: var(--on-ink); background: var(--on-ink); color: var(--ink); }
+:is(.on-ink, .section--dark) .btn--ghost { color: var(--on-ink); }
+.btn.is-loading::after { border-color: currentColor; border-right-color: transparent; }
+.btn--primary.is-loading { color: transparent; }
+
+/* --- Hlavička ----------------------------------------------------------------- */
+.header { background: rgba(244, 241, 235, .86); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); transition: background var(--dur-ui), border-color var(--dur-ui), color var(--dur-ui); }
+.nav a { font-size: 14px; font-weight: 500; letter-spacing: .01em; border-radius: 0; padding-inline: var(--s-3); position: relative; }
+.nav a:hover { background: none; }
+.nav a::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: 6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform var(--dur-ui) var(--ease); }
+.nav a:hover::after, .nav a[aria-current]::after { transform: scaleX(1); transform-origin: left; }
+.nav a[aria-current] { color: var(--ink); }
+.header .btn--primary { min-height: 40px; padding-inline: var(--s-5); font-size: 14px; }
+.icon-btn:hover { background: rgba(13, 26, 36, .06); }
+.icon-btn .count { background: var(--accent-deco); color: var(--ink); }
+/* průhledná hlavička nad tmavým hero (homepage) – po odscrollování se zpevní */
+body.has-over-hero .header:not(.is-solid) { background: transparent; border-color: transparent; backdrop-filter: none; color: var(--on-ink); }
+body.has-over-hero .header:not(.is-solid) :is(.nav a, .icon-btn) { color: var(--on-ink); }
+body.has-over-hero .header:not(.is-solid) .logo img { filter: brightness(0) invert(1); }
+body.has-over-hero .header:not(.is-solid) .btn--primary { background: var(--paper); color: var(--ink); }
+body.has-over-hero main { margin-top: calc(-1 * var(--header-h)); }
+
+/* --- Pole -------------------------------------------------------------------- */
+.input, .select { border: 1px solid var(--line-strong); background: transparent; border-radius: var(--r-input); padding-inline: var(--s-5); }
+.input-icon .input { padding-left: 44px; }
+.input-icon .icon { left: var(--s-4); }
+textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
+.input:focus, .select:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(13, 26, 36, .08); }
+.select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%230d1a24' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; padding-right: 44px; }
+.chip { border: 1px solid var(--line-strong); background: transparent; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); }
+.seg { background: transparent; border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 3px; }
+.seg button { border-radius: var(--r-pill); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+.check input, .radio input { accent-color: var(--ink); }
+.suggest__list { border-radius: var(--r-box); box-shadow: var(--sh-3); border-color: var(--line); background: var(--paper); }
+
+/* --- Štítky ------------------------------------------------------------------ */
+.badge { border-radius: var(--r-pill); height: 26px; padding-inline: var(--s-3); font-size: 10.5px; letter-spacing: .14em; backdrop-filter: blur(8px); }
+.badge--free { background: rgba(244, 241, 235, .9); color: var(--st-free); }
+.badge--rent { background: rgba(13, 26, 36, .78); color: var(--on-ink); }
+.param { background: none; padding: 0; height: auto; font-weight: 500; font-size: 13px; color: var(--text-muted); }
+.pcard__params .param + .param::before { content: "·"; margin-right: var(--s-1); color: var(--line-strong); }
+.fchip { background: transparent; border: 1px solid var(--ink); }
+.fchip:hover { background: var(--ink); color: var(--paper); }
+
+/* --- Karta nemovitosti: editoriální, bez rámečku ------------------------------ */
+.pcard { background: transparent; border: 0; border-radius: 0; overflow: visible; }
+.pcard:hover { box-shadow: none; transform: none; }
+.pcard__media { border-radius: var(--r-card); }
+.pcard__media img { transition: transform 1.4s var(--ease); }
+.pcard:hover .pcard__media img { transform: scale(1.05); }
+.pcard__body { padding: var(--s-4) 0 0; gap: var(--s-1); grid-template-rows: auto auto calc(2 * var(--lh-small)) auto; }
+.pcard__params { order: 0; }
+.pcard__loc { order: 1; font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 28px; letter-spacing: -.005em; }
+.pcard__loc .icon { display: none; }
+.pcard__title { order: 2; font-size: 13px; }
+.pcard__price { order: 3; border-top: 0; padding-top: var(--s-2); margin-top: 0; font-weight: 500; font-size: 16px; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+.pcard__fav { background: rgba(244, 241, 235, .85); backdrop-filter: blur(8px); top: var(--s-3); right: var(--s-3); }
+.pcard:focus-within { box-shadow: none; outline: 2px solid var(--focus); outline-offset: 6px; border-radius: var(--r-card); }
+.pcard__media.is-empty { background: var(--stone); }
+/* „Volný“ je výchozí stav – v prémiové verzi se nezobrazuje, štítkujeme jen výjimky */
+.pcard .badge--free { display: none; }
+.pcard.is-sold .pcard__media img { filter: grayscale(1); opacity: .85; }
+
+/* --- Ostatní karty a boxy: linky místo stínů ------------------------------------ */
+.agent, .ref, .project, .branch, .acard, .box, .calc, .compare > div, .process li, .office-card, .watchdog, .estimate, .wizard, .search, .dempty, .blocked, .cat { border-radius: var(--r-box); box-shadow: none; }
+.agent, .project, .acard, .branch { background: transparent; border: 0; }
+.agent__photo, .project__media, .acard__media, .branch__img { border-radius: var(--r-card); overflow: hidden; }
+.agent__photo img { filter: grayscale(.25); transition: filter var(--dur-ui), transform 1.2s var(--ease); }
+.agent:hover .agent__photo img { filter: none; transform: scale(1.03); }
+.agent__body, .project__body, .acard__body, .branch__body { padding-inline: 0; }
+.branch__actions { padding-inline: 0; }
+.agent__name, .project h3, .acard__title, .branch__body h3 { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 30px; }
+.project h3.t-h3 { font-size: 28px; line-height: 32px; }
+.ref { background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: var(--s-6) 0 0; }
+.ref blockquote { font-family: var(--font-display); font-size: 22px; line-height: 30px; color: var(--ink); }
+.ref__avatar { background: var(--ink); color: var(--paper); }
+.box, .calc, .compare > div, .office-card, .process li { background: transparent; border: 1px solid var(--line); }
+.box--muted { background: var(--stone); border-color: transparent; }
+.watchdog { background: var(--ink); color: var(--on-ink); }
+.watchdog p { color: var(--on-ink-muted); }
+.watchdog .t-h3 { color: var(--on-ink); }
+.watchdog__ico { background: var(--ink-2); color: var(--accent-deco); }
+.watchdog .input { border-color: var(--ink-line); color: var(--on-ink); }
+.watchdog .input::placeholder { color: var(--on-ink-muted); }
+.cat { border: 1px solid var(--line); background: transparent; }
+.cat:hover { border-color: var(--ink); box-shadow: none; }
+.cat__ico { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 50%; }
+
+/* --- Hlavičky stránek -------------------------------------------------------------- */
+.page-hero { background: var(--ink); color: var(--on-ink); padding-block: var(--s-16) var(--s-12); }
+.page-hero--light { background: var(--paper); color: var(--text); border-bottom: 1px solid var(--line); }
+.page-hero h1 { font-size: clamp(32px, 3.6vw, 48px); line-height: 1.04; max-width: 18ch; } /* funkční stránky: strop 48 px ze zadání */
+.crumbs { font-size: 13px; letter-spacing: .02em; }
+
+/* --- Patička -------------------------------------------------------------------------- */
+.footer { background: var(--ink); color: var(--on-ink-muted); padding-top: var(--s-24); }
+.footer h4 { font-family: var(--font); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--accent-deco); font-weight: 600; }
+.footer a { color: var(--on-ink); }
+.footer__legal { border-color: var(--ink-line); }
+.footer__mark { font-family: var(--font-display); font-size: clamp(44px, 9.4vw, 176px); line-height: .82; letter-spacing: -.04em; color: var(--on-ink); margin-top: var(--s-16); white-space: nowrap; overflow: hidden; }
+.footer__mark span { color: var(--accent-deco); font-style: italic; }
+
+/* --- Cookie lišta: tmavá, rovnocenná tlačítka --------------------------------------- */
+.cookies { background: var(--ink); color: var(--on-ink); border-radius: var(--r-box); box-shadow: var(--sh-3); }
+.cookies p { color: var(--on-ink-muted); }
+.cookies .btn--secondary { color: var(--on-ink); border-color: rgba(244, 241, 235, .4); }
+.cookies .btn--secondary:hover { background: var(--on-ink); color: var(--ink); }
+.cookies .btn--ghost { color: var(--on-ink); }
+
+/* --- Výpis a filtry ---------------------------------------------------------------- */
+.filterwrap { background: rgba(244, 241, 235, .94); backdrop-filter: blur(12px); }
+.list-head .t-h1 { font-family: var(--font-display); font-weight: 400; }
+.status-tabs button[aria-selected="true"] { border-color: var(--ink); }
+.pager__n[aria-current] { background: var(--ink); border-radius: 50%; }
+.pager__n { border-radius: 50%; }
+.mpin span { border-radius: var(--r-pill); background: var(--paper); border-color: var(--ink); font-family: var(--font); }
+.mpin:hover span { background: var(--ink); color: var(--paper); }
+.mcluster span { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 6px rgba(133, 185, 41, .35); }
+@media (max-width: 1023px) { .filters { background: var(--paper); border-radius: var(--r-box) var(--r-box) 0 0; } }
+
+/* --- Detail ------------------------------------------------------------------------- */
+.gallery { border-radius: var(--r-card); }
+.gallery__play { background: rgba(244, 241, 235, .92); backdrop-filter: blur(10px); font-weight: 500; }
+.gallery__play .icon { color: var(--ink); }
+.kp { background: transparent; border: 1px solid var(--line); border-radius: var(--r-pill); font-weight: 500; }
+.kp .icon { color: var(--ink); }
+.kp--price { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.kp--price .icon { color: var(--accent-deco); }
+.box__price { font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 44px; }
+.dsec > h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; line-height: 36px; }
+.equip .icon, .detail__loc .icon, .services .icon, .benefits .icon { color: var(--ink); }
+.services .icon { background: transparent; border: 1px solid var(--line); border-radius: 50%; }
+.stickybar { background: var(--ink); color: var(--on-ink); }
+.stickybar__title, .stickybar__price { color: var(--on-ink); }
+.stickybar__price small { color: var(--on-ink-muted); }
+.stickybar .btn--primary { background: var(--paper); color: var(--ink); }
+.stickybar .icon-btn { color: var(--on-ink); border-color: var(--ink-line) !important; }
+.lightbox { background: #070d12; }
+.process li::before { background: transparent; border: 1px solid var(--ink); color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+.motto { background: transparent; border-left: 1px solid var(--accent-deco); border-radius: 0; font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 400; }
+.wizard { background: var(--paper); color: var(--text); box-shadow: var(--sh-3); }
+.tile span { border-radius: var(--r-box); border-color: var(--line-strong); }
+.tile input:checked + span { border-color: var(--ink); background: transparent; box-shadow: inset 0 0 0 1px var(--ink); }
+.tile .icon, .wizard__note .icon { color: var(--ink); }
+.radio { border-radius: var(--r-box); }
+.radio:has(input:checked), .checks label:has(input:checked) { border-color: var(--ink); background: transparent; }
+.wizard__progress li.is-done::before, .wizard__progress li[aria-current]::before { background: var(--ink); }
+.trust .icon { color: var(--accent-deco); }
+.notfound__code { color: transparent; -webkit-text-stroke: 1px var(--ink); font-family: var(--font-display); font-weight: 400; font-size: 160px; }
+
+/* --- Prémiový detail: filmová hlavička, podnavigace, přehled ------------------------- */
+.d-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(88svh, 860px); display: flex; }
+.d-hero__media { position: absolute; inset: -6% 0; z-index: -1; }
+.d-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+.d-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(13, 26, 36, .6) 0%, rgba(13, 26, 36, .05) 30%, rgba(13, 26, 36, .25) 60%, rgba(13, 26, 36, .9) 100%); }
+.d-hero__in { display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-12); width: 100%; padding-block: calc(var(--header-h) + var(--s-6)) var(--s-10); }
+.d-hero .crumbs, .d-hero .crumbs a, .d-hero .crumbs [aria-current] { color: rgba(244, 241, 235, .8); }
+.d-hero__bottom { display: grid; gap: var(--s-8); align-items: end; }
+@media (min-width: 1024px) { .d-hero__bottom { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
+.d-hero .detail__h1 { color: var(--on-ink); font-size: var(--fs-hero); line-height: var(--lh-hero); max-width: 24ch; } /* funkční stránka – strop 48 px */
+.d-hero .detail__loc { color: rgba(244, 241, 235, .85); }
+.d-hero .detail__loc .icon { color: var(--accent-deco); }
+.d-hero .detail__loc a { color: var(--on-ink); }
+.d-hero__title { display: grid; gap: var(--s-4); }
+.d-hero__side { display: grid; gap: var(--s-4); justify-items: start; }
+@media (min-width: 1024px) { .d-hero__side { justify-items: end; text-align: right; } }
+.d-hero__price { font-family: var(--font-display); font-size: clamp(36px, 4vw, 56px); line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; }
+.d-hero__cta { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.d-hero .badge--free { background: rgba(244, 241, 235, .14); color: var(--on-ink); border: 1px solid rgba(244, 241, 235, .3); }
+.d-subnav { position: sticky; top: var(--header-h); z-index: 45; background: rgba(244, 241, 235, .94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.d-subnav .wide { display: flex; gap: var(--s-1); overflow-x: auto; scrollbar-width: none; }
+.d-subnav .wide::-webkit-scrollbar { display: none; }
+.d-subnav a { flex: none; padding: var(--s-4) var(--s-3); font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; margin-bottom: -1px; }
+.d-subnav a:hover, .d-subnav a.is-on { color: var(--ink); border-color: var(--ink); }
+.d-subnav__price { margin-left: auto; align-self: center; padding-inline: var(--s-4); font-family: var(--font-display); font-size: 22px; color: var(--ink); white-space: nowrap; }
+.d-subnav .d-subnav__cta { align-self: center; min-height: 40px; padding: 0 var(--s-5); color: var(--paper); border: 0; margin: 0; }
+.d-subnav .d-subnav__cta:hover { color: var(--paper); }
+@media (max-width: 1023px) { .d-subnav__price, .d-subnav .d-subnav__cta { display: none; } }
+.d-overview { display: grid; gap: var(--s-10); padding-bottom: var(--s-4); }
+.d-overview__lead { color: var(--ink); max-width: 28ch; }
+.d-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-6); margin: 0; padding-top: var(--s-8); border-top: 1px solid var(--line); }
+@media (min-width: 768px) { .d-facts { grid-template-columns: repeat(5, 1fr); } }
+.d-facts dt { font-family: var(--font-display); font-size: clamp(36px, 3.6vw, 52px); line-height: 1; color: var(--ink); }
+.d-facts dd { margin: var(--s-2) 0 0; font-size: 13px; color: var(--text-muted); }
+body[data-page="detail"] .detail { padding-top: var(--s-12); }
+/* stickybar na desktopu se v prémiové verzi nezobrazuje – cenu a CTA nese podnavigace */
+@media (min-width: 1024px) { body[data-page="detail"] .stickybar { display: none; } }
+
+/* --- Pohyb: výchozí stav prvků, které animuje motion.js ------------------------------- */
+.js-motion [data-reveal] { opacity: 0; transform: translateY(32px); }
+.js-motion [data-clip] { clip-path: inset(12% 0 12% 0); }
+.split-line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.split-line > span { display: inline-block; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .js-motion [data-reveal] { opacity: 1; transform: none; }
+  .js-motion [data-clip] { clip-path: none; }
+}

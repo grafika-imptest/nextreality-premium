@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nemovitosti na prodej | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+</head>
+<body data-page="vypis">
+<div id="site-header"></div>
+
+<main id="main">
+  <section class="list-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Nabídka nemovitostí</span></nav>
+      <div class="list-head__title">
+        <h1 class="t-h1" id="list-h1">Nemovitosti na prodej</h1>
+        <span class="list-head__count" id="list-count"></span>
+      </div>
+      <div class="status-tabs" id="status-tabs" role="tablist"></div>
+    </div>
+  </section>
+
+  <!-- Filtry: desktop = lišta, mobil = vysouvací panel (stejný markup, jiný layout) -->
+  <div class="filterwrap" id="filterwrap">
+    <div class="container">
+      <div class="mobile-tools">
+        <button class="btn btn--secondary" id="open-filters" aria-controls="filters" aria-expanded="false"><svg class="icon"><use href="#i-filter"/></svg><span>Filtry</span><span class="pill" id="filter-n" hidden></span></button>
+        <label class="sr-only" for="sort-m">Řazení</label>
+        <select class="select select--sm" id="sort-m"></select>
+        <div class="seg seg--icons" role="group" aria-label="Zobrazení">
+          <button type="button" data-view="list" aria-pressed="true" aria-label="Seznam"><svg class="icon"><use href="#i-list"/></svg></button>
+          <button type="button" data-view="map" aria-pressed="false" aria-label="Mapa"><svg class="icon"><use href="#i-map"/></svg></button>
+        </div>
+      </div>
+
+      <form class="filters" id="filters" aria-label="Filtry" role="dialog">
+        <div class="filters__head"><h2 class="t-h3">Filtry</h2><button type="button" class="icon-btn" id="close-filters" aria-label="Zavřít filtry"><svg class="icon icon--lg"><use href="#i-x"/></svg></button></div>
+        <div class="filters__body">
+          <div class="field">
+            <span class="field__label">Typ nabídky</span>
+            <div class="seg" role="group"><button type="button" data-deal="prodej" aria-pressed="true">Prodej</button><button type="button" data-deal="pronajem" aria-pressed="false">Pronájem</button></div>
+          </div>
+          <div class="field">
+            <label for="f-type">Typ nemovitosti</label>
+            <select class="select" id="f-type"><option value="">Vše</option><option value="byt">Byty</option><option value="dum">Domy</option><option value="komercni">Komerční</option><option value="pozemek">Pozemky</option><option value="ostatni">Ostatní</option></select>
+          </div>
+          <div class="field suggest filters__loc" id="suggest">
+            <label for="f-loc">Lokalita</label>
+            <div class="input-icon"><svg class="icon"><use href="#i-pin"/></svg><input class="input" id="f-loc" placeholder="Město, čtvrť nebo ulice" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="suggest-list"></div>
+            <ul class="suggest__list" id="suggest-list" role="listbox"></ul>
+          </div>
+          <div class="field">
+            <span class="field__label">Cena</span>
+            <div class="range"><label class="sr-only" for="f-pmin">Cena od</label><input class="input" id="f-pmin" inputmode="numeric" placeholder="od Kč"><span>–</span><label class="sr-only" for="f-pmax">Cena do</label><input class="input" id="f-pmax" inputmode="numeric" placeholder="do Kč"></div>
+          </div>
+          <div class="field">
+            <span class="field__label" id="lbl-area">Plocha alespoň</span>
+            <div class="chips" role="group" aria-labelledby="lbl-area" id="f-area">
+              <button type="button" class="chip" data-v="50" aria-pressed="false">50 m²</button><button type="button" class="chip" data-v="75" aria-pressed="false">75 m²</button><button type="button" class="chip" data-v="100" aria-pressed="false">100 m²</button><button type="button" class="chip" data-v="150" aria-pressed="false">150 m²</button>
+            </div>
+          </div>
+          <div class="field" id="disp-field">
+            <span class="field__label" id="lbl-disp">Dispozice</span>
+            <div class="chips" role="group" aria-labelledby="lbl-disp" id="f-disp">
+              <button type="button" class="chip" data-v="1+kk" aria-pressed="false">1+kk</button><button type="button" class="chip" data-v="1+1" aria-pressed="false">1+1</button><button type="button" class="chip" data-v="2+kk" aria-pressed="false">2+kk</button><button type="button" class="chip" data-v="2+1" aria-pressed="false">2+1</button><button type="button" class="chip" data-v="3+kk" aria-pressed="false">3+kk</button><button type="button" class="chip" data-v="3+1" aria-pressed="false">3+1</button><button type="button" class="chip" data-v="4+" aria-pressed="false">4+ a větší</button>
+            </div>
+          </div>
+        </div>
+        <div class="filters__foot">
+          <button type="button" class="btn btn--ghost" id="reset-m">Zrušit vše</button>
+          <button type="button" class="btn btn--primary" id="apply-m"><span>Zobrazit <b id="live-count">0</b></span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="active-chips" id="active-chips"></div>
+    <div class="results-bar">
+      <p class="results-bar__info" id="results-info" aria-live="polite"></p>
+      <div class="results-bar__tools">
+        <label class="sort"><span>Řadit</span><select class="select select--sm" id="sort"></select></label>
+        <div class="seg seg--view" role="group" aria-label="Zobrazení">
+          <button type="button" data-view="list" aria-pressed="true"><svg class="icon"><use href="#i-list"/></svg>Seznam</button>
+          <button type="button" data-view="map" aria-pressed="false"><svg class="icon"><use href="#i-map"/></svg>Mapa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="container results" id="results" aria-label="Výsledky">
+    <div class="grid-cards" id="grid"></div>
+    <div class="empty" id="empty" hidden></div>
+    <nav class="pager" id="pager" aria-label="Stránkování"></nav>
+  </section>
+
+  <section class="mapview" id="mapview" hidden aria-label="Mapa nabídek">
+    <div class="mapview__map" id="map"></div>
+    <div class="mapview__card" id="map-card" hidden></div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/stars-listings.js"></script>
+<script src="core.js"></script>
+<script src="listing.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

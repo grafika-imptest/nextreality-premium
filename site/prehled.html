@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Přehled předlohy | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+<style>
+  .hub { display: grid; gap: var(--s-12); padding-block: var(--s-8) var(--section-y); }
+  .hub h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); color: var(--ink); margin-bottom: var(--s-4); }
+  .tiles2 { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .tile2 { position: relative; display: grid; gap: var(--s-2); padding: var(--s-6); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); text-decoration: none; color: var(--text); transition: border-color .15s, box-shadow .15s; }
+  .tile2:hover { border-color: var(--accent); box-shadow: var(--sh-2); }
+  .tile2 b { color: var(--ink); font-size: var(--fs-card); }
+  .tile2 span { font-size: var(--fs-small); color: var(--text-muted); }
+  .tile2 .icon { color: var(--accent); width: 28px; height: 28px; }
+  .tile2--main { background: var(--surface-dark); border-color: var(--surface-dark); color: #fff; }
+  .tile2--main b { color: #fff; } .tile2--main span { color: rgba(255,255,255,.8); } .tile2--main .icon { color: var(--accent-deco); }
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); counter-reset: f; }
+  @media (min-width: 1024px) { .flow { grid-template-columns: repeat(5, 1fr); } }
+  .flow li { counter-increment: f; padding: var(--s-4); border-radius: var(--r-card); background: var(--surface-2); display: grid; gap: var(--s-2); align-content: start; }
+  .flow li::before { content: counter(f); display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; }
+  .flow b { color: var(--ink); } .flow span { font-size: var(--fs-small); color: var(--text-muted); }
+  .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-2); }
+  .checklist li { display: flex; gap: var(--s-3); align-items: start; }
+  .checklist .icon { color: var(--st-free); margin-top: 3px; }
+  .checklist small { color: var(--text-muted); }
+</style>
+</head>
+<body data-page="prehled">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="t-label eyebrow">HTML předloha · prémiová verze · říjen 2026</span>
+      <h1>NEXT Reality – <em>prémiová verze</em></h1>
+      <p>Jedna šablona pro všechny kanceláře NEXT Reality. Předloha pro vývoj: všechny obrazovky ze zadání v šířkách 375 / 768 / 1440 px, knihovna komponent se stavy, porovnání barevných variant a pravidla pro předání. Data jsou reálná z webů TGH a Stars.</p>
+    </div>
+  </section>
+  <div class="container hub">
+    <section>
+      <h2>Podklady pro vývoj</h2>
+      <div class="tiles2">
+        <a class="tile2 tile2--main" data-href="styleguide.html"><svg class="icon"><use href="#i-list"/></svg><b>Knihovna komponent</b><span>Tokeny, ikony, tlačítka, pole, karty a všechny stavy</span></a>
+        <a class="tile2" data-href="predani.html"><svg class="icon"><use href="#i-doc"/></svg><b>Pravidla pro vývoj</b><span>Mřížka, breakpointy, přetečení, obrázky, data z CRM, export tokenů</span></a>
+        <a class="tile2" data-href="porovnani.html"><svg class="icon"><use href="#i-compare"/></svg><b>Porovnání variant</b><span>Přejímací test přebarvení – automatické měření layoutu</span></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Hlavní cesta prototypu</h2>
+      <ol class="flow">
+        <li><b>Homepage</b><span>V hero vyber typ a lokalitu, klikni „Zobrazit nabídky“.</span><a class="btn btn--secondary" data-href="index.html">Začít</a></li>
+        <li><b>Výpis</b><span>Filtry se propíšou z homepage, výsledky počítá nad reálnými daty.</span><a class="btn btn--ghost" data-href="vypis.html" data-q="&type=byt&loc=Praha">Otevřít</a></li>
+        <li><b>Filtr</b><span>Dispozice, cena, plocha; na mobilu panel s živým počtem. Přepni Seznam / Mapa.</span><a class="btn btn--ghost" data-href="vypis.html" data-q="&type=byt&loc=Praha&disp=2%2Bkk">Otevřít</a></li>
+        <li><b>Detail</b><span>Galerie s videem, parametry, PENB, mapa, kalkulačka, lepící lišta.</span><a class="btn btn--ghost" data-href="detail.html">Otevřít</a></li>
+        <li><b>Poptávka</b><span>„Mám zájem“ → formulář s předvyplněnou zprávou → potvrzení.</span><a class="btn btn--ghost" data-href="detail.html#zajem">Otevřít</a></li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Obrazovky</h2>
+      <div class="tiles2" id="screens"></div>
+    </section>
+
+    <section>
+      <h2>Výstupy podle zadání (kap. 9)</h2>
+      <ul class="checklist">
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Tokeny – barvy, typografie, odsazení, rádiusy, stíny <small>· CSS proměnné + export tokens.json (místo Figma proměnných, dohodnuto)</small></span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Knihovna komponent z kap. 6 s variantami a stavy</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>10 obrazovek z kap. 5 ve třech šířkách <small>· responzivní stránky, ověřeno na 375 / 768 / 1440 px</small></span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Dvě barevné varianty homepage a výpisu <small>· TGH / Stars / Test přebarvení + automatické porovnání</small></span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Klikací prototyp hlavní cesty homepage → výpis → filtr → detail → poptávka, desktop i mobil</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Stránka pro předání vývoji – mřížka, breakpointy, odsazení, přetečení, ikonová sada k exportu</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Nové funkce: našeptávač + filtr dispozice, živý počet, tabulka parametrů + vybavení + půdorys + PENB, lepící lišta, hlídací pes, realizované nemovitosti</span></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const SCREENS = [
+  ['index.html', 'dum', '1 · Homepage', 'Hero s vyhledáváním → nabídka → chci prodat → makléři → reference → projekty → kontakt'],
+  ['vypis.html', 'list', '2 · Výpis – seznam', 'Filtry, řazení, stránkování, hlídací pes, realizované'],
+  ['vypis.html|&view=map', 'map', '3 · Výpis – mapa', 'Přepínač Seznam / Mapa, piny s cenou, shlukování'],
+  ['detail.html', 'image', '4 · Detail nemovitosti', 'Galerie, parametry, popis, vybavení, PENB, půdorys, mapa, makléř'],
+  ['prodat.html', 'chat', '5 · Chci prodat', 'Odhad ceny jako hlavní vstup do poptávky'],
+  ['makleri.html', 'people', '6 · Přehled makléřů', 'Filtr kanceláře, hledání jména'],
+  ['makler.html|&slug=zdenek-kubat', 'user', '7 · Detail makléře', 'Profil + jeho nabídky'],
+  ['projekty.html', 'projekt', '8 · Developerské projekty', 'Přehled a detail (Musílkova 39) s tabulkou jednotek'],
+  ['kontakty.html', 'pin', '9 · Kontakty', 'Pobočky TGH / kancelář Stars'],
+  ['404.html', 'empty', '10 · 404 a bez výsledků', 'Obecná 404, „už není v nabídce“ (?variant=sold), prázdný výsledek ve výpisu'],
+];
+window.PAGE = {
+  note: 'Rozcestník předlohy. Kancelář přepínej tady v panelu – drží se při proklikávání.',
+  render() {
+    $('#screens').innerHTML = SCREENS.map(([u, i, t, d]) => { const [p, q] = u.split('|'); return `<a class="tile2" href="${href(p, q || '')}">${ico(i)}<b>${t}</b><span>${d}</span></a>`; }).join('');
+  },
+  checks() { return ''; },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

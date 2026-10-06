@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pravidla pro vývoj | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+<style>
+  .doc { max-width: 960px; display: grid; gap: var(--s-12); padding-block: var(--s-8) var(--section-y); }
+  .doc section { display: grid; gap: var(--s-4); scroll-margin-top: calc(var(--header-h) + var(--s-4)); }
+  .doc h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); color: var(--ink); padding-bottom: var(--s-3); border-bottom: 2px solid var(--ink); }
+  .doc h3 { font-size: var(--fs-card); color: var(--ink); margin-top: var(--s-2); }
+  .doc ul { margin: 0; padding-left: 1.2em; display: grid; gap: var(--s-2); }
+  .doc code { font-size: 13px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  .doc table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .doc th, .doc td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .doc th { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .doc .scroll { overflow-x: auto; }
+  .bp-now { display: inline-flex; gap: var(--s-2); align-items: center; padding: var(--s-2) var(--s-3); border-radius: var(--r-pill); background: var(--accent-soft); color: var(--ink); font-weight: 600; font-size: var(--fs-small); }
+  .toc-inline { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .toc-inline a { font-size: var(--fs-small); font-weight: 600; padding: 6px 12px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); color: var(--ink); text-decoration: none; }
+  .callout { padding: var(--s-4) var(--s-6); border-left: 4px solid var(--accent-2); background: var(--accent-2-soft); border-radius: 0 var(--r-input) var(--r-input) 0; }
+</style>
+</head>
+<body data-page="predani">
+<div id="site-header"></div>
+<main>
+  <section class="page-hero page-hero--light">
+    <div class="container">
+      <nav class="crumbs"><a href="prehled.html">Přehled předlohy</a><span aria-hidden="true">/</span><span aria-current="page">Pravidla pro vývoj</span></nav>
+      <h1>Pravidla pro vývoj</h1>
+      <p>Předloha je referenční HTML, ne produkční kód. Vývoj ji přepíše do šablony CMS podle sebe – tato stránka říká, co musí zůstat stejné. Zdroj pravdy pro hodnoty je <code>tokens.css</code> (nebo export níže).</p>
+    </div>
+  </section>
+  <div class="container doc">
+    <nav class="toc-inline" aria-label="Obsah">
+      <a href="#tokeny">Tokeny</a><a href="#mrizka">Mřížka a breakpointy</a><a href="#odsazeni">Odsazení</a><a href="#preteceni">Přetečení</a><a href="#obrazky">Obrázky</a><a href="#data">Data z CRM</a><a href="#kancelare">Kanceláře</a><a href="#a11y">Přístupnost</a><a href="#cookies">Cookies</a><a href="#seo">Titulky</a>
+    </nav>
+
+    <section id="tokeny">
+      <h2>Tokeny</h2>
+      <p>Všechny barvy, velikosti písma, odsazení, rádiusy a stíny jsou CSS proměnné v <code>tokens.css</code>. Komponenty nesmí obsahovat vlastní „magická čísla“ – jen odkazy na tokeny. Export je generovaný přímo z <code>tokens.css</code>, takže vždy odpovídá předloze.</p>
+      <div style="display:flex;gap:var(--s-3);flex-wrap:wrap">
+        <button class="btn btn--primary" id="dl-json"><svg class="icon"><use href="#i-download"/></svg>Stáhnout tokens.json</button>
+        <a class="btn btn--secondary" href="tokens.css" download><svg class="icon"><use href="#i-download"/></svg>Stáhnout tokens.css</a>
+        <a class="btn btn--ghost" href="styleguide.html">Knihovna komponent →</a>
+      </div>
+      <p class="t-small" style="color:var(--text-muted)" id="json-info"></p>
+    </section>
+
+    <section id="mrizka">
+      <h2>Mřížka a breakpointy</h2>
+      <p>Aktuálně: <span class="bp-now" id="bp-now"></span> · Překryv mřížky zapneš v panelu „Předloha“ (nebo <code>?grid</code> v adrese).</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Breakpoint</th><th>Šířka</th><th>Typografie</th><th>Okraje</th><th>Mezera</th><th>Hlavička</th></tr></thead>
+        <tbody>
+          <tr><td>Mobil</td><td>&lt; 768 px (výchozí, mobile first)</td><td>mobilní škála</td><td>20 px</td><td>16 px</td><td>64 px, menu ☰</td></tr>
+          <tr><td>Tablet</td><td>768–1279 px</td><td>tabletová škála</td><td>32 px</td><td>24 px</td><td>72 px, menu ☰</td></tr>
+          <tr><td>Desktop</td><td>≥ 1280 px</td><td>desktopová škála</td><td>40 px</td><td>24 px</td><td>72 px, plná navigace</td></tr>
+        </tbody></table></div>
+      <ul>
+        <li>Obsah max. <b>1280 px</b> (<code>--content-max</code>), textové bloky max. <b>720 px</b> (<code>--text-max</code>). Nad 1280 px se neroztahuje nic kromě pozadí sekcí.</li>
+        <li>Mřížka 12 sloupců, mezera 24 px (mobil 16 px). Komponenty se ale skládají přes <code>grid-template-columns: repeat(n, 1fr)</code> – počet sloupců viz tabulka níže.</li>
+        <li>Velikosti se mění <b>jen skokem na breakpointech</b>, nikdy plynule (žádné <code>vw</code>, <code>clamp()</code> u písma, žádné škálování rootu – dnešní weby mají root 8,4 px).</li>
+        <li>Pomocné body rozvržení (jen počet sloupců, ne typografie): 600 px (2 karty), 1024 px (3 karty, filtry v liště, detail ve 2 sloupcích), 1440 px (doplňkové položky navigace).</li>
+      </ul>
+      <div class="scroll"><table>
+        <thead><tr><th>Komponenta</th><th>&lt;600</th><th>600–1023</th><th>1024–1279</th><th>≥1280</th></tr></thead>
+        <tbody>
+          <tr><td>Karty nemovitostí</td><td>1</td><td>2</td><td>3</td><td><b>4</b> (přejímací kritérium)</td></tr>
+          <tr><td>Kategorie (homepage)</td><td>vodorovný pruh</td><td>3</td><td>3</td><td>6</td></tr>
+          <tr><td>Makléři</td><td>2</td><td>2</td><td>4</td><td>4</td></tr>
+          <tr><td>Projekty</td><td>1</td><td>2 (od 768)</td><td>2</td><td>3</td></tr>
+          <tr><td>Reference</td><td>1</td><td>3 (od 768)</td><td>3</td><td>3</td></tr>
+          <tr><td>Články</td><td>1</td><td>2 (od 768)</td><td>2</td><td>3</td></tr>
+          <tr><td>Pobočky</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+          <tr><td>Detail nemovitosti / projektu</td><td colspan="2">1 sloupec, boční panel pod obsahem</td><td colspan="2">obsah + boční panel 360 px</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <section id="odsazeni">
+      <h2>Odsazení</h2>
+      <ul>
+        <li>Jen škála <code>4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 / 96</code> px (<code>--s-1</code> … <code>--s-24</code>). 20 a 40 px byly doplněny kvůli okrajům stránky ze zadání.</li>
+        <li>Svislé odsazení sekcí <code>--section-y</code>: 56 / 72 / 96 px. Hlavička sekce → obsah: 32 px (mobil 24 px).</li>
+        <li>Uvnitř karty: 16 px vnitřní odsazení, 8 px mezi řádky obsahu. Uvnitř formuláře: 16 px mezi poli, 4 px mezi popiskem a polem.</li>
+        <li>Klikací plochy min. 44 × 44 px (tlačítka, ikonová tlačítka, položky stránkování). Chipy 36 px výška + mezera 8 px.</li>
+      </ul>
+    </section>
+
+    <section id="preteceni">
+      <h2>Chování při přetečení</h2>
+      <p>Texty chodí z CRM strojově a nezkracují se ručně. Každá komponenta proto musí zvládnout nejkratší i nejdelší reálnou hodnotu. Ověřeno na 490 reálných kartách TGH a Stars (nejdelší název: „Prodej komerčních prostor činžovní dům 660 m², Vaněčkova, Benátky nad Jizerou-Benátky nad Jizerou I“).</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Prvek</th><th>Pravidlo</th></tr></thead>
+        <tbody>
+          <tr><td>Název nemovitosti v kartě</td><td>max. 2 řádky, <code>line-clamp: 2</code>, rezervovaná výška 2 řádků i u krátkého názvu; plný text v <code>title</code>, na detailu celý</td></tr>
+          <tr><td>Lokalita v kartě</td><td>1 řádek, výpustka (…)</td></tr>
+          <tr><td>Štítky parametrů v kartě</td><td>1 řádek bez zalomení, co se nevejde, skryje se (pořadí: typ/dispozice → plocha → pozemek)</td></tr>
+          <tr><td>Cena v kartě</td><td>pevná pozice u spodní hrany (oddělovač nad ní); „Cena na vyžádání“ šedě; u pronájmu „/ měsíc“</td></tr>
+          <tr><td>Výška karet v řadě</td><td>vždy stejná (grid <code>stretch</code> + flex sloupec)</td></tr>
+          <tr><td>H1 detailu nemovitosti</td><td>celý název, velikost H2 (32 / 28 / 24 px); reálně 2 řádky desktop, 3 mobil</td></tr>
+          <tr><td>Role makléře</td><td>max. 2 řádky, rezervovaná výška</td></tr>
+          <tr><td>E-mail / telefon v kartě makléře</td><td>1 řádek, výpustka</td></tr>
+          <tr><td>Reference</td><td>max. 5 řádků; texty verzálkami (existují) se zobrazí tak, jak jsou</td></tr>
+          <tr><td>Popis projektu v kartě</td><td>max. 3 řádky; fakta projektu = zalamovací štítky (volný text z CMS)</td></tr>
+          <tr><td>Titulek / perex článku</td><td>2 / 3 řádky</td></tr>
+          <tr><td>Popis nemovitosti na detailu</td><td>sbalený na ~9 řádků s přechodem, tlačítko „Zobrazit celý popis“</td></tr>
+          <tr><td>Chipy dispozic na mobilu</td><td>vodorovné posouvání (homepage), v panelu filtrů zalamování</td></tr>
+          <tr><td>Navigace</td><td>bez zalomení; mezi 1280 a 1439 px se skryjí „Realizováno“ a „Reference“</td></tr>
+          <tr><td>Drobečková navigace</td><td>na mobilu skrytá; dlouhá poslední položka se zalamuje</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <section id="obrazky">
+      <h2>Obrázky</h2>
+      <p>Fotky chodí z CRM v proměnné kvalitě a poměru. Šablona je vždy ořezává do pevného poměru (<code>object-fit: cover</code>) – nikdy nerozhoduje poměr fotky o výšce komponenty.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Místo</th><th>Poměr</th><th>Když fotka chybí</th><th>Potřebná velikost z CMS</th></tr></thead>
+        <tbody>
+          <tr><td>Karta nemovitosti</td><td>4 : 3</td><td>šedá plocha + ikona + „Fotografie se připravuje“</td><td>400×300 a 800×600 (2×), webp</td></tr>
+          <tr><td>Galerie detailu – mozaika</td><td>21 : 9 (3 : 1 na desktopu), 1. dlaždice 2× větší</td><td>skrýt mozaiku, ukázat 1 fotku</td><td>náhledy 800×600 + plná 1920×1440</td></tr>
+          <tr><td>Makléř</td><td>1 : 1, ořez nahoře</td><td>ikona osoby</td><td>400×400 a 760×760</td></tr>
+          <tr><td>Projekt</td><td>3 : 2 (karta), 3 : 1 (hlavička detailu)</td><td>tónovaná plocha</td><td>900×600, 1940×650</td></tr>
+          <tr><td>Článek</td><td>16 : 9</td><td>brandová plocha s ikonou (dnes všechny články TGH)</td><td>800×450</td></tr>
+          <tr><td>Hero homepage</td><td>přes celou šířku, tmavý přechod zleva</td><td>tmavá plocha (navy)</td><td>1920×800</td></tr>
+        </tbody></table></div>
+      <p class="callout"><b>Dnešní stav CMS:</b> karta 549×480 (TGH) / 480×240 (Stars – 2 : 1, nízké rozlišení), galerie jen 1920×1440 (~700 kB na fotku, mozaika detailu tak stahuje ~3,5 MB). Náhledové velikosti je potřeba v CMS doplnit.</p>
+    </section>
+
+    <section id="data">
+      <h2>Data z CRM, která šablona potřebuje</h2>
+      <p>Předloha si část dat vypomáhá parsováním názvu – produkce to dělat nesmí. Tato pole musí přijít strukturovaně:</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Komponenta</th><th>Pole</th><th>Dnes</th></tr></thead>
+        <tbody>
+          <tr><td>Karta, filtr</td><td>typ smlouvy, typ, podtyp, dispozice, užitná plocha, plocha pozemku, obec, část obce, ulice, cena, typ ceny (na vyžádání / za měsíc), stav, příznak TOP / zlevněno + původní cena</td><td>v předloze parsováno z názvu; stav ve výpisu jen „Volný“</td></tr>
+          <tr><td>Našeptávač, živý počet</td><td>seznam obcí / částí / ulic / projektů s počty nad aktuálním filtrem</td><td>neexistuje – nutný endpoint</td></tr>
+          <tr><td>Mapa</td><td>GPS každé nabídky</td><td>TGH 238 z 258 nabídek</td></tr>
+          <tr><td>Detail</td><td>galerie s typem položky (foto / video / 3D), parametry s jednotkami, vybavení (výtah, balkon, sklep, parkování…), PENB (třída, hodnota, PDF), půdorysy, evidenční číslo, makléř</td><td>vybavení jen v textu popisu; „Plocha pozemku: 528“ bez jednotky</td></tr>
+          <tr><td>Realizováno</td><td>prodané nabídky s fotkou, lokalitou a (volitelně) cenou</td><td>Stars 184, TGH 0 v mapě</td></tr>
+          <tr><td>Makléř</td><td>jméno, role, kancelář, telefon, e-mail, foto, motto, bio, seznam aktivních nabídek</td><td>OK, ale duplicitní profily (stejný telefon)</td></tr>
+          <tr><td>Kancelář</td><td>název, adresa, GPS, telefon, e-mail, IČ, provozovatel</td><td>pobočky TGH bez GPS a telefonu</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <section id="kancelare">
+      <h2>Kanceláře (přebarvení)</h2>
+      <ul>
+        <li>Kancelář mění <b>jen</b>: logo-lockup, fotku hero, kontakty a – pokud bude potřeba – proměnné v bloku <code>[data-office]</code> (<code>--accent</code>, <code>--accent-2</code>, <code>--accent-soft</code>, <code>--accent-deco</code>, <code>--surface-dark</code>).</li>
+        <li>Typografie, odsazení, layout, komponenty, ikony a rádiusy jsou fixní pro všechny. Test: varianta „Test přebarvení“ nemění pozici žádné sekce – viz <a href="porovnani.html">porovnání variant</a>.</li>
+        <li>Dnes mají všechny kanceláře stejné brand barvy NEXT, takže v praxi se mění jen logo, fotky a obsah.</li>
+      </ul>
+    </section>
+
+    <section id="a11y">
+      <h2>Přístupnost (WCAG AA)</h2>
+      <ul>
+        <li>Kontrast textu min. 4,5 : 1 – živě měřeno v <a href="styleguide.html#barvy">knihovně</a>. Brand zelená #85B929 a modrá #3187AA s bílým textem nevyhovují, proto se na tlačítka používají ztmavené <code>--accent</code> a <code>--accent-2</code>.</li>
+        <li>Zaměření klávesnicí: vždy viditelné (<code>:focus-visible</code>, 3 px obrys <code>--focus</code>). Nikdy <code>outline: none</code> bez náhrady.</li>
+        <li>Každé pole má <code>&lt;label&gt;</code>; chyba je text u pole + <code>aria-invalid</code>, ne jen červená barva.</li>
+        <li>Živý počet výsledků v <code>aria-live="polite"</code>; dialogy (filtry na mobilu, galerie) mají <code>role="dialog"</code>, zavírají se Esc.</li>
+        <li>Písmo min. 14 px pro čtený text, 12 px jen pro štítky. Zákazníci 50+ – žádný šedý text pod <code>--text-muted</code>.</li>
+      </ul>
+    </section>
+
+    <section id="cookies">
+      <h2>Cookies a obsah třetích stran</h2>
+      <ul>
+        <li>„Povolit vše“ a „Odmítnout vše“ jsou stejná komponenta vedle sebe, „Nastavit“ jako třetí volba. Lišta max. 760 px, nikdy přes půl obrazovky.</li>
+        <li>Mapy a videa se bez souhlasu nenačítají – místo nich náhradní blok s vysvětlením a tlačítkem „Povolit a zobrazit“ (komponenta <code>blocked</code>).</li>
+      </ul>
+    </section>
+
+    <section id="seo">
+      <h2>Titulky stránek</h2>
+      <p>H1 a <code>&lt;title&gt;</code> se mohou lišit. H1 = celý název z CRM. Pro titulek doporučujeme standard oboru – lokalita napřed, pak typ a plocha:</p>
+      <div class="scroll"><table>
+        <thead><tr><th></th><th>Titulek</th></tr></thead>
+        <tbody>
+          <tr><td>Dnes</td><td>Prodej domu rodinný 226 m² pozemek 528 m², Bžany-Lhenice | NEXT Reality TGH</td></tr>
+          <tr><td>Doporučení</td><td>Bžany-Lhenice | Prodej, rodinný dům 226 m², pozemek 528 m² | NEXT Reality TGH</td></tr>
+        </tbody></table></div>
+      <p class="t-small" style="color:var(--text-muted)">Není to grafický úkol – vyžaduje strukturovaná pole z CRM (viz Data z CRM).</p>
+    </section>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+// Export tokenů: parsuje tokens.css (:root, media query bloky, [data-office]) → JSON ve formátu Design Tokens (W3C draft)
+async function buildTokens() {
+  const css = await (await fetch('tokens.css')).text();
+  const clean = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const vars = block => Object.fromEntries([...block.matchAll(/--([\w-]+)\s*:\s*([^;]+);/g)].map(m => [m[1], m[2].trim()]));
+  const out = { $description: 'NEXT Reality – design tokeny, generováno z tokens.css', base: {}, breakpoints: {}, offices: {} };
+  const rootM = clean.match(/^:root\s*\{([\s\S]*?)\n\}/m);
+  const base = vars(rootM ? rootM[1] : '');
+  const type = v => /^#|rgba?\(/.test(v) ? 'color' : /px$/.test(v) ? 'dimension' : /^\d+$/.test(v) ? 'number' : v.includes('cubic') ? 'cubicBezier' : v.includes('rgba') || v.includes('px ') ? 'shadow' : 'string';
+  for (const [k, v] of Object.entries(base)) out.base[k] = { $value: v, $type: /^sh-/.test(k) ? 'shadow' : /^font$/.test(k) ? 'fontFamily' : type(v) };
+  for (const m of clean.matchAll(/@media\s*\(min-width:\s*(\d+)px\)\s*\{\s*:root\s*\{([\s\S]*?)\}\s*\}/g)) out.breakpoints['min-' + m[1]] = Object.fromEntries(Object.entries(vars(m[2])).map(([k, v]) => [k, { $value: v, $type: type(v) }]));
+  for (const m of clean.matchAll(/\[data-office="(\w+)"\]\s*\{([^}]*)\}/g)) out.offices[m[1]] = vars(m[2]);
+  return out;
+}
+window.PAGE = {
+  render() {},
+  checks() { return ''; },
+  init() {
+    const bp = () => { const w = innerWidth; $('#bp-now').textContent = (w < 768 ? 'Mobil' : w < 1280 ? 'Tablet' : 'Desktop') + ' · ' + w + ' px'; };
+    bp(); addEventListener('resize', bp);
+    buildTokens().then(t => { $('#json-info').textContent = `${Object.keys(t.base).length} základních tokenů, přepisy pro ${Object.keys(t.breakpoints).join(' a ')} px, ${Object.keys(t.offices).length} kanceláře.`; window.__tokens = t; });
+    $('#dl-json').addEventListener('click', async () => {
+      const t = window.__tokens || await buildTokens();
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(t, null, 2)], { type: 'application/json' })); a.download = 'tokens.json'; a.click();
+    });
+  },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>
