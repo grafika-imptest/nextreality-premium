@@ -19,7 +19,7 @@ git subtree split --prefix site -b gh-pages && git push -f origin gh-pages
 | | Standardní | Prémiová |
 |---|---|---|
 | Data, logika (filtry, mapa, galerie, průvodce odhadem, kalkulačka) | ✓ | ✓ shodné (`core.js`, `listing.js`, `detail.js`, `prodat.js`) |
-| Vizuální jazyk | světlý, funkční | dvě atmosféry: INK (tmavé „kino“) a PAPER (teplá bílá „dokument“) |
+| Vizuální jazyk | světlý, funkční | dvě atmosféry: INK (tmavé „kino“) a PAPER (velmi světlá neutrální šedá #F3F4F5, „dokument“) |
 | Písmo | DM Sans | DM Sans + **Instrument Serif** (editoriální nadpisy) |
 | Homepage | seznam sekcí | příběh v 9 kapitolách: teze → úvod a čísla → vodorovná galerie nabídky → index kategorií → prodej → projekty → lidé → reference → závěr |
 | Detail nemovitosti | galerie + 2 sloupce | filmová hlavička přes celou šířku (fotka, H1, cena, video), lepící podnavigace s cenou a „Mám zájem“, přehled velkými čísly |
@@ -51,12 +51,13 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 
 ## Portréty makléřů – úprava výrazu (Magnific)
 Na homepage TGH se makléři po najetí myší jemně usmějí. Páry obrázků (`assets/agents/*-a.jpg` výchozí, `*-b.jpg` úsměv) mají stejný výřez, takže jde jen o prolnutí.
-- Upraveno v Magnificu modelem Google Nano Banana Pro, 10 generací × 75 kreditů = 750 kreditů (účet IMP net Grafika).
+- Upraveno v Magnificu modelem Google Nano Banana Pro, 10 generací × 75 kreditů = 750 kreditů (účet IMP net Grafika). Béžové pozadí fotek je lokálně přebarvené na šedou paletu webu.
 - Böhm a Hornych: originál = neutrální, **úsměv je AI úprava**. Procházková a Hes se na originálních fotkách usmívají: **neutrální výchozí stav je AI úprava**, úsměv je jejich skutečná fotka.
 - ⚠️ **Před nasazením do produkce musí s upravenými portréty souhlasit dotčení makléři.** Jde o změnu podoby skutečných lidí. Pro ostatní makléře (včetně Stars) páry zatím nejsou – karta ukáže běžnou fotku.
 
 ## Rizika prémiové verze
-- **Stojí na fotkách.** Velké formáty potřebují kvalitní snímky – z CRM jdou v proměnné kvalitě (Stars karty jen 430×270). Hero homepage proto používá fotku z banneru projektů TGH a detail galerii zakázky; u slabých fotek bude prémiový dojem horší než ve standardní verzi.
+- **Stojí na fotkách.** Velké formáty potřebují kvalitní snímky – z CRM jdou v proměnné kvalitě (Stars karty jen 430×270). Hero homepage TGH je proto stock fotka Prahy při západu slunce (Magnific, premium licence, autor tan4ikk, 150 kreditů, `assets/hero-praha-*.jpg`), detail používá galerii zakázky; u slabých fotek bude prémiový dojem horší než ve standardní verzi.
+- **Licence hero fotky:** stažena v rámci tarifu Magnific Pro účtu IMP net Grafika – před produkcí ověřit, že licence pokrývá použití na webu klienta.
 - **Víc JavaScriptu:** GSAP + ScrollTrigger + Lenis + SplitType ≈ 100 kB (gzip ~40 kB) navíc, načítané `defer`. Funkce webu na nich nezávisí.
 - **Vyšší náklady na vývoj a údržbu** (animace, dvě atmosféry, kontrola čitelnosti na fotkách). Pro šablonu, která se nasazuje na všechny pobočky, je to rozhodnutí o ceně, ne jen o vkusu.
 - Reference, data a zjištění k CMS/CRM jsou shodné se standardní verzí – viz její README.
