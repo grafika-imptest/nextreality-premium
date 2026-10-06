@@ -58,7 +58,7 @@ window.PAGE = {
     if (sold) stats.push([sold, 'realizovaných prodejů na mapě']); else if (o.satisfied) stats.push([parseInt(o.satisfied), 'spokojených klientů', ' %']);
     $('#stats').innerHTML = stats.map(([n, l, suf = '', plain]) => `<div data-reveal><dt><span${plain ? '' : ` data-count="${n}"`}>${plain ? n : num(n)}</span>${suf}</dt><dd>${l}</dd></div>`).join('');
 
-    $('#cards').innerHTML = o.listings.map(x => `<div class="p-featured__item">${card(x)}</div>`).join('')
+    $('#cards').innerHTML = o.listings.map(x => `<div class="p-featured__item">${card(x)}<a class="p-featured__cta" href="${href('detail.html')}" tabindex="-1">Detail nemovitosti ${ico('arrow')}</a></div>`).join('')
       + `<a class="p-featured__more" href="${href('vypis.html')}"><span class="d-sm">Celá nabídka</span><span>${nab(o.total)} ${ico('arrow', 'icon icon--lg')}</span></a>`;
 
     $('#cats').innerHTML = CATS.map(([t, l], i) => {
