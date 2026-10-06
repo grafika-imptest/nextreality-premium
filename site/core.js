@@ -105,7 +105,7 @@ function layout() {
   const link = u => { const [a, q] = u.split('|'); return `data-href="${a}"${q ? ` data-q="${q}"` : ''}`; };
   const nav = NAV.map(([u, l, p, opt]) => `<a${opt ? ' class="nav__opt"' : ''} ${link(u)}${isCur(p) ? ' aria-current="page"' : ''}>${l}</a>`).join('');
   $('#site-header').outerHTML = `<header class="header" id="header">
-  <div class="container header__in">
+  <div class="wide header__in">
     <a class="logo" data-href="index.html" aria-label="Domů"><img data-bind="logo" alt="" width="250" height="76"></a>
     <nav class="nav" aria-label="Hlavní navigace">${nav}</nav>
     <div class="header__actions">
@@ -124,7 +124,7 @@ function layout() {
 </div>`;
   const ft = $('#site-footer');
   if (ft) ft.outerHTML = `<footer class="footer">
-  <div class="container">
+  <div class="wide">
     <div class="footer__grid">
       <div class="footer__brand"><img data-bind="logo" alt=""><p data-bind="name"></p></div>
       <div><h4>Nemovitosti</h4><ul><li><a data-href="vypis.html">Prodej</a></li><li><a data-href="vypis.html" data-q="&deal=pronajem">Pronájem</a></li><li><a data-href="projekty.html">Developerské projekty</a></li><li><a data-href="vypis.html" data-q="&status=sold">Realizováno</a></li></ul></div>
