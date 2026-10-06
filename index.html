@@ -22,10 +22,10 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
   <section class="p-hero on-ink" data-over-hero aria-labelledby="hero-h">
     <div class="p-hero__media"><img data-bind="hero" alt="" fetchpriority="high" data-parallax="0.18"></div>
     <div class="wide p-hero__in">
-      <div class="p-hero__top">
-        <span class="t-label eyebrow" data-reveal><span data-bind="name"></span>&nbsp;· <span data-bind="region-short"></span></span>
+      <div class="p-hero__head">
+        <span class="t-label eyebrow" data-reveal data-bind="region-short"></span>
+        <h1 class="d-xl p-hero__h" id="hero-h" data-split="now">Najděte místo, <em>kde chcete žít.</em></h1>
       </div>
-      <h1 class="d-xl p-hero__h" id="hero-h" data-split="now">Najděte místo, <em>kde chcete žít.</em></h1>
       <div class="p-hero__foot">
         <p class="t-lead p-hero__lead" data-reveal data-delay=".5"><b data-bind="total"></b> nemovitostí v aktuální nabídce <span data-bind="region"></span>. Byty, domy, pozemky i komerční prostory.</p>
         <form class="p-search" id="search" role="search" data-reveal data-delay=".7">

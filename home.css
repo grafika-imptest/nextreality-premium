@@ -10,9 +10,10 @@
 .p-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
   linear-gradient(180deg, rgba(13, 26, 36, .55) 0%, rgba(13, 26, 36, .15) 32%, rgba(13, 26, 36, .35) 62%, rgba(13, 26, 36, .92) 100%),
   linear-gradient(90deg, rgba(13, 26, 36, .55) 0%, rgba(13, 26, 36, 0) 60%); }
-.p-hero__in { display: grid; grid-template-rows: auto 1fr auto; gap: var(--s-8); padding-block: calc(var(--header-h) + var(--s-8)) var(--s-10); width: 100%; }
-.p-hero__top .eyebrow { color: var(--on-ink); }
-.p-hero__h { align-self: end; color: var(--on-ink); max-width: 11ch; }
+.p-hero__in { display: grid; grid-template-rows: 1fr auto; gap: var(--s-8); padding-block: calc(var(--header-h) + var(--s-8)) var(--s-10); width: 100%; }
+.p-hero__head { align-self: end; display: grid; gap: var(--s-5); }
+.p-hero__head .eyebrow { color: var(--on-ink); }
+.p-hero__h { color: var(--on-ink); max-width: 11ch; }
 .p-hero__h em { color: var(--accent-deco); }
 .p-hero__foot { display: grid; gap: var(--s-6); align-items: end; }
 .p-hero__lead { color: rgba(243, 244, 245, .82); max-width: 40ch; }
