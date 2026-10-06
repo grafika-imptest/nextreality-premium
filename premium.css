@@ -47,14 +47,14 @@ em, .serif-em { font-family: var(--font-display); font-style: italic; font-weigh
 .btn--alt:hover { background: #97c93c; }
 :is(.on-ink, .section--dark, .hero, .estimate-ink) .btn--primary { background: var(--paper); color: var(--ink); }
 :is(.on-ink, .section--dark, .hero) .btn--primary:hover { background: #fff; }
-:is(.on-ink, .section--dark, .hero) .btn--secondary, .btn--on-dark.btn--secondary { background: transparent; color: var(--on-ink); border-color: rgba(244, 241, 235, .4); }
+:is(.on-ink, .section--dark, .hero) .btn--secondary, .btn--on-dark.btn--secondary { background: transparent; color: var(--on-ink); border-color: rgba(243, 244, 245, .4); }
 :is(.on-ink, .section--dark, .hero) .btn--secondary:hover { border-color: var(--on-ink); background: var(--on-ink); color: var(--ink); }
 :is(.on-ink, .section--dark) .btn--ghost { color: var(--on-ink); }
 .btn.is-loading::after { border-color: currentColor; border-right-color: transparent; }
 .btn--primary.is-loading { color: transparent; }
 
 /* --- Hlavička ----------------------------------------------------------------- */
-.header { background: rgba(244, 241, 235, .86); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); transition: background var(--dur-ui), border-color var(--dur-ui), color var(--dur-ui); }
+.header { background: rgba(243, 244, 245, .86); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); transition: background var(--dur-ui), border-color var(--dur-ui), color var(--dur-ui); }
 .nav a { font-size: 14px; font-weight: 500; letter-spacing: .01em; border-radius: 0; padding-inline: var(--s-3); position: relative; }
 .nav a:hover { background: none; }
 .nav a::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: 6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform var(--dur-ui) var(--ease); }
@@ -87,7 +87,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 
 /* --- Štítky ------------------------------------------------------------------ */
 .badge { border-radius: var(--r-pill); height: 26px; padding-inline: var(--s-3); font-size: 10.5px; letter-spacing: .14em; backdrop-filter: blur(8px); }
-.badge--free { background: rgba(244, 241, 235, .9); color: var(--st-free); }
+.badge--free { background: rgba(243, 244, 245, .9); color: var(--st-free); }
 .badge--rent { background: rgba(13, 26, 36, .78); color: var(--on-ink); }
 .param { background: none; padding: 0; height: auto; font-weight: 500; font-size: 13px; color: var(--text-muted); }
 .pcard__params .param + .param::before { content: "·"; margin-right: var(--s-1); color: var(--line-strong); }
@@ -106,7 +106,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .pcard__loc .icon { display: none; }
 .pcard__title { order: 2; font-size: 13px; }
 .pcard__price { order: 3; border-top: 0; padding-top: var(--s-2); margin-top: 0; font-weight: 500; font-size: 16px; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
-.pcard__fav { background: rgba(244, 241, 235, .85); backdrop-filter: blur(8px); top: var(--s-3); right: var(--s-3); }
+.pcard__fav { background: rgba(243, 244, 245, .85); backdrop-filter: blur(8px); top: var(--s-3); right: var(--s-3); }
 .pcard:focus-within { box-shadow: none; outline: 2px solid var(--focus); outline-offset: 6px; border-radius: var(--r-card); }
 .pcard__media.is-empty { background: var(--stone); }
 /* „Volný“ je výchozí stav – v prémiové verzi se nezobrazuje, štítkujeme jen výjimky */
@@ -155,12 +155,12 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 /* --- Cookie lišta: tmavá, rovnocenná tlačítka --------------------------------------- */
 .cookies { background: var(--ink); color: var(--on-ink); border-radius: var(--r-box); box-shadow: var(--sh-3); }
 .cookies p { color: var(--on-ink-muted); }
-.cookies .btn--secondary { color: var(--on-ink); border-color: rgba(244, 241, 235, .4); }
+.cookies .btn--secondary { color: var(--on-ink); border-color: rgba(243, 244, 245, .4); }
 .cookies .btn--secondary:hover { background: var(--on-ink); color: var(--ink); }
 .cookies .btn--ghost { color: var(--on-ink); }
 
 /* --- Výpis a filtry ---------------------------------------------------------------- */
-.filterwrap { background: rgba(244, 241, 235, .94); backdrop-filter: blur(12px); }
+.filterwrap { background: rgba(243, 244, 245, .94); backdrop-filter: blur(12px); }
 .list-head .t-h1 { font-family: var(--font-display); font-weight: 400; }
 .status-tabs button[aria-selected="true"] { border-color: var(--ink); }
 .pager__n[aria-current] { background: var(--ink); border-radius: 50%; }
@@ -172,7 +172,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 
 /* --- Detail ------------------------------------------------------------------------- */
 .gallery { border-radius: var(--r-card); }
-.gallery__play { background: rgba(244, 241, 235, .92); backdrop-filter: blur(10px); font-weight: 500; }
+.gallery__play { background: rgba(243, 244, 245, .92); backdrop-filter: blur(10px); font-weight: 500; }
 .gallery__play .icon { color: var(--ink); }
 .kp { background: transparent; border: 1px solid var(--line); border-radius: var(--r-pill); font-weight: 500; }
 .kp .icon { color: var(--ink); }
@@ -206,11 +206,11 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .d-hero__media img { width: 100%; height: 100%; object-fit: cover; }
 .d-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(13, 26, 36, .6) 0%, rgba(13, 26, 36, .05) 30%, rgba(13, 26, 36, .25) 60%, rgba(13, 26, 36, .9) 100%); }
 .d-hero__in { display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-12); width: 100%; padding-block: calc(var(--header-h) + var(--s-6)) var(--s-10); }
-.d-hero .crumbs, .d-hero .crumbs a, .d-hero .crumbs [aria-current] { color: rgba(244, 241, 235, .8); }
+.d-hero .crumbs, .d-hero .crumbs a, .d-hero .crumbs [aria-current] { color: rgba(243, 244, 245, .8); }
 .d-hero__bottom { display: grid; gap: var(--s-8); align-items: end; }
 @media (min-width: 1024px) { .d-hero__bottom { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
 .d-hero .detail__h1 { color: var(--on-ink); font-size: var(--fs-hero); line-height: var(--lh-hero); max-width: 24ch; } /* funkční stránka – strop 48 px */
-.d-hero .detail__loc { color: rgba(244, 241, 235, .85); }
+.d-hero .detail__loc { color: rgba(243, 244, 245, .85); }
 .d-hero .detail__loc .icon { color: var(--accent-deco); }
 .d-hero .detail__loc a { color: var(--on-ink); }
 .d-hero__title { display: grid; gap: var(--s-4); }
@@ -218,8 +218,8 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 @media (min-width: 1024px) { .d-hero__side { justify-items: end; text-align: right; } }
 .d-hero__price { font-family: var(--font-display); font-size: clamp(36px, 4vw, 56px); line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; }
 .d-hero__cta { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-.d-hero .badge--free { background: rgba(244, 241, 235, .14); color: var(--on-ink); border: 1px solid rgba(244, 241, 235, .3); }
-.d-subnav { position: sticky; top: var(--header-h); z-index: 45; background: rgba(244, 241, 235, .94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.d-hero .badge--free { background: rgba(243, 244, 245, .14); color: var(--on-ink); border: 1px solid rgba(243, 244, 245, .3); }
+.d-subnav { position: sticky; top: var(--header-h); z-index: 45; background: rgba(243, 244, 245, .94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
 .d-subnav .wide { display: flex; gap: var(--s-1); overflow-x: auto; scrollbar-width: none; }
 .d-subnav .wide::-webkit-scrollbar { display: none; }
 .d-subnav a { flex: none; padding: var(--s-4) var(--s-3); font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; margin-bottom: -1px; }

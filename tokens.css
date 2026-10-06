@@ -4,7 +4,7 @@
    jiné hodnoty + editoriální vrstva (serif display, fluidní typografie jen pro editoriál).
 
    Pravidla:
-   1. Dvě atmosféry: INK (tmavá – „kino“: hero, prodej, závěr) a PAPER (teplá světlá – „dokument“).
+   1. Dvě atmosféry: INK (tmavá – „kino“: hero, prodej, závěr) a PAPER (velmi světlá neutrální šedá – „dokument“).
    2. Brand zelená NEXT #85B929 je jediný akcent. Na INK je čitelná (7,3 : 1), na PAPER jen jako linka/tečka.
    3. Žádné stíny – struktura z 1px linek. Rádiusy jen dva: 999px (interakce) a 4px (média, karty).
    4. Funkční stránky (výpis, detail, filtry) drží kompaktní škálu ze zadání: základ 16 px, H1 ≤ 48 px.
@@ -21,10 +21,10 @@
   --ink: #0d1a24;            /* nadpisy na světlé + tmavé plochy */
   --ink-2: #14242f;          /* karty a panely na tmavé */
   --ink-line: #2a3c49;       /* 1px linky na tmavé */
-  --on-ink: #f4f1eb;         /* text na tmavé */
+  --on-ink: #f3f4f5;         /* text na tmavé */
   --on-ink-muted: #a9b2b8;   /* popisky na tmavé */
-  --paper: #f4f1eb;          /* hlavní světlé pozadí – teplá bílá */
-  --stone: #e9e4da;          /* alternativní světlá sekce */
+  --paper: #f3f4f5;          /* hlavní světlé pozadí – velmi světlá neutrální šedá */
+  --stone: #e8eaec;          /* alternativní světlá sekce */
 
   /* --- Akcenty (stejné názvy jako standardní verze) --- */
   --accent: #0d1a24;         /* primární tlačítko na světlé = ink */
@@ -38,16 +38,16 @@
   /* --- Neutrály --- */
   --text: #2b2f33;
   --text-muted: #5e6368;
-  --line: #d9d2c5;
-  --line-strong: #b9b1a3;
-  --surface: #f4f1eb;
-  --surface-2: #e9e4da;
+  --line: #d7dade;
+  --line-strong: #b4b9bf;
+  --surface: #f3f4f5;
+  --surface-2: #e8eaec;
   --surface-dark: #0d1a24;
 
   /* --- Stavy nabídky (fixní pro všechny kanceláře) --- */
   --st-free: #256b29;   --st-free-bg: #e4ebd6;
   --st-reserved: #7a5000; --st-reserved-bg: #f3e7cc;
-  --st-sold: #4e5459;   --st-sold-bg: #e2ddd3;
+  --st-sold: #4e5459;   --st-sold-bg: #e2e5e8;
   --st-top: #0d1a24;    --st-top-bg: #85b929;
   --st-last: #8e2a2a;   --st-last-bg: #f2dfd9;
   --danger: #a3261e;

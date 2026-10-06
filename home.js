@@ -2,7 +2,8 @@
 // Rozdíl oproti standardu: živý počet ve vyhledávání se počítá nad reálnými daty výpisu (ne simulace).
 const PREMIUM = {
   tgh: {
-    hero: 'https://www.nextreality-tgh.cz/www/upload/fd55c419/20260616131637512/20260616131637512.1940x760.qa-82.jpg',
+    // Praha z věže při západu slunce – Magnific stock (premium licence, autor tan4ikk)
+    hero: 'assets/hero-praha-2400.jpg', heroSet: 'assets/hero-praha-1280.jpg 1280w, assets/hero-praha-2400.jpg 2400w',
     final: 'https://www.nextreality-tgh.cz/www/upload/d88ef166/20261006114004877/20261006114004877.1920x1440.shrinkonly.qa-82.jpeg',
     short: 'Praha a okolí',
   },
@@ -44,7 +45,7 @@ window.PAGE = {
   render(k) {
     const o = OFFICES[k], P = PREMIUM[k], L = listings();
     document.title = `Reality a nemovitosti ${o.region} | ${o.name}`;
-    $$('[data-bind="hero"]').forEach(i => (i.src = P.hero));
+    $$('[data-bind="hero"]').forEach(i => { i.srcset = P.heroSet || ''; i.sizes = '100vw'; i.src = P.hero; });
     $$('[data-bind="final"]').forEach(i => (i.src = P.final));
     $$('[data-bind="region"]').forEach(e => (e.textContent = o.region));
     $$('[data-bind="region-short"]').forEach(e => (e.textContent = P.short));
