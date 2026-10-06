@@ -364,7 +364,7 @@
 .checks label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
 .wizard__done { text-align: center; display: grid; gap: var(--s-4); justify-items: center; padding-block: var(--s-6); }
 .wizard__done > .icon { width: 56px; height: 56px; color: #fff; background: var(--st-free); border-radius: 50%; padding: 12px; }
-.summary { width: 100%; text-align: left; background: var(--surface-2); border-radius: var(--r-input); padding: var(--s-4); display: grid; gap: var(--s-1); font-size: var(--fs-small); }
+.summary { width: 100%; text-align: left; background: var(--surface-2); border-radius: var(--r-card); padding: var(--s-4); display: grid; gap: var(--s-1); font-size: var(--fs-small); }
 .summary b { color: var(--ink); }
 
 /* --- Postup (číslované kroky) --------------------------------------- */
