@@ -179,3 +179,16 @@
 .p-agent .p-agent__smile { position: absolute; inset: 0; opacity: 0; transition: opacity .9s cubic-bezier(.45, 0, .25, 1), filter var(--dur-ui), transform 1.4s var(--ease); }
 .p-agent:is(:hover, :focus-within, .is-smiling) .p-agent__smile { opacity: 1; transition: opacity 1.6s cubic-bezier(.45, 0, .25, 1) .3s, filter var(--dur-ui), transform 1.4s var(--ease); }
 @media (prefers-reduced-motion: reduce) { .p-agent__smile { transition: none; } }
+
+/* připnutá galerie (desktop s myší): sekce = přesně výška okna, fotka se smrskne/roztáhne,
+   aby popis, cena i tlačítko karty byly vždy vidět – i na nízkých monitorech (768–900 px) */
+.p-featured.is-pinned { height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: calc(var(--header-h) + var(--s-6)) var(--s-8); }
+.p-featured.is-pinned .p-featured__head { flex: none; margin-bottom: var(--s-6); }
+.p-featured.is-pinned { --fh: clamp(160px, calc(100svh - 470px), 560px); } /* výška fotky = okno − hlavička, nadpis, popis karty */
+.p-featured.is-pinned .p-featured__track { flex: none; align-items: flex-start; }
+.p-featured.is-pinned .p-featured__item { width: clamp(240px, calc(var(--fh) * .8), 440px); }
+.p-featured.is-pinned .p-featured__item .pcard__media { height: var(--fh); aspect-ratio: auto; }
+.p-featured.is-pinned .p-featured__more { aspect-ratio: auto; width: clamp(220px, calc(var(--fh) * .7), 360px); height: var(--fh); }
+.p-featured__cta { position: relative; z-index: 2; align-self: flex-start; margin-top: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); font-size: 14px; font-weight: 500; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; transition: border-color var(--dur-ui), gap var(--dur-ui) var(--ease); }
+.p-featured__cta:hover { border-color: var(--ink); gap: var(--s-3); }
+.p-featured__cta .icon { width: 16px; height: 16px; }
