@@ -28,10 +28,19 @@
 .d-agent__actions { display: grid; gap: var(--s-2); }
 /* na mobilu/tabletu je boční panel až pod obsahem – makléře tam nese proužek a sekce Mám zájem */
 @media (max-width: 1023px) { .d-agent { display: none; } }
-/* lepí se pod podnavigací, jen když se celý vejde na výšku okna */
-@media (min-width: 1024px) and (min-height: 840px) {
+/* lepí se pod podnavigací a zastaví se na konci obsahu – těsně před formulářem Mám zájem */
+@media (min-width: 1024px) {
+  .detail > .aside { align-self: stretch; }
   .aside .d-agent { position: sticky; top: calc(var(--header-h) + 59px + var(--s-6)); }
 }
+/* nižší okna: panel se zkompaktní, aby se vešel celý (fotka nižší, bez doprovodné věty) */
+@media (min-width: 1024px) and (max-height: 860px) {
+  .d-agent { gap: var(--s-4); padding: var(--s-5); }
+  .d-agent__photo { margin: calc(-1 * var(--s-5)) calc(-1 * var(--s-5)) 0; aspect-ratio: 16 / 9; }
+  .d-agent__photo img { object-position: center 20%; }
+  .aside .d-agent__why { display: none; }
+}
+@media (min-width: 1024px) and (max-height: 700px) { .d-agent__photo { display: none; } }
 
 /* --- Proužek pod přehledem (mobil / tablet) ------------------------------------- */
 .d-agent-strip { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s-4); align-items: center; padding-top: var(--s-6); border-top: 1px solid var(--line); }
