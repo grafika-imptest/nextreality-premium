@@ -131,7 +131,7 @@ function layout() {
       <div><h4>Služby</h4><ul><li><a data-href="prodat.html#odhad">Odhad ceny</a></li><li><a href="#">Právní služby</a></li><li><a href="#">Kalkulačka financování</a></li><li><a href="#">Výkupy nemovitostí</a></li></ul></div>
       <div><h4>O nás</h4><ul><li><a data-href="makleri.html">Makléři</a></li><li><a data-href="kontakty.html">Kontakty</a></li><li><a href="#">Reference</a></li><li><a href="#">Blog</a></li><li><a href="#">Kariéra</a></li></ul></div>
     </div>
-    <div class="footer__mark" aria-hidden="true" data-bind="name"></div>
+    <div class="footer__mark" aria-hidden="true" data-bind="mark"></div>
     <div class="footer__legal"><span>© 2026 <span data-bind="name"></span></span><a href="#">Ochrana osobních údajů</a><a href="#" id="cookie-reopen">Nastavení cookies</a></div>
   </div>
 </footer>`;
@@ -193,6 +193,9 @@ function params(x) {
   if (x.land) p.push('pozemek ' + num(x.land) + ' m²');
   return p;
 }
+// logotyp NEXT překreslený do vektoru podle oficiálního loga (e s „stříškou“ v zeleném kruhu)
+const NEXT_MARK = '<svg class="next-mark" viewBox="0 0 1110 427" aria-hidden="true"><g fill="currentColor"><path d="M0 136h72v257H0zM167 136h73v257h-73zM0 136h67l173 231v26h-67L0 163z"/><path d="M604 136h82l164 257h-83zM770 136h81L688 393h-84z"/><path d="M885 136h225v71h-78v186h-73V207h-74z"/></g><g fill="var(--accent-deco)"><path d="M439 0l80 71H360z"/><path fill-rule="evenodd" d="M440 106a160 160 0 1 1 0 320a160 160 0 1 1 0-320zM440 168a90 98 0 1 0 0 196a90 98 0 1 0 0-196z"/><path d="M400 248a39 38 0 0 1 78 0zM533 283H400q5 32 47 39l88-32z"/></g></svg>';
+
 function card(x, opt = {}) {
   const st = STATUS[x.st || 'free'];
   const price = x.price == null
@@ -258,6 +261,8 @@ function applyOffice(k) {
   html.classList.add('no-tr'); html.dataset.office = k; setTimeout(() => html.classList.remove('no-tr'), 50);
   $$('[data-bind="logo"]').forEach(i => { i.src = o.logo; i.alt = o.name; });
   $$('[data-bind="name"]').forEach(e => (e.textContent = o.name));
+  // patička: logotyp NEXT (vektor podle loga) + zbytek názvu pobočky textem
+  $$('[data-bind="mark"]').forEach(e => (e.innerHTML = NEXT_MARK + `<span>${esc(o.name.replace(/^NEXT\s*/i, ''))}</span>`));
   $$('[data-href]').forEach(a => { const [u, h] = a.dataset.href.split('#'); a.href = href(u, a.dataset.q || '') + (h ? '#' + h : ''); });
   window.PAGE?.render(k);
   document.dispatchEvent(new Event('rendered'));
