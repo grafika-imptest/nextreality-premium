@@ -75,7 +75,7 @@
 }
 
 /* --- Mapa: seznam + mapa ---------------------------------------------- */
-.lmap { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: calc(100dvh - var(--header-h) - 64px); min-height: 520px; border-top: 1px solid var(--line); }
+.lmap { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: var(--lx-map-h, calc(100dvh - var(--header-h) - 64px)); min-height: 520px; border-top: 1px solid var(--line); }
 .lmap[hidden], .lmap [hidden] { display: none !important; }
 .lmap__side { container: lside / inline-size; display: flex; flex-direction: column; min-width: 0; min-height: 0; border-right: 1px solid var(--line); background: var(--lx-bg); }
 .lmap__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); }
@@ -155,7 +155,7 @@
 
 /* mobil + tablet: mapa přes celou šířku, karusel karet dole */
 @media (max-width: 1023px) {
-  .lmap { display: block; position: relative; height: calc(100dvh - var(--header-h) - 112px); min-height: 460px; }
+  .lmap { display: block; position: relative; height: var(--lx-map-h, calc(100dvh - var(--header-h) - 112px)); min-height: 460px; }
   .lmap__stage { position: absolute; inset: 0; }
   .lmap__side { position: absolute; z-index: 500; left: 0; right: 0; bottom: var(--s-3); container-type: normal; border: 0; background: none; pointer-events: none; }
   .lmap__head { display: none; }
