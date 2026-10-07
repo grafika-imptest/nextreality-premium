@@ -62,7 +62,7 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Kontakty | nejdřív mapa kanceláří (schéma bez souhlasu s cookies), karty kanceláří, pak formulář a makléři | kontakty.* |
 | Detail makléře | osobní web: o mně, čím se chlubím, nabídka, realizace, reference, formulář (i ve standardu) | makler.* |
 
-**Mezery v datech (pro CMS/CRM):** makléř u nabídky, prodané zakázky, reference i projektu; souřadnice, telefon, e-mail a otevírací doba kanceláří; ocenění a praxe makléřů; datum realizace; realizace TGH (dnes se nezveřejňují). Mapové podklady: CARTO bez klíče už nefunguje, předloha používá OpenStreetMap – pro produkci vybrat poskytovatele s klíčem (Mapy.cz / CARTO / vlastní dlaždice). Logotyp v patičce je překreslený podle rastru – nahradit oficiálním SVG.
+**Mezery v datech (pro CMS/CRM):** makléř u nabídky, prodané zakázky, reference i projektu; souřadnice, telefon, e-mail a otevírací doba kanceláří; ocenění a praxe makléřů; datum realizace; realizace TGH (dnes se nezveřejňují). Mapové podklady: CARTO bez klíče už nefunguje, předloha používá OpenStreetMap – pro produkci vybrat poskytovatele s klíčem (Mapy.cz / CARTO / vlastní dlaždice).
 
 ## Portréty makléřů – úprava výrazu (Magnific)
 Na homepage TGH se makléři po najetí myší jemně usmějí. Páry obrázků (`assets/agents/*-a.jpg` výchozí, `*-b.jpg` úsměv) mají stejný výřez, takže jde jen o prolnutí.
