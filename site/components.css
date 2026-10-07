@@ -388,3 +388,12 @@ textarea.input { height: auto; min-height: 120px; padding-block: var(--s-3); res
 .pcard.is-hover { box-shadow: var(--sh-2); transform: translateY(-2px); }
 .pcard.is-focus { box-shadow: 0 0 0 3px var(--focus); }
 .input.is-success { border-color: var(--st-free); }
+
+/* --- Mobilní menu (globální – hlavička je na každé stránce, i na homepage bez pages.css) --- */
+.drawer { position: fixed; inset: 0; z-index: 80; background: rgba(12,34,53,.5); }
+.drawer[hidden] { display: none; }
+.drawer__panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(360px, 88vw); background: var(--surface); padding: var(--s-4); display: flex; flex-direction: column; gap: var(--s-6); box-shadow: var(--sh-3); }
+.drawer__head { display: flex; justify-content: space-between; align-items: center; }
+.drawer__head img { height: 36px; width: auto; }
+.drawer__nav { display: grid; }
+.drawer__nav a { padding: var(--s-3) var(--s-2); font-size: var(--fs-card); font-weight: 600; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
