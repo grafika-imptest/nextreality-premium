@@ -415,7 +415,11 @@ function drawMap(r) {
   }
   if (!map) {
     el.innerHTML = '';
-    map = L.map(el, { scrollWheelZoom: true, zoomControl: false });
+    map = L.map(el, { scrollWheelZoom: false, zoomControl: false });
+    // kolečko myši až po kliknutí do mapy – jinak stránka „uvízne“ v mapě a nejde odscrollovat
+    map.on('click focus', () => map.scrollWheelZoom.enable());
+    el.addEventListener('mouseleave', () => map?.scrollWheelZoom.disable());
+    map.on('dragstart zoomstart', () => { const h = $('#lmap-hint'); if (h && map._loaded && !fitting) h.classList.add('is-gone'); });
     L.control.zoom({ position: 'topright', zoomInTitle: 'Přiblížit', zoomOutTitle: 'Oddálit' }).addTo(map);
     L.tileLayer(TILE, { maxZoom: 19, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
     map.attributionControl.setPrefix(false);
@@ -445,9 +449,11 @@ function drawMap(r) {
   cluster.addLayers(ms);
   fitAll(false);
 }
+let fitting = false;
 function fitAll(anim = true) {
   if (!map) return;
   const pts = mapRes.map(x => [x.lat, x.lng]);
+  fitting = true; setTimeout(() => (fitting = false), 400);
   if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.08), { maxZoom: 14, animate: anim });
   else map.setView([49.9, 15.3], 7);
   syncView();

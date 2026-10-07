@@ -12,17 +12,17 @@
 .rz-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(100svh, 920px); display: flex; }
 .rz-hero.is-empty { min-height: auto; }
 .rz-hero.is-empty .rz-hero__in { padding-top: calc(var(--header-h) + var(--s-16)); }
-.rz-hero__wall { position: absolute; inset: 0; z-index: -2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-inline: 8px; opacity: .38; }
+.rz-hero__wall { position: absolute; inset: 0; z-index: -2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-inline: 8px; opacity: .62; }
 @media (max-width: 767px) { .rz-hero__wall { grid-template-columns: repeat(2, 1fr); } .rz-hero__col:nth-child(n+3) { display: none; } }
 .rz-hero__col { overflow: hidden; }
 .rz-hero__track { display: grid; gap: 8px; }
 .rz-hero__col:nth-child(even) .rz-hero__track { margin-top: -18%; }
 .rz-hero__track img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-card); filter: grayscale(1) contrast(1.05); }
-.js-motion .rz-hero__track { animation: rz-drift 90s linear infinite; }
-.js-motion .rz-hero__col:nth-child(even) .rz-hero__track { animation-direction: reverse; animation-duration: 110s; }
+.js-motion .rz-hero__track { animation: rz-drift 45s linear infinite; }
+.js-motion .rz-hero__col:nth-child(even) .rz-hero__track { animation-direction: reverse; animation-duration: 58s; }
 @keyframes rz-drift { to { transform: translateY(-50%); } }
 .rz-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
-  linear-gradient(180deg, color-mix(in srgb, var(--ink) 80%, transparent) 0%, color-mix(in srgb, var(--ink) 55%, transparent) 40%, var(--ink) 96%),
+  linear-gradient(180deg, color-mix(in srgb, var(--ink) 70%, transparent) 0%, color-mix(in srgb, var(--ink) 30%, transparent) 40%, var(--ink) 96%),
   linear-gradient(90deg, color-mix(in srgb, var(--ink) 70%, transparent) 0%, transparent 70%); }
 .rz-hero__in { display: grid; grid-template-rows: auto 1fr auto; gap: var(--s-8); width: 100%; padding-block: calc(var(--header-h) + var(--s-6)) var(--s-10); }
 .rz-hero__crumbs, .rz-hero__crumbs a, .rz-hero__crumbs [aria-current] { color: rgba(243, 244, 245, .75); }
