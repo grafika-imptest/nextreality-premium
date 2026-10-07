@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Chci prodat – prémiová kompozice (načítá se po premium.css, jen pro prodat.html)
+   Hlavní cesta = kontaktní formulář v úvodu (#kontakt), odhad ceny (#odhad) je druhá cesta.
+   Bez stínů, 1px linky, rádius 999 px interakce / 4 px boxy, zelená jen jako akcent na INK.
+   ========================================================================== */
+
+/* --- Společné ---------------------------------------------------------------- */
+.sp-ink { background: var(--ink); color: var(--on-ink); }
+.sp-ink .t-h2 { color: var(--on-ink); }
+.sp-eyebrow { color: var(--accent-deco); }
+.sp-sec .section-head .t-h2 { max-width: 22ch; }
+.sp-btn-line { color: var(--on-ink); border-color: rgba(243, 244, 245, .4); }
+.sp-btn-line:hover { background: var(--on-ink); color: var(--ink); border-color: var(--on-ink); }
+#kontakt, #odhad { scroll-margin-top: calc(var(--header-h) + var(--s-4)); }
+
+/* --- 1 · Úvod ------------------------------------------------------------------ */
+.sp-hero { padding-block: var(--s-10) var(--s-16); }
+.sp-hero__grid { display: grid; gap: var(--s-8); grid-template-areas: "intro" "form" "more"; }
+.sp-hero__intro { grid-area: intro; display: grid; gap: var(--s-5); justify-items: start; align-content: start; }
+.sp-hero__intro .crumbs { margin-bottom: var(--s-2); }
+.sp-hero h1 { color: var(--on-ink); max-width: 14ch; }
+.sp-hero h1 em { color: var(--accent-deco); }
+.page-hero .sp-hero__lead { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(20px, 1.9vw, 26px); line-height: 1.32; letter-spacing: -.005em; color: var(--on-ink); max-width: 30ch; margin: 0; }
+.sp-hero__jump { margin-top: var(--s-2); display: none; }
+.sp-hero__more { grid-area: more; display: grid; gap: var(--s-8); align-content: start; }
+.sp-contact { grid-area: form; min-width: 0; display: grid; gap: var(--s-4); }
+@media (min-width: 1024px) {
+  .sp-hero { padding-block: var(--s-12) var(--s-16); }
+  .sp-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); grid-template-areas: "intro form" "more form"; grid-template-rows: auto 1fr; column-gap: var(--s-16); row-gap: var(--s-12); }
+}
+@media (max-width: 599px) { .sp-hero__jump { display: inline-flex; } } /* jen mobil – formulář je hned pod úvodem, odkaz k němu pomůže */
+
+/* tři sliby */
+.sp-promises { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-6); counter-reset: pr; }
+.sp-promises li { counter-increment: pr; display: grid; gap: var(--s-2); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--ink-line); }
+.sp-promises li::before { content: "0" counter(pr); font-family: var(--font-display); font-size: 13px; letter-spacing: .08em; color: var(--accent-deco); }
+.sp-promises b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 26px; color: var(--on-ink); }
+.sp-promises span { font-size: 15px; line-height: 23px; color: var(--on-ink-muted); }
+@media (min-width: 600px) { .sp-promises { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) and (max-width: 1279px) { .sp-promises { grid-template-columns: 1fr; gap: var(--s-4); } }
+
+/* pruh důkazů */
+.sp-proof { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-8); }
+.sp-proof li { display: flex; align-items: baseline; gap: var(--s-2); }
+.sp-proof b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 28px; line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; }
+.sp-proof span { font-size: 13px; color: var(--on-ink-muted); }
+
+/* kontaktní formulář */
+.sp-form, .sp-form__done { background: var(--paper); color: var(--text); border-radius: var(--r-box); padding: var(--s-6); display: grid; gap: var(--s-5); }
+@media (min-width: 768px) { .sp-form, .sp-form__done { padding: var(--s-8); } }
+.sp-form[hidden], .sp-form__done[hidden] { display: none; }
+.sp-form__head { display: grid; gap: var(--s-2); padding-bottom: var(--s-5); border-bottom: 1px solid var(--line); }
+.sp-form__head .t-label { color: var(--text-muted); }
+.sp-form__title { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 28px; line-height: 32px; letter-spacing: -.01em; color: var(--ink); }
+.page-hero .sp-form p, .page-hero .sp-form__done p { color: var(--text-muted); margin: 0; max-width: none; font-size: var(--fs-small); line-height: 22px; }
+.sp-form__grid { display: grid; gap: var(--s-4); }
+@media (min-width: 600px) { .sp-form__grid { grid-template-columns: 1fr 1fr; } .sp-form__grid .full { grid-column: 1 / -1; } }
+.sp-form textarea.input { min-height: 96px; resize: vertical; height: auto; padding-block: var(--s-3); }
+.sp-form .check a { color: var(--ink); }
+.sp-form .field__error, #k-gdpr-err { margin-top: calc(-1 * var(--s-3)); }
+.sp-form .field .field__error { margin-top: 0; }
+.sp-form__trust { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); font-size: 13px; color: var(--text-muted); }
+.sp-form__trust li { display: inline-flex; align-items: center; gap: var(--s-2); }
+.sp-form__trust .icon { width: 16px; height: 16px; color: var(--ink); }
+.sp-form__done { justify-items: start; outline: none; }
+.sp-form__done > .icon { width: 48px; height: 48px; padding: 11px; border-radius: 50%; background: var(--ink); color: var(--accent-deco); }
+.sp-form__done h3 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 26px; line-height: 32px; color: var(--ink); }
+.sp-done__sum { display: grid; gap: var(--s-1); width: 100%; padding: var(--s-4) 0; border-block: 1px solid var(--line); }
+.sp-done__sum span { font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.sp-done__sum b { color: var(--ink); font-weight: 500; }
+.sp-done__btns { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); align-items: center; }
+.page-hero .sp-contact__alt { margin: 0; font-size: var(--fs-small); color: var(--on-ink-muted); }
+.sp-contact__alt a { color: var(--on-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-deco); }
+
+/* --- 2 · Postup a servis ------------------------------------------------------- */
+.sp-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 var(--gap); }
+@media (min-width: 768px) { .sp-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1280px) { .sp-steps { grid-template-columns: repeat(4, 1fr); } }
+.sp-steps li { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-5) 0 var(--s-8); border-top: 1px solid var(--line); }
+.sp-steps__no { font-family: var(--font-display); font-size: 13px; letter-spacing: .08em; color: var(--text-muted); }
+.sp-steps h3 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 26px; color: var(--ink); }
+.sp-steps p { font-size: 15px; line-height: 23px; color: var(--text-muted); }
+.sp-services { display: grid; gap: var(--s-4); margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--ink); }
+.sp-services .t-label { color: var(--text-muted); }
+.sp-services ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.sp-services li { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 40px; padding: 0 var(--s-4) 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-pill); font-size: 14px; font-weight: 500; color: var(--ink); }
+.sp-services .icon { width: 18px; height: 18px; color: var(--ink); }
+
+/* --- 3 · Čísla ------------------------------------------------------------------ */
+.sp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gap); margin: 0; }
+@media (min-width: 1024px) { .sp-stats { grid-template-columns: repeat(4, 1fr); } }
+.sp-stats > div { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-6) 0 var(--s-8); border-top: 1px solid var(--ink); }
+.sp-stats dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(48px, 5.4vw, 80px); line-height: .95; letter-spacing: -.04em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.sp-stats dd { margin: 0; display: grid; gap: var(--s-1); }
+.sp-stats dd b { font-weight: 600; color: var(--ink); }
+.sp-stats dd span { font-size: var(--fs-small); line-height: var(--lh-small); color: var(--text-muted); max-width: 30ch; }
+
+/* --- 4 · Makléři ---------------------------------------------------------------- */
+.sp-agents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-8) var(--gap); }
+@media (min-width: 1024px) { .sp-agents { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sp-agent { display: grid; gap: var(--s-1); align-content: start; min-width: 0; }
+.sp-agent__photo { aspect-ratio: 4 / 5; border-radius: var(--r-card); overflow: hidden; background: var(--stone); margin-bottom: var(--s-3); }
+.sp-agent__photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.25); transition: filter var(--dur-ui), transform 1.2s var(--ease); }
+.sp-agent:hover .sp-agent__photo img { filter: none; transform: scale(1.03); }
+.sp-agent h3 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 26px; }
+.sp-agent h3 a { color: var(--ink); text-decoration: none; }
+.sp-agent h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sp-agent p { font-size: 13px; line-height: 19px; color: var(--text-muted); }
+.sp-agent__tel { display: inline-flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); font-size: 14px; font-weight: 500; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+.sp-agent__tel .icon { width: 16px; height: 16px; flex: none; }
+.sp-agent__tel:hover span { text-decoration: underline; text-underline-offset: 3px; }
+
+/* --- 5 · Reference -------------------------------------------------------------- */
+.sp-ratings { display: flex; gap: var(--s-8); }
+.sp-ratings div { display: grid; gap: var(--s-1); }
+.sp-ratings b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 40px; line-height: 1; color: var(--ink); }
+.sp-ratings small { font-size: 16px; color: var(--text-muted); }
+.sp-ratings span { font-size: 13px; color: var(--text-muted); }
+.sp-refs { display: grid; gap: var(--s-8) var(--gap); }
+@media (min-width: 1024px) { .sp-refs { grid-template-columns: repeat(3, 1fr); } }
+.sp-ref { margin: 0; display: grid; gap: var(--s-5); align-content: space-between; padding-top: var(--s-6); border-top: 1px solid var(--ink); }
+.sp-ref blockquote { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 29px; color: var(--ink); }
+.sp-ref figcaption { display: grid; gap: 2px; font-size: var(--fs-small); }
+.sp-ref figcaption b { color: var(--ink); font-weight: 600; }
+.sp-ref figcaption span { color: var(--text-muted); }
+
+/* --- 6 · Odhad ceny (průvodce beze změny logiky) ----------------------------------- */
+.sp-estimate__intro { display: grid; gap: var(--s-5); align-content: start; }
+.sp-estimate__intro > p { color: var(--on-ink-muted); max-width: 46ch; }
+.sp-estimate .wizard { box-shadow: none; border: 0; }
+.sp-compare { margin-top: var(--s-4); }
+.sp-compare > div, .sp-compare > div:first-child { background: transparent; border: 0; border-top: 1px solid var(--ink-line); border-radius: 0; padding: var(--s-5) 0 0; }
+.sp-compare > div:first-child { border-top-color: var(--accent-deco); }
+.sp-compare h3 { color: var(--on-ink); font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; }
+.sp-compare p { color: var(--on-ink-muted); }
+
+/* --- 8 · Časté otázky ------------------------------------------------------------ */
+.sp-faq { border-top: 1px solid var(--ink); max-width: 880px; }
+.sp-faq details { border-bottom: 1px solid var(--line-strong); }
+.sp-faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: var(--s-6); align-items: center; padding: var(--s-5) 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 28px; color: var(--ink); }
+.sp-faq summary::-webkit-details-marker { display: none; }
+.sp-faq summary::after { content: ""; flex: none; width: 36px; height: 36px; border: 1px solid var(--line-strong); border-radius: 50%;
+  background: linear-gradient(var(--ink), var(--ink)) center / 12px 1px no-repeat, linear-gradient(var(--ink), var(--ink)) center / 1px 12px no-repeat; transition: transform var(--dur-ui) var(--ease); }
+.sp-faq details[open] summary::after { transform: rotate(45deg); }
+.sp-faq summary:hover::after { border-color: var(--ink); }
+.sp-faq summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.sp-faq details p { padding: 0 0 var(--s-6); max-width: 64ch; color: var(--text-muted); }
+
+/* --- 9 · Závěr ------------------------------------------------------------------- */
+.sp-final { padding-block: var(--section-editorial); }
+.sp-final__in { display: grid; gap: var(--s-8); align-items: end; }
+.sp-final__in .t-h2 { max-width: 20ch; margin-top: var(--s-4); }
+.sp-final__in p { color: var(--on-ink-muted); max-width: 52ch; margin-top: var(--s-4); }
+.sp-final__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+@media (min-width: 1024px) { .sp-final__in { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }

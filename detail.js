@@ -39,12 +39,98 @@ function drawMap() {
   L.marker([D.lat, D.lng], { icon: L.divIcon({ className: 'mpin', html: `<span>${kc(D.price)}</span>`, iconSize: null }) }).addTo(dmap);
 }
 
+// čísla z polí: „27 000“, „4,5“ → číslo; prázdné / nesmysl → NaN
+const val = id => parseFloat(String($(id).value).replace(/[\s ]/g, '').replace(',', '.'));
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+// anuitní splátka: úvěr, roční sazba v %, doba v letech
+function annuity(loan, ratePct, years) {
+  const r = (ratePct || 0) / 100 / 12, n = Math.round((years || 0) * 12);
+  if (!(loan > 0) || !(n > 0)) return 0;
+  return r ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
+}
 function calc() {
-  const p = D.price, own = parseFloat($('#c-own').value.replace(',', '.')) / 100 || 0;
-  const r = parseFloat($('#c-rate').value.replace(',', '.')) / 100 / 12, n = (parseFloat($('#c-years').value) || 0) * 12;
-  const loan = p * (1 - own);
-  const m = !n ? 0 : r ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
+  const own = clamp(val('#c-own') || 0, 0, 100) / 100;
+  const m = annuity(D.price * (1 - own), val('#c-rate'), val('#c-years'));
   $('#c-out').textContent = m > 0 && isFinite(m) ? kc(Math.round(m / 10) * 10) : '–';
+}
+
+// --- Investiční výpočet (orientační) ---
+const pct = x => (x * 100).toLocaleString('cs-CZ', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
+const signedKc = x => (x < 0 ? '−' : x > 0 ? '+' : '') + kc(Math.abs(x));
+const yearsCz = y => `${num(y)} ${y === 1 ? 'rok' : y >= 2 && y <= 4 ? 'roky' : 'let'}`;
+const RENT_YIELD_EST = 0.03; // předvyplněný nájem = 3 % ceny ročně (jen výchozí odhad, ne údaj z nabídky)
+function invest() {
+  const price = D.price;
+  const rent = Math.max(0, val('#i-rent') || 0);
+  const cost = Math.max(0, val('#i-cost') || 0);
+  const vac = clamp(val('#i-vac') || 0, 0, 12);
+  const own = clamp(val('#i-own') || 0, 0, 100) / 100;
+  const loan = price * (1 - own);
+  const pay = annuity(loan, val('#i-rate'), val('#i-years'));
+  const grossYear = rent * 12;                    // hrubý roční nájem
+  const netYear = rent * (12 - vac) - cost * 12;  // čistý roční příjem před financováním
+  const cf = netYear / 12 - pay;                  // měsíční cashflow po splátce
+  const r = { grossYield: grossYear / price, netYield: netYear / price, cf, pay, loan, payback: netYear > 0 ? price / netYear : null };
+  $('#i-gross').textContent = rent ? pct(r.grossYield) : '–';
+  $('#i-net').textContent = rent ? pct(r.netYield) : '–';
+  $('#i-cf').textContent = rent || pay ? signedKc(Math.round(cf / 10) * 10) : '–';
+  $('#i-cf').classList.toggle('is-neg', cf < 0);
+  $('#i-cf-sub').textContent = pay ? `po splátce hypotéky ${kc(Math.round(pay / 10) * 10)} (úvěr ${kc(Math.round(loan))})` : 'bez hypotéky';
+  $('#i-pay').textContent = r.payback ? yearsCz(Math.round(r.payback)) : '–';
+  return r;
+}
+
+// --- Makléř: spárování s profilem (data/phase3.js) podle e-mailu nebo jména ---
+function broker() {
+  const a = D.agent, all = [...(window.BROKERS?.tgh || []), ...(window.BROKERS?.stars || [])];
+  const b = all.find(x => x.mail === a.mail) || all.find(x => x.n === a.n);
+  const full = b && window.BROKER_DETAIL?.slug === b.slug ? BROKER_DETAIL : null;
+  const offers = full ? (window.LISTINGS?.tgh || []).filter(x => full.hrefs?.includes(x.href)).length : 0;
+  return {
+    ...a, slug: b?.slug, office: b?.office || '',
+    img: b?.img || a.img, square: full?.portrait || b?.img || a.img, motto: full?.motto || '', offers,
+    url: href('makler.html', b?.slug ? '&slug=' + b.slug : '&name=' + encodeURIComponent(a.n)),
+    tel0: a.tel.replace(/\s/g, ''),
+  };
+}
+function renderBroker() {
+  const b = broker();
+  const role = `${esc(b.r)}${b.office ? ` · ${esc(b.office)}` : ''}`;
+  const why = 'Zakázku vede osobně. Domluví prohlídku a odpoví na dotazy k domu, vybavení, provozním nákladům i podmínkám prodeje.';
+  const profile = `<a class="d-agent__profile" href="${b.url}">Profil makléře${ico('arrow')}</a>`;
+  // boční panel (desktop, lepí se pod podnavigací)
+  $('#d-agent').innerHTML = `<a class="d-agent__photo" href="${b.url}" tabindex="-1" aria-hidden="true"><img src="${esc(b.square)}" alt="" loading="lazy"></a>
+    <div class="d-agent__id"><span class="t-label eyebrow">Nemovitost nabízí</span>
+      <h2 class="d-agent__name"><a href="${b.url}">${esc(b.n)}</a></h2><p class="d-agent__role">${role}</p></div>
+    <p class="d-agent__why">${why}</p>
+    <div class="d-agent__actions">
+      <a class="btn btn--primary btn--block" href="tel:${b.tel0}">${ico('phone')}<span>${esc(b.tel)}</span></a>
+      <a class="btn btn--secondary btn--block" href="mailto:${esc(b.mail)}">${ico('mail')}<span>Napsat e-mail</span></a>
+    </div>${profile}`;
+  // mobil / tablet: proužek pod přehledem
+  $('#d-agent-strip').innerHTML = `<a class="d-agent-strip__photo" href="${b.url}" tabindex="-1" aria-hidden="true"><img src="${esc(b.img)}" alt="" loading="lazy"></a>
+    <div class="d-agent-strip__id"><span class="t-label">Nemovitost nabízí</span><b class="d-agent__name"><a href="${b.url}">${esc(b.n)}</a></b><span class="d-agent__role">${role}</span></div>
+    <div class="d-agent-strip__actions"><a class="btn btn--primary" href="tel:${b.tel0}">${ico('phone')}<span>Zavolat</span></a><a class="btn btn--secondary" href="${b.url}">Profil makléře</a></div>`;
+  // sekce Mám zájem: velký portrét + motto z profilu
+  $('#d-broker').innerHTML = `<a class="d-broker__photo" href="${b.url}" tabindex="-1" aria-hidden="true"><img src="${esc(b.img)}" alt="" loading="lazy"></a>
+    <div class="d-broker__body">
+      <span class="t-label eyebrow">Váš makléř</span>
+      <h3 class="d-broker__name"><a href="${b.url}">${esc(b.n)}</a></h3>
+      <p class="d-agent__role">${role}</p>
+      ${b.motto ? `<blockquote class="d-broker__motto">${esc(b.motto)}</blockquote>` : `<p class="d-agent__why">${why}</p>`}
+      <div class="d-broker__links"><a href="tel:${b.tel0}">${ico('phone')}${esc(b.tel)}</a><a href="mailto:${esc(b.mail)}">${ico('mail')}${esc(b.mail)}</a></div>
+      <div class="d-broker__foot">${profile}${b.offers ? `<span>${num(b.offers)} ${b.offers === 1 ? 'nemovitost' : b.offers <= 4 ? 'nemovitosti' : 'nemovitostí'} v nabídce</span>` : ''}</div>
+    </div>`;
+  $('#sb-call').href = 'tel:' + b.tel0;
+  return b;
+}
+
+function setCalcTab(inv, focus) {
+  $('#t-mort').setAttribute('aria-selected', !inv); $('#t-inv').setAttribute('aria-selected', inv);
+  $('#t-mort').tabIndex = inv ? -1 : 0; $('#t-inv').tabIndex = inv ? 0 : -1;
+  $('#calc').hidden = inv; $('#calc-inv').hidden = !inv;
+  $('#h-calc').textContent = inv ? 'Investiční kalkulačka' : 'Hypoteční kalkulačka';
+  if (focus) (inv ? $('#t-inv') : $('#t-mort')).focus();
 }
 
 window.PAGE = {
@@ -71,13 +157,12 @@ window.PAGE = {
         ${D.penb.pdf ? `<a class="btn btn--secondary" href="#" style="margin-top:var(--s-2)">${ico('download')} Stáhnout průkaz (PDF)</a>` : ''}</div>`;
     $('#d-map-note').textContent = `${D.loc} ${D.region}. Poloha podle údajů v inzerci.`;
     $('#d-price').innerHTML = `${kc(D.price)}<small>${esc(D.loc)} ${esc(D.region)}</small>`;
-    const a = D.agent;
-    $('#d-call').href = $('#sb-call').href = 'tel:' + a.tel.replace(/\s/g, '');
-    $('#d-call span').textContent = a.tel;
     $('#d-ref').textContent = `Evidenční číslo ${D.ref} – uveďte při komunikaci s makléřem.`;
-    const am = `<img src="${esc(a.img)}" alt=""><div><b>${esc(a.n)}</b><span>${esc(a.r)}</span></div>`;
-    $('#d-agent').innerHTML = $('#d-agent-2').innerHTML = am;
-    $('#d-agent-links').innerHTML = `<a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}${esc(a.tel)}</a><a href="mailto:${esc(a.mail)}">${ico('mail')}${esc(a.mail)}</a>`;
+    renderBroker();
+    // investice: předvyplněný odhad nájmu (zaokrouhleno na 500 Kč) – jen pokud uživatel nic nezadal
+    if (!$('#i-rent').value) $('#i-rent').value = num(Math.round(D.price * RENT_YIELD_EST / 12 / 500) * 500);
+    $('#i-price').textContent = kc(D.price);
+    $('#i-hint').textContent = `Nájem je předvyplněný odhad (≈ ${num(RENT_YIELD_EST * 100)} % kupní ceny ročně), ne údaj z nabídky – skutečný nájem v lokalitě ověřte u makléře. Náklady majitele: pojištění, daň z nemovitosti, údržba.`;
     $('#z-msg').value = `Dobrý den, mám zájem o nemovitost ${D.ref} (${D.t}). Prosím o kontakt a domluvu prohlídky.`;
     $('#sb-title').textContent = D.t;
     $('#sb-price').innerHTML = `${kc(D.price)}<small>${esc(D.loc)}</small>`;
@@ -91,12 +176,15 @@ window.PAGE = {
     $('#d-lead').textContent = `${D.desc[0]} ${D.desc[1]}`;
     const facts = [['226', 'm² obytná plocha'], ['528', 'm² pozemek'], ['5+', 'pokojů'], [D.penb.cls, 'energetická třída'], ['2014', 'kompletní rekonstrukce']];
     $('#d-facts').innerHTML = facts.map(([v, l]) => `<div data-reveal><dt>${esc(v)}</dt><dd>${esc(l)}</dd></div>`).join('');
-    gallery(); drawMap(); calc();
+    gallery(); drawMap(); calc(); invest();
   },
   checks() {
     const h1 = $('#d-h1'), lines = Math.round(h1.offsetHeight / parseFloat(getComputedStyle(h1).lineHeight));
     const sb = $('#stickybar').getBoundingClientRect();
+    const b = broker(), r = invest();
     return check('H1 detailu', parseFloat(getComputedStyle(h1).fontSize) <= 32, getComputedStyle(h1).fontSize + ' · ' + lines + ' ř.')
+      + check('Profil makléře', !!b.slug, b.slug ? b.slug : 'nespárováno → odkaz podle jména')
+      + check('Investice', isFinite(r.grossYield), `hrubý ${pct(r.grossYield)} · čistý ${pct(r.netYield)}`)
       + check('Lepící lišta', null, innerWidth < 1024 ? (sb.bottom <= innerHeight + 1 ? 'dole' : '?') : ($('#stickybar').classList.contains('is-on') ? 'zobrazena' : 'čeká na scroll'));
   },
   init() {
@@ -124,6 +212,15 @@ window.PAGE = {
       e.currentTarget.querySelector('.icon').style.transform = open ? 'rotate(180deg)' : '';
     });
     $$('#calc input').forEach(i => i.addEventListener('input', calc));
+    $$('#calc-inv input').forEach(i => i.addEventListener('input', invest));
+    $('#t-mort').addEventListener('click', () => setCalcTab(false));
+    $('#t-inv').addEventListener('click', () => setCalcTab(true));
+    $('.calc-tabs').addEventListener('keydown', e => {
+      const inv = $('#t-inv').getAttribute('aria-selected') === 'true';
+      const next = { ArrowLeft: !inv, ArrowRight: !inv, Home: false, End: true }[e.key];
+      if (next !== undefined) { e.preventDefault(); setCalcTab(next, true); }
+    });
+    if (location.hash === '#investice') setCalcTab(true);
     $('#d-share').addEventListener('click', () => navigator.share ? navigator.share({ title: D.t, url: location.href }).catch(() => {}) : navigator.clipboard?.writeText(location.href));
     document.addEventListener('consent', () => { dmap = null; drawMap(); if (!$('#lightbox').hidden) lightbox(lbIndex); });
     // desktop: lišta nahoře, jakmile cenový box zmizí z obrazovky

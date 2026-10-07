@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chci prodat – odhad ceny nemovitosti | NEXT Reality</title>
+<title>Chci prodat nemovitost – rychle a za nejlepší cenu | NEXT Reality</title>
 <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,127 +12,213 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="prodat.css">
 </head>
 <body data-page="prodat">
 <div id="site-header"></div>
 
 <main>
-  <!-- Odhad ceny = hlavní vstup do poptávky prodávajícího -->
-  <section class="page-hero">
-    <div class="container sell-hero">
-      <div>
+  <!-- 1 · Úvod: ujištění + kontaktní formulář = hlavní cesta prodávajícího -->
+  <section class="page-hero sp-hero">
+    <div class="container sp-hero__grid">
+      <div class="sp-hero__intro">
         <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Chci prodat</span></nav>
-        <h1>Kolik je vaše nemovitost dnes za&nbsp;to?</h1>
-        <p class="t-lead">Postaráme se, abyste svou nemovitost prodali rychle, za nejlepší možnou cenu a bez starostí – od úvodního nacenění přes prezentaci až po předání.</p>
-        <ul class="trust">
-          <li><svg class="icon"><use href="#i-check"/></svg>Odhad je zdarma a nezávazný</li>
-          <li><svg class="icon"><use href="#i-clock"/></svg>Nejpozději do 24 hodin se ozveme</li>
-          <li><svg class="icon"><use href="#i-shield"/></svg>Vaše údaje jsou v bezpečí</li>
-        </ul>
+        <span class="t-label eyebrow sp-eyebrow">Prodej nemovitosti</span>
+        <h1>Jste na správném <em>místě.</em></h1>
+        <p class="sp-hero__lead">Vaši nemovitost prodáme rychle a&nbsp;za nejlepší cenu, jakou trh nabízí. O&nbsp;všechno ostatní se postaráme&nbsp;my.</p>
+        <a class="btn btn--alt sp-hero__jump" href="#kontakt">Nezávazně nás kontaktujte <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
 
-      <form class="wizard" id="odhad" novalidate aria-labelledby="wiz-title">
-        <h2 class="sr-only" id="wiz-title">Odhad ceny nemovitosti</h2>
-        <ol class="wizard__progress" id="wiz-progress">
-          <li aria-current="step"><span>Nemovitost</span></li><li><span>Parametry</span></li><li><span>Adresa</span></li><li><span>Kontakt</span></li>
+      <div class="sp-hero__more">
+        <ol class="sp-promises">
+          <li><b>Rychle</b><span>Nabídku zveřejníme na našem webu, až na 100 realitních serverech a pošleme ji poptávajícím z naší databáze.</span></li>
+          <li><b>Za nejlepší cenu</b><span>Cenu stanovíme z tržních dat a srovnávací analýzy. Strategii nastavíme tak, abyste prodali s maximálním ziskem.</span></li>
+          <li><b>Bez starostí</b><span>Fotografie, video, inzerce, prohlídky, financování, smlouvy, katastr i předání energií – vše za vás vyřešíme.</span></li>
         </ol>
+        <ul class="sp-proof" id="sp-proof" aria-label="Fakta o kanceláři"></ul>
+      </div>
 
-        <fieldset class="wizard__step" data-step="1">
-          <legend>Co chcete ocenit?</legend>
-          <div class="tiles" role="radiogroup" aria-label="Typ nemovitosti">
-            <label class="tile"><input type="radio" name="type" value="flat" checked><span><svg class="icon"><use href="#i-byt"/></svg>Byt</span></label>
-            <label class="tile"><input type="radio" name="type" value="house"><span><svg class="icon"><use href="#i-dum"/></svg>Dům</span></label>
-            <label class="tile"><input type="radio" name="type" value="land"><span><svg class="icon"><use href="#i-pozemek"/></svg>Pozemek</span></label>
+      <div class="sp-contact" id="kontakt">
+        <form class="sp-form" id="sp-form" novalidate aria-labelledby="sp-form-title">
+          <div class="sp-form__head">
+            <span class="t-label">Kontaktní formulář</span>
+            <h2 class="sp-form__title" id="sp-form-title">Chci prodat nemovitost</h2>
+            <p>Napište nám pár slov. Makléř se vám ozve nejpozději do 24 hodin a domluví další postup.</p>
           </div>
-          <div class="field">
-            <span class="field__label">Prodej nebo pronájem</span>
-            <div class="seg" role="radiogroup"><button type="button" data-sale="sale" aria-pressed="true">Prodej</button><button type="button" data-sale="rent" aria-pressed="false">Pronájem</button></div>
+          <div class="sp-form__grid">
+            <div class="field full"><label for="k-name">Jméno a příjmení *</label><input class="input" id="k-name" autocomplete="name" data-req aria-describedby="k-name-err"><span class="field__error" id="k-name-err" hidden>Zadejte jméno a příjmení</span></div>
+            <div class="field"><label for="k-tel">Telefon *</label><input class="input" id="k-tel" type="tel" autocomplete="tel" inputmode="tel" data-req data-pattern="tel" aria-describedby="k-tel-err"><span class="field__error" id="k-tel-err" hidden>Zadejte telefon ve tvaru 603 418 108</span></div>
+            <div class="field"><label for="k-mail">E-mail *</label><input class="input" id="k-mail" type="email" autocomplete="email" data-req data-pattern="mail" aria-describedby="k-mail-err"><span class="field__error" id="k-mail-err" hidden>Zadejte e-mail ve tvaru jmeno@domena.cz</span></div>
+            <div class="field"><label for="k-type">Typ nemovitosti</label><select class="select" id="k-type"><option value="">Vyberte</option><option>Byt</option><option>Rodinný dům</option><option>Pozemek</option><option>Chata / chalupa</option><option>Komerční prostor</option><option>Jiné</option></select></div>
+            <div class="field"><label for="k-loc">Lokalita</label><input class="input" id="k-loc" autocomplete="address-level2" placeholder="Obec nebo adresa"></div>
+            <div class="field full"><label for="k-msg">Zpráva</label><textarea class="input" id="k-msg" rows="3" placeholder="Např. kdy chcete prodávat nebo v jakém stavu nemovitost je"></textarea></div>
           </div>
-        </fieldset>
-
-        <fieldset class="wizard__step" data-step="2" hidden>
-          <legend>Parametry nemovitosti</legend>
-          <div class="wizard__grid">
-            <div class="field" data-for="house"><label for="w-houseType">Typ domu</label><select class="select" id="w-houseType"><option value="">Vyberte</option><option>Rodinný dům</option><option>Chalupa</option><option>Vila</option><option>Chata</option><option>Jiný</option></select></div>
-            <div class="field" data-for="flat"><label for="w-subtype">Dispozice</label><select class="select" id="w-subtype"><option value="">Vyberte</option><option>1+kk</option><option>1+1</option><option>2+kk</option><option>2+1</option><option>3+kk</option><option>3+1</option><option>4+kk</option><option>4+1</option><option>jiné</option></select></div>
-            <div class="field" data-for="land"><label for="w-landType">Typ pozemku</label><select class="select" id="w-landType"><option value="">Vyberte</option><option>Stavební</option><option>Pole</option><option>Zahrada</option><option>Louka</option><option>Les</option><option>Jiný</option></select></div>
-            <div class="field" data-for="flat house"><label for="w-usable">Užitková plocha *</label><div class="input-suffix"><input class="input" id="w-usable" inputmode="numeric" data-req><span>m²</span></div><span class="field__error" hidden>Zadejte plochu v m²</span></div>
-            <div class="field" data-for="house land"><label for="w-estate">Plocha pozemku<span data-for="land"> *</span></label><div class="input-suffix"><input class="input" id="w-estate" inputmode="numeric" data-req-land><span>m²</span></div><span class="field__error" hidden>Zadejte plochu pozemku v m²</span></div>
-            <div class="field" data-for="flat"><label for="w-floor">Podlaží bytu</label><input class="input" id="w-floor" inputmode="numeric"></div>
-            <div class="field" data-for="flat"><label for="w-floors">Celkem podlaží</label><input class="input" id="w-floors" inputmode="numeric"></div>
-            <div class="field" data-for="flat house"><label for="w-rating">Stav nemovitosti</label><select class="select" id="w-rating"><option value="">Vyberte</option><option>Neobyvatelný</option><option>Před rekonstrukcí</option><option>Průměrný</option><option>Velmi dobrý</option><option>Novostavba</option><option>Luxusní</option></select></div>
-            <div class="field" data-for="flat house"><label for="w-construction">Konstrukce</label><select class="select" id="w-construction"><option value="">Vyberte</option><option>Cihlová</option><option>Panelová</option><option>Dřevěná</option><option>Kamenná</option><option>Montovaná</option><option>Smíšená</option><option>Nízkonákladová</option><option>Jiná</option></select></div>
-            <div class="field" data-for="flat"><label for="w-ownership">Vlastnictví</label><select class="select" id="w-ownership"><option value="">Vyberte</option><option>Osobní</option><option>Družstevní</option><option>Státní/obecní</option><option>Jiné</option></select></div>
-            <div class="field full" data-for="flat house"><span class="field__label">Součástí nemovitosti je</span>
-              <div class="checks"><label><input type="checkbox" value="garáž">garáž</label><label><input type="checkbox" value="sklep">sklep</label><label><input type="checkbox" value="balkon">balkon</label><label><input type="checkbox" value="zahrada">zahrada</label></div></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="wizard__step" data-step="3" hidden>
-          <legend>Kde se nemovitost nachází?</legend>
-          <div class="wizard__grid">
-            <div class="field full"><label for="w-street">Ulice a číslo popisné *</label><div class="input-icon"><svg class="icon"><use href="#i-pin"/></svg><input class="input" id="w-street" autocomplete="street-address" data-req></div><span class="field__error" hidden>Zadejte ulici a číslo popisné</span></div>
-            <div class="field"><label for="w-city">Město *</label><input class="input" id="w-city" autocomplete="address-level2" data-req><span class="field__error" hidden>Zadejte město</span></div>
-            <div class="field"><label for="w-zip">PSČ</label><input class="input" id="w-zip" inputmode="numeric" autocomplete="postal-code" placeholder="123 45"></div>
-          </div>
-          <p class="wizard__note"><svg class="icon"><use href="#i-info"/></svg>Adresu potřebujeme ke srovnání s prodeji v okolí.</p>
-        </fieldset>
-
-        <fieldset class="wizard__step" data-step="4" hidden>
-          <legend>Komu máme odhad poslat?</legend>
-          <div class="field"><span class="field__label">Jaký typ ocenění si přejete?</span>
-            <div class="radios">
-              <label class="radio"><input type="radio" name="valuation" value="Orientační tržní cena" checked><span>Orientační tržní cena nemovitosti<small>Pro rozhodnutí o prodeji – zdarma a nezávazně</small></span></label>
-              <label class="radio"><input type="radio" name="valuation" value="Pro účely dědictví"><span>Tržní cena pro účely dědictví</span></label>
-              <label class="radio"><input type="radio" name="valuation" value="Znalecký posudek"><span>Znalecký posudek<small>Právně závazný dokument – zpracovává znalec</small></span></label>
-            </div></div>
-          <div class="wizard__grid">
-            <div class="field full"><label for="w-name">Jméno a příjmení *</label><input class="input" id="w-name" autocomplete="name" data-req><span class="field__error" hidden>Zadejte jméno a příjmení</span></div>
-            <div class="field"><label for="w-tel">Telefon *</label><input class="input" id="w-tel" type="tel" autocomplete="tel" data-req data-pattern="tel"><span class="field__error" hidden>Zadejte telefon ve tvaru 603 418 108</span></div>
-            <div class="field"><label for="w-mail">E-mail *</label><input class="input" id="w-mail" type="email" autocomplete="email" data-req data-pattern="mail"><span class="field__error" hidden>Zadejte e-mail ve tvaru jmeno@domena.cz</span></div>
-          </div>
-          <label class="check"><input type="checkbox" id="w-gdpr"> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
-          <span class="field__error" id="w-gdpr-err" hidden>Bez souhlasu vám odhad nemůžeme poslat</span>
-        </fieldset>
-
-        <div class="wizard__done" id="wiz-done" hidden></div>
-
-        <div class="wizard__nav" id="wiz-nav">
-          <button type="button" class="btn btn--ghost" id="wiz-back" hidden><svg class="icon"><use href="#i-arrow-left"/></svg>Zpět</button>
-          <button type="button" class="btn btn--primary" id="wiz-next">Pokračovat <svg class="icon"><use href="#i-arrow"/></svg></button>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Jak to funguje</span><h2 class="t-h2">Od nacenění po předání klíčů</h2><p>Zprostředkujeme vše od úvodního nacenění, přes prezentaci zakázky, až po předání nemovitosti.</p></div></div>
-      <ol class="process" id="process"></ol>
-    </div>
-  </section>
-
-  <section class="section section--tint">
-    <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Co pro vás zajistíme</span><h2 class="t-h2">Kompletní prodejní servis</h2></div></div>
-      <ul class="services" id="services"></ul>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Odhad, nebo posudek?</span><h2 class="t-h2">V čem se liší</h2></div></div>
-      <div class="compare">
-        <div><h3>Odhad ceny od makléře</h3><p>Rychlé a nezávazné posouzení aktuální tržní hodnoty, založené na tržních datech a srovnávací analýze. Ideální pro počáteční orientaci, ať už zvažujete prodej, nebo se připravujete na jednání.</p></div>
-        <div><h3>Znalecký posudek</h3><p>Formální dokument, který vyžadují oficiální účely. Náš odhad není právně závazný dokument – pokud potřebujete posudek, vyberte ho v posledním kroku formuláře.</p></div>
+          <label class="check"><input type="checkbox" id="k-gdpr" aria-describedby="k-gdpr-err"> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+          <span class="field__error" id="k-gdpr-err" hidden>Bez souhlasu vás nemůžeme kontaktovat</span>
+          <button type="submit" class="btn btn--primary btn--block" id="k-submit">Odeslat a domluvit konzultaci <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <ul class="sp-form__trust">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Zdarma a nezávazně</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Ozveme se do 24 hodin</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Údaje jsou v bezpečí</li>
+          </ul>
+        </form>
+        <div class="sp-form__done" id="sp-done" hidden tabindex="-1"></div>
+        <p class="sp-contact__alt">Chcete nejdřív znát cenu? <a href="#odhad">Online odhad ceny ve 4 krocích</a></p>
       </div>
     </div>
   </section>
 
-  <section class="section section--tint" id="sold-sec">
+  <!-- 2 · Co pro vás uděláme -->
+  <section class="section sp-sec">
+    <div class="container">
+      <div class="section-head"><div><span class="t-label eyebrow">Co pro vás uděláme</span><h2 class="t-h2">Od nacenění po předání klíčů</h2><p>Celý prodej vedeme za vás. Vy se rozhodujete, my zařídíme všechno ostatní.</p></div></div>
+      <ol class="sp-steps" id="process"></ol>
+      <div class="sp-services">
+        <h3 class="t-label">Součástí servisu</h3>
+        <ul id="services"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Proč s námi – jen ověřená čísla z dat kanceláře -->
+  <section class="section section--tint sp-sec">
+    <div class="container">
+      <div class="section-head"><div><span class="t-label eyebrow">Proč prodat s námi</span><h2 class="t-h2">Čísla místo slibů</h2><p id="why-lead"></p></div></div>
+      <dl class="sp-stats" id="sp-stats"></dl>
+    </div>
+  </section>
+
+  <!-- 4 · Makléři -->
+  <section class="section sp-sec">
+    <div class="container">
+      <div class="section-head"><div><span class="t-label eyebrow">Váš makléř</span><h2 class="t-h2">Lidé, kteří znají vaši lokalitu</h2></div><a class="btn btn--secondary" data-href="makleri.html" id="all-agents">Všichni makléři <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="sp-agents" id="sp-agents"></div>
+    </div>
+  </section>
+
+  <!-- 5 · Reference -->
+  <section class="section section--tint sp-sec">
+    <div class="container">
+      <div class="section-head"><div><span class="t-label eyebrow">Reference</span><h2 class="t-h2">Co říkají naši klienti</h2></div><div class="sp-ratings" id="sp-ratings"></div></div>
+      <div class="sp-refs" id="sp-refs"></div>
+    </div>
+  </section>
+
+  <!-- 6 · Odhad ceny – druhá cesta pro ty, kdo chtějí nejdřív znát cenu -->
+  <section class="section sp-ink sp-estimate">
+    <div class="container sell-hero">
+      <div class="sp-estimate__intro">
+        <span class="t-label eyebrow sp-eyebrow">Online odhad ceny</span>
+        <h2 class="t-h2">Kolik je vaše nemovitost dnes za&nbsp;to?</h2>
+        <p>Vyplňte čtyři krátké kroky. Makléř porovná vaši nemovitost s prodeji v okolí a pošle vám orientační tržní cenu – zdarma a nezávazně.</p>
+        <div class="compare sp-compare">
+          <div><h3>Odhad ceny od makléře</h3><p>Rychlé a nezávazné posouzení aktuální tržní hodnoty, založené na tržních datech a srovnávací analýze. Ideální pro počáteční orientaci, ať už zvažujete prodej, nebo se připravujete na jednání.</p></div>
+          <div><h3>Znalecký posudek</h3><p>Formální dokument, který vyžadují oficiální účely. Náš odhad není právně závazný dokument – pokud potřebujete posudek, vyberte ho v posledním kroku formuláře.</p></div>
+        </div>
+      </div>
+
+        <form class="wizard" id="odhad" novalidate aria-labelledby="wiz-title">
+          <h2 class="sr-only" id="wiz-title">Odhad ceny nemovitosti</h2>
+          <ol class="wizard__progress" id="wiz-progress">
+            <li aria-current="step"><span>Nemovitost</span></li><li><span>Parametry</span></li><li><span>Adresa</span></li><li><span>Kontakt</span></li>
+          </ol>
+  
+          <fieldset class="wizard__step" data-step="1">
+            <legend>Co chcete ocenit?</legend>
+            <div class="tiles" role="radiogroup" aria-label="Typ nemovitosti">
+              <label class="tile"><input type="radio" name="type" value="flat" checked><span><svg class="icon"><use href="#i-byt"/></svg>Byt</span></label>
+              <label class="tile"><input type="radio" name="type" value="house"><span><svg class="icon"><use href="#i-dum"/></svg>Dům</span></label>
+              <label class="tile"><input type="radio" name="type" value="land"><span><svg class="icon"><use href="#i-pozemek"/></svg>Pozemek</span></label>
+            </div>
+            <div class="field">
+              <span class="field__label">Prodej nebo pronájem</span>
+              <div class="seg" role="radiogroup"><button type="button" data-sale="sale" aria-pressed="true">Prodej</button><button type="button" data-sale="rent" aria-pressed="false">Pronájem</button></div>
+            </div>
+          </fieldset>
+  
+          <fieldset class="wizard__step" data-step="2" hidden>
+            <legend>Parametry nemovitosti</legend>
+            <div class="wizard__grid">
+              <div class="field" data-for="house"><label for="w-houseType">Typ domu</label><select class="select" id="w-houseType"><option value="">Vyberte</option><option>Rodinný dům</option><option>Chalupa</option><option>Vila</option><option>Chata</option><option>Jiný</option></select></div>
+              <div class="field" data-for="flat"><label for="w-subtype">Dispozice</label><select class="select" id="w-subtype"><option value="">Vyberte</option><option>1+kk</option><option>1+1</option><option>2+kk</option><option>2+1</option><option>3+kk</option><option>3+1</option><option>4+kk</option><option>4+1</option><option>jiné</option></select></div>
+              <div class="field" data-for="land"><label for="w-landType">Typ pozemku</label><select class="select" id="w-landType"><option value="">Vyberte</option><option>Stavební</option><option>Pole</option><option>Zahrada</option><option>Louka</option><option>Les</option><option>Jiný</option></select></div>
+              <div class="field" data-for="flat house"><label for="w-usable">Užitková plocha *</label><div class="input-suffix"><input class="input" id="w-usable" inputmode="numeric" data-req><span>m²</span></div><span class="field__error" hidden>Zadejte plochu v m²</span></div>
+              <div class="field" data-for="house land"><label for="w-estate">Plocha pozemku<span data-for="land"> *</span></label><div class="input-suffix"><input class="input" id="w-estate" inputmode="numeric" data-req-land><span>m²</span></div><span class="field__error" hidden>Zadejte plochu pozemku v m²</span></div>
+              <div class="field" data-for="flat"><label for="w-floor">Podlaží bytu</label><input class="input" id="w-floor" inputmode="numeric"></div>
+              <div class="field" data-for="flat"><label for="w-floors">Celkem podlaží</label><input class="input" id="w-floors" inputmode="numeric"></div>
+              <div class="field" data-for="flat house"><label for="w-rating">Stav nemovitosti</label><select class="select" id="w-rating"><option value="">Vyberte</option><option>Neobyvatelný</option><option>Před rekonstrukcí</option><option>Průměrný</option><option>Velmi dobrý</option><option>Novostavba</option><option>Luxusní</option></select></div>
+              <div class="field" data-for="flat house"><label for="w-construction">Konstrukce</label><select class="select" id="w-construction"><option value="">Vyberte</option><option>Cihlová</option><option>Panelová</option><option>Dřevěná</option><option>Kamenná</option><option>Montovaná</option><option>Smíšená</option><option>Nízkonákladová</option><option>Jiná</option></select></div>
+              <div class="field" data-for="flat"><label for="w-ownership">Vlastnictví</label><select class="select" id="w-ownership"><option value="">Vyberte</option><option>Osobní</option><option>Družstevní</option><option>Státní/obecní</option><option>Jiné</option></select></div>
+              <div class="field full" data-for="flat house"><span class="field__label">Součástí nemovitosti je</span>
+                <div class="checks"><label><input type="checkbox" value="garáž">garáž</label><label><input type="checkbox" value="sklep">sklep</label><label><input type="checkbox" value="balkon">balkon</label><label><input type="checkbox" value="zahrada">zahrada</label></div></div>
+            </div>
+          </fieldset>
+  
+          <fieldset class="wizard__step" data-step="3" hidden>
+            <legend>Kde se nemovitost nachází?</legend>
+            <div class="wizard__grid">
+              <div class="field full"><label for="w-street">Ulice a číslo popisné *</label><div class="input-icon"><svg class="icon"><use href="#i-pin"/></svg><input class="input" id="w-street" autocomplete="street-address" data-req></div><span class="field__error" hidden>Zadejte ulici a číslo popisné</span></div>
+              <div class="field"><label for="w-city">Město *</label><input class="input" id="w-city" autocomplete="address-level2" data-req><span class="field__error" hidden>Zadejte město</span></div>
+              <div class="field"><label for="w-zip">PSČ</label><input class="input" id="w-zip" inputmode="numeric" autocomplete="postal-code" placeholder="123 45"></div>
+            </div>
+            <p class="wizard__note"><svg class="icon"><use href="#i-info"/></svg>Adresu potřebujeme ke srovnání s prodeji v okolí.</p>
+          </fieldset>
+  
+          <fieldset class="wizard__step" data-step="4" hidden>
+            <legend>Komu máme odhad poslat?</legend>
+            <div class="field"><span class="field__label">Jaký typ ocenění si přejete?</span>
+              <div class="radios">
+                <label class="radio"><input type="radio" name="valuation" value="Orientační tržní cena" checked><span>Orientační tržní cena nemovitosti<small>Pro rozhodnutí o prodeji – zdarma a nezávazně</small></span></label>
+                <label class="radio"><input type="radio" name="valuation" value="Pro účely dědictví"><span>Tržní cena pro účely dědictví</span></label>
+                <label class="radio"><input type="radio" name="valuation" value="Znalecký posudek"><span>Znalecký posudek<small>Právně závazný dokument – zpracovává znalec</small></span></label>
+              </div></div>
+            <div class="wizard__grid">
+              <div class="field full"><label for="w-name">Jméno a příjmení *</label><input class="input" id="w-name" autocomplete="name" data-req><span class="field__error" hidden>Zadejte jméno a příjmení</span></div>
+              <div class="field"><label for="w-tel">Telefon *</label><input class="input" id="w-tel" type="tel" autocomplete="tel" data-req data-pattern="tel"><span class="field__error" hidden>Zadejte telefon ve tvaru 603 418 108</span></div>
+              <div class="field"><label for="w-mail">E-mail *</label><input class="input" id="w-mail" type="email" autocomplete="email" data-req data-pattern="mail"><span class="field__error" hidden>Zadejte e-mail ve tvaru jmeno@domena.cz</span></div>
+            </div>
+            <label class="check"><input type="checkbox" id="w-gdpr"> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
+            <span class="field__error" id="w-gdpr-err" hidden>Bez souhlasu vám odhad nemůžeme poslat</span>
+          </fieldset>
+  
+          <div class="wizard__done" id="wiz-done" hidden></div>
+  
+          <div class="wizard__nav" id="wiz-nav">
+            <button type="button" class="btn btn--ghost" id="wiz-back" hidden><svg class="icon"><use href="#i-arrow-left"/></svg>Zpět</button>
+            <button type="button" class="btn btn--primary" id="wiz-next">Pokračovat <svg class="icon"><use href="#i-arrow"/></svg></button>
+          </div>
+        </form>
+    </div>
+  </section>
+
+  <!-- 7 · Realizováno (jen kancelář s realizacemi na webu) -->
+  <section class="section sp-sec" id="sold-sec">
     <div class="container">
       <div class="section-head"><div><span class="t-label eyebrow">Realizováno</span><h2 class="t-h2">Nedávno jsme prodali</h2></div><a class="btn btn--secondary" data-href="vypis.html" data-q="&status=sold">Všechny realizace <svg class="icon"><use href="#i-arrow"/></svg></a></div>
       <div class="grid-cards" id="sold"></div>
+    </div>
+  </section>
+
+  <!-- 8 · Časté otázky -->
+  <section class="section section--tint sp-sec">
+    <div class="container sp-faq-wrap">
+      <div class="section-head"><div><span class="t-label eyebrow">Časté otázky</span><h2 class="t-h2">Než se rozhodnete</h2></div></div>
+      <div class="sp-faq" id="sp-faq"></div>
+    </div>
+  </section>
+
+  <!-- 9 · Závěr -->
+  <section class="section sp-ink sp-final">
+    <div class="container sp-final__in">
+      <div>
+        <span class="t-label eyebrow sp-eyebrow">Začněme</span>
+        <h2 class="t-h2">Prodej nemovitosti začíná jedním rozhovorem.</h2>
+        <p>Napište nám nebo si nechte nezávazně ocenit nemovitost. Ozveme se nejpozději do 24 hodin.</p>
+      </div>
+      <div class="sp-final__cta">
+        <a class="btn btn--alt" href="#kontakt">Napsat makléři <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--secondary sp-btn-line" href="#odhad">Online odhad ceny</a>
+      </div>
     </div>
   </section>
 </main>
@@ -141,6 +227,7 @@
 <script src="data.js"></script>
 <script src="data/tgh-listings.js"></script>
 <script src="data/stars-listings.js"></script>
+<script src="data/phase3.js"></script>
 <script src="core.js"></script>
 <script src="prodat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>

@@ -1,0 +1,258 @@
+/* Výpis nemovitostí – lokalita s více hodnotami, druh nemovitosti, mapa se seznamem, porovnání.
+   Načítá se jako poslední (po premium.css). Používá jen tokeny – stejný soubor (s jiným blokem proměnných) je ve standardní verzi.
+   Prémiová pravidla: bez stínů (1px linky), 999px u interakce, var(--r-card) u karet a panelů, zelená jen na INK. */
+:root {
+  --lx-bg: var(--paper);            /* plochy panelů, karet, štítků na mapě */
+  --lx-media: var(--stone);         /* podklad fotek */
+  --lx-strong: var(--ink);          /* aktivní stav (vybraný čip, štítek, karta) */
+  --lx-on-strong: var(--paper);
+  --lx-hi: var(--accent-deco);      /* brand zelená – jen na tmavé */
+  --lx-display: var(--font-display);
+  --lx-dw: var(--fw-display);
+  --lx-bar: var(--ink);             /* lišta porovnání */
+  --lx-bar-2: var(--ink-2);
+  --lx-bar-line: var(--ink-line);
+  --lx-bar-text: var(--on-ink);
+  --lx-bar-muted: var(--on-ink-muted);
+  --lx-cta-bg: var(--accent-deco);  /* hlavní tlačítko na tmavé liště */
+  --lx-cta-fg: var(--ink);
+  --lx-cta-hover: #97c93c;
+  --lx-ring: rgba(13, 26, 36, .16);
+  --lx-ring-hi: rgba(133, 185, 41, .55);
+  --lx-cmpbar-h: 74px;
+}
+
+/* --- Lokalita: pole se štítky ----------------------------------------- */
+.locbox { display: flex; align-items: center; gap: 6px; height: var(--input-h); padding: 0 var(--s-4); border: 1px solid var(--line-strong); border-radius: var(--r-input); background: transparent; cursor: text; min-width: 0; transition: border-color var(--dur-micro, .18s); }
+.locbox:hover { border-color: var(--text-muted); }
+.locbox:focus-within { border-color: var(--lx-strong); box-shadow: 0 0 0 3px var(--lx-ring); }
+.locbox > .icon { flex: none; color: var(--text-muted); }
+.locbox__tags { display: flex; gap: 4px; min-width: 0; flex: 0 1 auto; overflow: hidden; }
+.locbox__tags:empty { display: none; }
+.loctag { display: inline-flex; align-items: center; gap: 2px; flex: 0 1 auto; min-width: 0; max-width: 160px; height: 28px; padding: 0 6px 0 10px; border: 0; border-radius: var(--r-pill); background: var(--lx-strong); color: var(--lx-on-strong); font: 500 13px/1 var(--font); cursor: pointer; }
+.loctag span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.loctag .icon { flex: none; width: 14px; height: 14px; opacity: .8; }
+.loctag:hover .icon { opacity: 1; }
+.loctag--more { flex: none; padding: 0 8px; background: transparent; color: var(--ink); border: 1px solid var(--line-strong); cursor: default; }
+.locbox__input { flex: 1 1 80px; min-width: 64px; height: 100%; padding: 0; border: 0; background: none; outline: none; font: inherit; font-size: 16px; color: var(--ink); }
+.locbox__input::placeholder { color: var(--text-muted); }
+
+.suggest__list { max-height: min(420px, 60vh); overflow: auto; overscroll-behavior: contain; }
+.suggest__list li.suggest__group { display: block; padding: var(--s-3) var(--s-3) var(--s-1); cursor: default; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.suggest__list li.suggest__group:hover { background: none; }
+.suggest__list li[aria-selected="true"] { background: none; font-weight: 600; }
+.suggest__list li[aria-selected="true"] .icon { color: var(--lx-strong); }
+.suggest__list li:hover, .suggest__list li.is-active { background: var(--surface-2); }
+.suggest__list li > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.suggest__list small { font-variant-numeric: tabular-nums; }
+.suggest__list li.suggest__empty { cursor: default; color: var(--text-muted); }
+.suggest__list li.suggest__empty:hover { background: none; }
+.suggest__list li.suggest__free { margin-top: var(--s-1); border-top: 1px solid var(--line); border-radius: 0; color: var(--text-muted); }
+
+/* --- Druh nemovitosti: čipy s počty ----------------------------------- */
+.chip--count { display: inline-flex; align-items: center; gap: 6px; }
+.chip--count span { font-weight: 400; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.chip--count[aria-pressed="true"] span { color: inherit; opacity: .7; }
+.field--sub[hidden] { display: none; }
+@media (min-width: 1024px) {
+  .locbox { height: 40px; padding-inline: var(--s-3); }
+  .loctag { height: 26px; }
+  .field--sub { order: 10; flex-basis: 100%; display: flex; align-items: center; gap: var(--s-3); padding-top: var(--s-1); }
+  .field--sub .field__label { flex: none; }
+  .field--sub .chip { height: 32px; padding-inline: 12px; }
+}
+
+/* --- Porovnat: tlačítko ------------------------------------------------ */
+.cmp-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px 0 10px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: transparent; color: var(--ink); font: 500 13px/1 var(--font); white-space: nowrap; cursor: pointer; transition: background var(--dur-micro, .18s), border-color var(--dur-micro, .18s), color var(--dur-micro, .18s), opacity var(--dur-micro, .18s); }
+.cmp-btn .icon { width: 16px; height: 16px; }
+.cmp-btn:hover { border-color: var(--lx-strong); }
+.cmp-btn[aria-pressed="true"] { background: var(--lx-strong); border-color: var(--lx-strong); color: var(--lx-on-strong); }
+.cmp-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.cmp-btn--card { position: absolute; z-index: 2; left: var(--s-3); bottom: var(--s-3); border-color: transparent; background: color-mix(in srgb, var(--lx-bg) 92%, transparent); backdrop-filter: blur(8px); }
+@media (hover: hover) and (pointer: fine) {
+  .cmp-btn--card[aria-pressed="false"] { opacity: 0; }
+  .pcard:hover .cmp-btn--card, .pcard:focus-within .cmp-btn--card { opacity: 1; }
+}
+
+/* --- Mapa: seznam + mapa ---------------------------------------------- */
+.lmap { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: calc(100dvh - var(--header-h) - 64px); min-height: 520px; border-top: 1px solid var(--line); }
+.lmap[hidden], .lmap [hidden] { display: none !important; }
+.lmap__side { container: lside / inline-size; display: flex; flex-direction: column; min-width: 0; min-height: 0; border-right: 1px solid var(--line); background: var(--lx-bg); }
+.lmap__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); }
+.lmap__info { margin: 0 auto 0 0; font-size: var(--fs-small); color: var(--text-muted); }
+.lmap__info b { color: var(--ink); font-weight: 600; }
+.lmap__fit { min-height: 32px; font-size: var(--fs-small); }
+.lmap__live { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--fs-small); color: var(--ink); cursor: pointer; }
+.lmap__live input { width: 18px; height: 18px; margin: 0; accent-color: var(--lx-strong); }
+.lmap__list { position: relative; flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: var(--s-4); display: grid; grid-template-columns: 1fr; gap: var(--s-3); align-content: start; }
+@container lside (min-width: 540px) { .lmap__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); } }
+.lmap__stage { position: relative; min-width: 0; }
+.lmap__redo { position: absolute; z-index: 600; top: var(--s-4); left: 50%; transform: translateX(-50%); min-height: 40px; padding-inline: var(--s-5); font-size: 14px; }
+.lmap__none { grid-column: 1 / -1; display: grid; gap: var(--s-3); justify-items: start; padding: var(--s-4); border: 1px dashed var(--line-strong); border-radius: var(--r-card); color: var(--text-muted); font-size: var(--fs-small); background: var(--lx-bg); }
+.lmap__none p { margin: 0; }
+
+/* kompaktní karta – vodorovná v úzkém panelu / karuselu, svislá ve širokém panelu */
+.mcard { position: relative; display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: var(--s-3); padding: var(--s-2); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--lx-bg); transition: border-color var(--dur-micro, .18s); }
+.mcard:hover, .mcard.is-active { border-color: var(--lx-strong); }
+.mcard.is-active { background: color-mix(in srgb, var(--lx-strong) 5%, var(--lx-bg)); }
+.mcard__media { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: calc(var(--r-card) - 1px); overflow: hidden; background: var(--lx-media); color: var(--line-strong); }
+.mcard__media img { width: 100%; height: 100%; object-fit: cover; }
+.mcard__media .badge { position: absolute; top: 6px; left: 6px; height: 22px; padding-inline: var(--s-2); font-size: 10px; }
+.mcard.is-sold .mcard__media img { filter: grayscale(1); opacity: .85; }
+.mcard__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mcard__price { font: 600 16px/22px var(--font); color: var(--ink); font-variant-numeric: tabular-nums; }
+.mcard__price small { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+.mcard__params { font-size: 13px; line-height: 18px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mcard__loc { margin: 0; font-family: var(--lx-display); font-weight: var(--lx-dw); font-size: 17px; line-height: 22px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mcard__loc a { color: inherit; text-decoration: none; }
+.mcard__loc a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--r-card); }
+.mcard__loc a:focus-visible { outline: none; }
+.mcard:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mcard .cmp-btn { position: relative; z-index: 2; align-self: flex-start; margin-top: auto; height: 28px; padding-inline: 8px 10px; font-size: 12.5px; }
+.mcard .muted { color: var(--text-muted); font-weight: 500; }
+@container lside (min-width: 540px) {
+  .mcard { grid-template-columns: 1fr; gap: var(--s-2); }
+  .mcard__media { aspect-ratio: 3 / 2; }
+  .mcard__body { padding: 0 var(--s-1) var(--s-1); }
+  .mcard .cmp-btn { margin-top: var(--s-2); }
+}
+
+/* štítky s cenou */
+.lpin { background: none; border: 0; }
+.lpin span { position: relative; display: inline-block; transform: translate(-50%, calc(-100% - 6px)); white-space: nowrap; padding: 7px 10px; border: 1px solid var(--lx-strong); border-radius: var(--r-pill); background: var(--lx-bg); color: var(--ink); font: 600 13px/1 var(--font); font-variant-numeric: tabular-nums; cursor: pointer; transition: background var(--dur-micro, .18s), color var(--dur-micro, .18s); }
+.lpin span::after { content: ""; position: absolute; left: 50%; top: 100%; width: 8px; height: 8px; background: inherit; border-right: 1px solid var(--lx-strong); border-bottom: 1px solid var(--lx-strong); transform: translate(-50%, -4.5px) rotate(45deg); }
+.lpin:hover span, .lpin:focus-visible span { background: var(--lx-strong); color: var(--lx-on-strong); }
+.lpin.is-active span { background: var(--lx-strong); color: var(--lx-hi); }
+.lpin:focus-visible { outline: none; }
+/* shluky */
+.lclu { background: none; }
+.lclu span { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%; border: 5px solid var(--lx-ring); background: var(--lx-strong) padding-box; color: var(--lx-on-strong); font: 600 14px/1 var(--font); font-variant-numeric: tabular-nums; cursor: pointer; transition: border-color var(--dur-micro, .18s); }
+.lclu:hover span { border-color: rgba(13, 26, 36, .32); }
+.lclu.is-active span { border-color: var(--lx-ring-hi); color: var(--lx-hi); }
+/* ovládání a atribuce */
+.lmap .leaflet-container { background: #eef0f1; font-family: var(--font); }
+.lmap .leaflet-tile-pane { filter: grayscale(1) contrast(.88) brightness(1.06); } /* OSM → klidný neutrální podklad, štítky vyniknou */
+.lmap .leaflet-bar { border: 1px solid var(--line-strong); border-radius: var(--r-pill); box-shadow: none; overflow: hidden; }
+.lmap .leaflet-bar a { width: 36px; height: 36px; line-height: 34px; background: var(--lx-bg); color: var(--ink); border-bottom-color: var(--line); font: 400 20px/34px var(--font); }
+.lmap .leaflet-bar a:hover { background: var(--surface-2); }
+.lmap .leaflet-control-attribution { background: color-mix(in srgb, var(--lx-bg) 85%, transparent); color: var(--text-muted); font-size: 11px; padding: 2px 8px; border-top-left-radius: var(--r-card); }
+.lmap .leaflet-control-attribution a { color: inherit; }
+/* popup s kartou */
+.lpop .leaflet-popup-content-wrapper { padding: 0; border: 1px solid var(--lx-strong); border-radius: var(--r-card); background: var(--lx-bg); box-shadow: none; overflow: hidden; }
+.lpop .leaflet-popup-content { margin: 0; font: 14px/20px var(--font); color: var(--text); }
+.lpop .leaflet-popup-tip { background: var(--lx-bg); border: 1px solid var(--lx-strong); box-shadow: none; }
+.lpop a.leaflet-popup-close-button { top: 8px; right: 8px; z-index: 2; width: 32px; height: 32px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--lx-bg) 92%, transparent); color: var(--ink); font: 400 22px/30px var(--font); text-align: center; }
+.lpop__media { display: grid; place-items: center; aspect-ratio: 16 / 10; background: var(--lx-media); color: var(--line-strong); overflow: hidden; }
+.lpop__media img { width: 100%; height: 100%; object-fit: cover; }
+.lpop__body { display: grid; gap: 2px; padding: var(--s-3) var(--s-4) var(--s-4); }
+.lpop__price { font: 600 18px/24px var(--font); color: var(--ink); font-variant-numeric: tabular-nums; }
+.lpop__price small { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+.lpop__params { font-size: 13px; color: var(--text-muted); }
+.lpop__loc { font-family: var(--lx-display); font-weight: var(--lx-dw); font-size: 17px; line-height: 22px; color: var(--ink); }
+.lpop__act { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-top: var(--s-3); }
+.lpop__act .btn { min-height: 36px; padding-inline: var(--s-4); font-size: 14px; }
+.lpop a.btn--primary { color: var(--lx-on-strong); }
+
+/* mobil + tablet: mapa přes celou šířku, karusel karet dole */
+@media (max-width: 1023px) {
+  .lmap { display: block; position: relative; height: calc(100dvh - var(--header-h) - 112px); min-height: 460px; }
+  .lmap__stage { position: absolute; inset: 0; }
+  .lmap__side { position: absolute; z-index: 500; left: 0; right: 0; bottom: var(--s-3); container-type: normal; border: 0; background: none; pointer-events: none; }
+  .lmap__head { display: none; }
+  .lmap__list { display: flex; gap: var(--s-2); padding: var(--s-1) var(--s-4); overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; pointer-events: auto; }
+  .lmap__list::-webkit-scrollbar { display: none; }
+  .mcard { flex: 0 0 min(86%, 380px); grid-template-columns: 112px minmax(0, 1fr); scroll-snap-align: center; }
+  .lmap__none { flex: 1; }
+  body.has-cmpbar .lmap__side { bottom: calc(var(--lx-cmpbar-h) + var(--s-3)); }
+  .lmap .leaflet-top.leaflet-right { top: var(--s-2); }
+}
+
+/* --- Lišta porovnání -------------------------------------------------- */
+.cmpbar { position: fixed; z-index: 70; left: 0; right: 0; bottom: 0; padding-block: var(--s-3) calc(var(--s-3) + env(safe-area-inset-bottom)); background: var(--lx-bar); color: var(--lx-bar-text); border-top: 1px solid var(--lx-bar-line); }
+.cmpbar[hidden] { display: none; }
+body.has-cmpbar { padding-bottom: var(--lx-cmpbar-h); }
+.cmpbar__in { display: flex; align-items: center; gap: var(--s-4) var(--s-6); }
+.cmpbar__label { display: grid; gap: 2px; flex: 0 1 220px; min-width: 0; font-size: 13px; line-height: 18px; color: var(--lx-bar-muted); }
+.cmpbar__label b { font-family: var(--lx-display); font-weight: var(--lx-dw); font-size: 17px; line-height: 22px; color: var(--lx-bar-text); }
+.cmpbar.is-warn .cmpbar__label span { color: var(--lx-hi); }
+.cmpbar__slots { display: flex; gap: var(--s-2); flex: 1; min-width: 0; margin: 0; padding: 0; list-style: none; }
+.cmpbar__slot { position: relative; display: flex; align-items: center; gap: var(--s-2); flex: 0 1 200px; min-width: 0; height: 50px; padding: 4px 30px 4px 4px; border: 1px solid var(--lx-bar-line); border-radius: var(--r-card); }
+.cmpbar__slot.is-empty { flex: 0 0 50px; padding: 0; border-style: dashed; }
+.cmpbar__img { flex: none; width: 40px; height: 40px; border-radius: calc(var(--r-card) - 1px); overflow: hidden; background: var(--lx-bar-2); }
+.cmpbar__img img { width: 100%; height: 100%; object-fit: cover; }
+.cmpbar__txt { display: grid; min-width: 0; line-height: 1.25; }
+.cmpbar__txt b { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cmpbar__txt small { font-size: 12px; color: var(--lx-bar-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmpbar__x { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--r-pill); background: none; color: var(--lx-bar-muted); cursor: pointer; }
+.cmpbar__x:hover { color: var(--lx-bar-text); background: rgba(255, 255, 255, .08); }
+.cmpbar__x .icon { width: 16px; height: 16px; }
+.cmpbar__act { display: flex; align-items: center; gap: var(--s-4); flex: none; }
+.cmpbar .btn { min-height: 44px; }
+.cmpbar .btn--ghost { color: var(--lx-bar-text); font-size: 14px; }
+.cmpbar .btn--primary { background: var(--lx-cta-bg); color: var(--lx-cta-fg); }
+.cmpbar .btn--primary:hover { background: var(--lx-cta-hover); }
+.cmpbar .btn--primary[disabled] { opacity: 1; background: transparent; color: var(--lx-bar-muted); border: 1px solid var(--lx-bar-line); }
+.cmpbar__txt { overflow: hidden; }
+@media (max-width: 1023px) {
+  .cmpbar__in { gap: var(--s-3) var(--s-4); }
+  .cmpbar__slots { flex: 0 1 auto; }
+  .cmpbar__slot { flex: 0 0 44px; height: 44px; padding: 3px; }
+  .cmpbar__slot.is-empty { flex-basis: 44px; }
+  .cmpbar__img { width: 36px; height: 36px; }
+  .cmpbar__txt { display: none; }
+  .cmpbar__x { top: -6px; right: -6px; transform: none; width: 20px; height: 20px; background: var(--lx-bar-text); color: var(--lx-bar); }
+  .cmpbar__x:hover { background: var(--lx-bar-text); color: var(--lx-bar); }
+  .cmpbar__x .icon { width: 12px; height: 12px; }
+  .cmpbar__act { margin-left: auto; }
+}
+@media (max-width: 767px) {
+  .cmpbar__label { display: none; }
+  .cmpbar.is-warn .cmpbar__label { display: grid; position: absolute; left: var(--s-4); right: var(--s-4); bottom: calc(100% + var(--s-2)); padding: var(--s-2) var(--s-3); background: var(--lx-bar); border-radius: var(--r-card); }
+  .cmpbar__act .btn--ghost { display: none; }
+  .cmpbar__act .btn { padding-inline: var(--s-4); }
+}
+@media (max-width: 359px) { .cmpbar__slot.is-empty { display: none; } }
+
+/* --- Dialog porovnání ------------------------------------------------- */
+.cmpd { width: min(1200px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--lx-bg); color: var(--text); overflow: hidden; }
+.cmpd::backdrop { background: rgba(13, 26, 36, .62); }
+.cmpd__in { display: flex; flex-direction: column; max-height: calc(100dvh - 34px); }
+.cmpd__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-3) var(--s-3) var(--s-6); border-bottom: 1px solid var(--line); }
+.cmpd__head h2 { margin: 0; }
+.cmpd__body { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+.cmpd__note { margin: 0; padding: var(--s-3) var(--s-6); border-top: 1px solid var(--line); font-size: 13px; line-height: 18px; color: var(--text-muted); }
+html.cmp-lock { overflow: hidden; }
+.cmpt { width: 100%; min-width: calc(148px + var(--cols) * 220px); table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: 15px; line-height: 22px; }
+.cmpt th, .cmpt td { padding: var(--s-3) var(--s-4); text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.cmpt thead th { font-weight: 400; }
+.cmpt__corner, .cmpt tbody th { position: sticky; left: 0; z-index: 1; width: 148px; background: var(--lx-bg); }
+.cmpt__corner { vertical-align: bottom; font-size: 13px; color: var(--text-muted); }
+.cmpt tbody th { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.cmpt__head { display: grid; gap: var(--s-2); }
+.cmpt__img { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: var(--r-card); overflow: hidden; background: var(--lx-media); color: var(--line-strong); }
+.cmpt__img img { width: 100%; height: 100%; object-fit: cover; }
+.cmpt__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 40px; font-size: 14px; line-height: 20px; color: var(--ink); text-decoration: none; }
+.cmpt__title:hover { text-decoration: underline; }
+.cmpt__x { justify-self: start; display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px 0 6px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: none; color: var(--ink); font: 500 13px/1 var(--font); cursor: pointer; }
+.cmpt__x:hover { border-color: var(--lx-strong); }
+.cmpt__x .icon { width: 16px; height: 16px; }
+.cmpt td b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cmpt td { font-variant-numeric: tabular-nums; color: var(--ink); }
+.cmpt small { font-size: 13px; color: var(--text-muted); }
+.cmpt .cmpt__sub { display: block; }
+.cmpt .muted { color: var(--text-muted); }
+.cmp-best { display: inline-block; margin-left: var(--s-2); padding: 1px 8px; border-radius: var(--r-pill); background: var(--accent-soft); color: var(--st-free); font-style: normal; font-size: 10.5px; line-height: 18px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; vertical-align: 1px; }
+.cmpt__links td { border-bottom: 0; padding-block: var(--s-4); }
+.cmpt__links th { border-bottom: 0; }
+.cmpt__links .btn { min-height: 40px; font-size: 14px; }
+@media (max-width: 767px) {
+  .cmpd { width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
+  .cmpd__in { height: 100%; max-height: 100dvh; }
+  .cmpd__head { padding-left: var(--s-4); }
+  .cmpd__note { padding-inline: var(--s-4); }
+  .cmpt { min-width: calc(104px + var(--cols) * 168px); font-size: 14px; }
+  .cmpt th, .cmpt td { padding: var(--s-3); }
+  .cmpt__corner, .cmpt tbody th { width: 104px; }
+  .cmp-best { display: table; margin: 2px 0 0; }
+}
+@media (min-width: 1024px) { .filters #f-type { width: 172px; } } /* počty v možnostech */

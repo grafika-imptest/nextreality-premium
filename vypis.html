@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="listing.css">
 </head>
 <body data-page="vypis">
 <div id="site-header"></div>
@@ -54,10 +55,18 @@
             <label for="f-type">Typ nemovitosti</label>
             <select class="select" id="f-type"><option value="">Vše</option><option value="byt">Byty</option><option value="dum">Domy</option><option value="komercni">Komerční</option><option value="pozemek">Pozemky</option><option value="ostatni">Ostatní</option></select>
           </div>
+          <div class="field field--sub" id="sub-field" hidden>
+            <span class="field__label" id="lbl-sub">Druh</span>
+            <div class="chips" role="group" aria-labelledby="lbl-sub" id="f-sub"></div>
+          </div>
           <div class="field suggest filters__loc" id="suggest">
             <label for="f-loc">Lokalita</label>
-            <div class="input-icon"><svg class="icon"><use href="#i-pin"/></svg><input class="input" id="f-loc" placeholder="Město, čtvrť nebo ulice" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="suggest-list"></div>
-            <ul class="suggest__list" id="suggest-list" role="listbox"></ul>
+            <div class="locbox" id="locbox">
+              <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
+              <span class="locbox__tags" id="loc-tags"></span>
+              <input class="locbox__input" id="f-loc" placeholder="Město, čtvrť nebo ulice" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggest-list">
+            </div>
+            <ul class="suggest__list" id="suggest-list" role="listbox" aria-label="Lokality v nabídce" aria-multiselectable="true" data-lenis-prevent></ul>
           </div>
           <div class="field">
             <span class="field__label">Cena</span>
@@ -104,11 +113,31 @@
     <nav class="pager" id="pager" aria-label="Stránkování"></nav>
   </section>
 
-  <section class="mapview" id="mapview" hidden aria-label="Mapa nabídek">
-    <div class="mapview__map" id="map"></div>
-    <div class="mapview__card" id="map-card" hidden></div>
+  <section class="mapview lmap" id="mapview" hidden aria-label="Mapa nabídek">
+    <aside class="lmap__side" aria-label="Nabídky v zobrazené oblasti">
+      <div class="lmap__head">
+        <p class="lmap__info" id="lmap-info" aria-live="polite"></p>
+        <button type="button" class="btn btn--ghost lmap__fit" id="lmap-fit" hidden>Zobrazit vše</button>
+        <label class="lmap__live"><input type="checkbox" id="lmap-live" checked> Hledat při posunu mapy</label>
+      </div>
+      <div class="lmap__list" id="lmap-list" data-lenis-prevent></div>
+    </aside>
+    <div class="lmap__stage">
+      <div class="mapview__map" id="map"></div>
+      <button type="button" class="btn btn--primary lmap__redo" id="lmap-redo" hidden>Hledat v této oblasti</button>
+    </div>
   </section>
 </main>
+
+<!-- Porovnání: lišta s výběrem + dialog s tabulkou (obsah kreslí listing.js) -->
+<div class="cmpbar" id="cmpbar" hidden role="region" aria-label="Porovnání nabídek"></div>
+<dialog class="cmpd" id="cmp-dialog" aria-labelledby="cmpd-title" data-lenis-prevent>
+  <div class="cmpd__in">
+    <div class="cmpd__head"><h2 class="t-h3" id="cmpd-title">Porovnání nabídek</h2><button type="button" class="icon-btn cmpd__close" aria-label="Zavřít porovnání"><svg class="icon icon--lg"><use href="#i-x"/></svg></button></div>
+    <div class="cmpd__body" data-lenis-prevent></div>
+    <p class="cmpd__note">Údaje přebíráme z inzerátu. Cena za m² je dopočtená z ceny a plochy (u pozemků z výměry). Závazné informace vám potvrdí makléř.</p>
+  </div>
+</dialog>
 
 <div id="site-footer"></div>
 

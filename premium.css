@@ -196,6 +196,10 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .tile span { border-radius: var(--r-box); border-color: var(--line-strong); }
 .tile input:checked + span { border-color: var(--ink); background: transparent; box-shadow: inset 0 0 0 1px var(--ink); }
 .tile .icon, .wizard__note .icon { color: var(--ink); }
+/* typové ikony: tenká linka, dvoubarevné – tmavá kresba + světle zelený detail (střecha, okna, terén) */
+.icon { --icon-accent: var(--accent-deco); }
+.tile .icon { width: 30px; height: 30px; stroke-width: 1.2; }
+.tile input:checked + span .icon { stroke-width: 1.4; }
 .radio { border-radius: var(--r-box); }
 .radio:has(input:checked), .checks label:has(input:checked) { border-color: var(--ink); background: transparent; }
 .wizard__progress li.is-done::before, .wizard__progress li[aria-current]::before { background: var(--ink); }
