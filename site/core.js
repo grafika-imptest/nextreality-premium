@@ -96,7 +96,7 @@ const href = (u, extra = '') => `${u}?office=${office}${extra}`;
 
 // --- Hlavička, patička, cookies, panel předlohy ---
 const NAV = [
-  ['vypis.html', 'Nabídka nemovitostí', 'vypis'], ['projekty.html', 'Developerské projekty', 'projekty'], ['vypis.html|&status=sold', 'Realizováno', 'realizovano', 1],
+  ['vypis.html', 'Nabídka nemovitostí', 'vypis'], ['projekty.html', 'Developerské projekty', 'projekty'], ['realizovano.html', 'Realizováno', 'realizovano', 1],
   ['prodat.html', 'Chci prodat', 'prodat'], ['makleri.html', 'Makléři', 'makleri'], ['index.html#reference', 'Reference', null, 1], ['kontakty.html', 'Kontakty', 'kontakty'],
 ];
 function layout() {
@@ -127,7 +127,7 @@ function layout() {
   <div class="wide">
     <div class="footer__grid">
       <div class="footer__brand"><img data-bind="logo" alt=""><p data-bind="name"></p></div>
-      <div><h4>Nemovitosti</h4><ul><li><a data-href="vypis.html">Prodej</a></li><li><a data-href="vypis.html" data-q="&deal=pronajem">Pronájem</a></li><li><a data-href="projekty.html">Developerské projekty</a></li><li><a data-href="vypis.html" data-q="&status=sold">Realizováno</a></li></ul></div>
+      <div><h4>Nemovitosti</h4><ul><li><a data-href="vypis.html">Prodej</a></li><li><a data-href="vypis.html" data-q="&deal=pronajem">Pronájem</a></li><li><a data-href="projekty.html">Developerské projekty</a></li><li><a data-href="realizovano.html">Realizováno</a></li></ul></div>
       <div><h4>Služby</h4><ul><li><a data-href="prodat.html#odhad">Odhad ceny</a></li><li><a href="#">Právní služby</a></li><li><a href="#">Kalkulačka financování</a></li><li><a href="#">Výkupy nemovitostí</a></li></ul></div>
       <div><h4>O nás</h4><ul><li><a data-href="makleri.html">Makléři</a></li><li><a data-href="kontakty.html">Kontakty</a></li><li><a href="#">Reference</a></li><li><a href="#">Blog</a></li><li><a href="#">Kariéra</a></li></ul></div>
     </div>
