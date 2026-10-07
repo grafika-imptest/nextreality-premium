@@ -206,10 +206,18 @@ function render(withSkeleton) {
   $('#live-count').textContent = nab(r.length, true);
   $('#results').hidden = onMap;
   $('#mapview').hidden = !onMap;
-  if (onMap) drawMap(r);
+  if (onMap) { fitMapBox(); drawMap(r); }
   cmpBar();
   writeUrl();
   setTimeout(runChecks, 350);
+}
+
+// mapa = přesně zbytek okna pod lepicí hlavičkou a filtry → stránka se v mapovém režimu neposouvá
+// a filtry zůstávají vidět (dřív byla mapa vyšší než volné místo a její vrstvy přejížděly přes filtry)
+function fitMapBox() {
+  const mv = $('#mapview'), fw = $('.filterwrap');
+  const head = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 64) + (fw && getComputedStyle(fw).position === 'sticky' ? fw.offsetHeight : 0);
+  mv.style.setProperty('--lx-map-h', Math.max(420, innerHeight - head) + 'px');
 }
 
 function watchdog(big) {
@@ -615,7 +623,7 @@ window.PAGE = {
     $('#apply-m').addEventListener('click', () => sheet(false));
     $('#reset-m').addEventListener('click', () => { Object.assign(S, BLANK()); syncForm(); upd(false); });
     document.addEventListener('consent', () => { mapKey = null; if (S.view === 'map') render(); });
-    let rw; addEventListener('resize', () => { clearTimeout(rw); rw = setTimeout(() => { if (map && S.view === 'map') { map.invalidateSize(); renderSide(true); } }, 200); });
+    let rw; addEventListener('resize', () => { clearTimeout(rw); rw = setTimeout(() => { if (map && S.view === 'map') { fitMapBox(); map.invalidateSize(); renderSide(true); } }, 200); });
     // sticky lišta filtrů – stín po odlepení
     const io = new IntersectionObserver(([en]) => fw.classList.toggle('is-stuck', !en.isIntersecting), { rootMargin: '-73px 0px 0px 0px' });
     io.observe($('.list-head'));

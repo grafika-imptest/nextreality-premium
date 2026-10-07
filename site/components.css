@@ -397,3 +397,6 @@ textarea.input { height: auto; min-height: 120px; padding-block: var(--s-3); res
 .drawer__head img { height: 36px; width: auto; }
 .drawer__nav { display: grid; }
 .drawer__nav a { padding: var(--s-3) var(--s-2); font-size: var(--fs-card); font-weight: 600; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+/* --- Mapy (Leaflet): vnitřní vrstvy mají z-index 400–1000 → bez vlastního kontextu přejedou přes lepicí hlavičku a filtry --- */
+.leaflet-container { isolation: isolate; z-index: 0; }
