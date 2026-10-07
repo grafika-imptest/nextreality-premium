@@ -150,9 +150,9 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .footer a { color: var(--on-ink); }
 .footer__legal { border-color: var(--ink-line); }
 .footer__mark { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(44px, 9.4vw, 176px); line-height: .82; letter-spacing: -.055em; color: var(--on-ink); margin-top: var(--s-16); white-space: nowrap; overflow: hidden; }
-/* logotyp NEXT: výška verzálek loga (257/427 viewBoxu) = výška verzálek písma (~0,727 em) */
+/* logotyp NEXT: verzálky loga (35,2 z 59,6 viewBoxu) = výška verzálek písma (~0,727 em) */
 .footer__mark { padding-top: .22em; }
-.footer__mark .next-mark { display: inline-block; height: 1.208em; width: auto; vertical-align: -.096em; margin-right: .2em; overflow: visible; }
+.footer__mark .next-mark { display: inline-block; height: 1.231em; width: auto; vertical-align: -.099em; margin-right: .2em; overflow: visible; }
 
 /* --- Cookie lišta: tmavá, rovnocenná tlačítka --------------------------------------- */
 .cookies { background: var(--ink); color: var(--on-ink); border-radius: var(--r-box); box-shadow: var(--sh-3); }
