@@ -11,20 +11,20 @@ body { background: var(--paper); color: var(--text); }
 /* --- Typografie ------------------------------------------------------------ */
 .t-hero, .t-h1, .t-h2, .page-hero h1, .detail__h1, .profile h1, .notfound h1,
 .sg-sec > h2, .doc h2, .hub h2 {
-  font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em;
+  font-family: var(--font-display); font-weight: var(--fw-display); letter-spacing: -.01em;
 }
 .t-h3 { font-weight: 500; letter-spacing: -.005em; }
 .t-label, .eyebrow { font-size: var(--fs-label); letter-spacing: var(--ls-label); font-weight: 600; }
 .eyebrow { display: inline-flex; align-items: center; gap: var(--s-3); color: var(--text-muted); }
 .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
 .section--dark .eyebrow, .on-ink .eyebrow { color: var(--accent-deco); }
-em, .serif-em { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+em, .serif-em { font-family: var(--font-display); font-weight: var(--fw-display); font-style: italic; font-weight: 400; }
 
 /* editoriální velikosti */
-.d-xl { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display-xl); line-height: var(--lh-display-xl); letter-spacing: -.025em; }
-.d { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: -.02em; }
-.d-sm { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: -.015em; }
-.statement { font-family: var(--font-display); font-size: var(--fs-statement); line-height: var(--lh-statement); letter-spacing: -.01em; }
+.d-xl { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display-xl); line-height: var(--lh-display-xl); letter-spacing: -.045em; }
+.d { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: -.04em; }
+.d-sm { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: -.03em; }
+.statement { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-statement); line-height: var(--lh-statement); letter-spacing: -.01em; }
 
 /* --- Atmosféry ------------------------------------------------------------- */
 .on-ink, .section--dark { background: var(--ink); color: var(--on-ink); }
@@ -102,7 +102,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .pcard:hover .pcard__media img { transform: scale(1.05); }
 .pcard__body { padding: var(--s-4) 0 0; gap: var(--s-1); grid-template-rows: auto auto calc(2 * var(--lh-small)) auto; }
 .pcard__params { order: 0; }
-.pcard__loc { order: 1; font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 28px; letter-spacing: -.005em; }
+.pcard__loc { order: 1; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; line-height: 28px; letter-spacing: -.005em; }
 .pcard__loc .icon { display: none; }
 .pcard__title { order: 2; font-size: 13px; }
 .pcard__price { order: 3; border-top: 0; padding-top: var(--s-2); margin-top: 0; font-weight: 500; font-size: 16px; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
@@ -121,10 +121,10 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .agent:hover .agent__photo img { filter: none; transform: scale(1.03); }
 .agent__body, .project__body, .acard__body, .branch__body { padding-inline: 0; }
 .branch__actions { padding-inline: 0; }
-.agent__name, .project h3, .acard__title, .branch__body h3 { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 30px; }
+.agent__name, .project h3, .acard__title, .branch__body h3 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 24px; line-height: 30px; }
 .project h3.t-h3 { font-size: 28px; line-height: 32px; }
 .ref { background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: var(--s-6) 0 0; }
-.ref blockquote { font-family: var(--font-display); font-size: 22px; line-height: 30px; color: var(--ink); }
+.ref blockquote { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; line-height: 30px; color: var(--ink); }
 .ref__avatar { background: var(--ink); color: var(--paper); }
 .box, .calc, .compare > div, .office-card, .process li { background: transparent; border: 1px solid var(--line); }
 .box--muted { background: var(--stone); border-color: transparent; }
@@ -149,7 +149,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .footer h4 { font-family: var(--font); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--accent-deco); font-weight: 600; }
 .footer a { color: var(--on-ink); }
 .footer__legal { border-color: var(--ink-line); }
-.footer__mark { font-family: var(--font-display); font-size: clamp(44px, 9.4vw, 176px); line-height: .82; letter-spacing: -.04em; color: var(--on-ink); margin-top: var(--s-16); white-space: nowrap; overflow: hidden; }
+.footer__mark { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(44px, 9.4vw, 176px); line-height: .82; letter-spacing: -.055em; color: var(--on-ink); margin-top: var(--s-16); white-space: nowrap; overflow: hidden; }
 .footer__mark span { color: var(--accent-deco); font-style: italic; }
 
 /* --- Cookie lišta: tmavá, rovnocenná tlačítka --------------------------------------- */
@@ -161,7 +161,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 
 /* --- Výpis a filtry ---------------------------------------------------------------- */
 .filterwrap { background: rgba(243, 244, 245, .94); backdrop-filter: blur(12px); }
-.list-head .t-h1 { font-family: var(--font-display); font-weight: 400; }
+.list-head .t-h1 { font-family: var(--font-display); font-weight: var(--fw-display); }
 .status-tabs button[aria-selected="true"] { border-color: var(--ink); }
 .pager__n[aria-current] { background: var(--ink); border-radius: 50%; }
 .pager__n { border-radius: 50%; }
@@ -178,8 +178,8 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .kp .icon { color: var(--ink); }
 .kp--price { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .kp--price .icon { color: var(--accent-deco); }
-.box__price { font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 44px; }
-.dsec > h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; line-height: 36px; }
+.box__price { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 40px; line-height: 44px; }
+.dsec > h2 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 30px; line-height: 36px; }
 .equip .icon, .detail__loc .icon, .services .icon, .benefits .icon { color: var(--ink); }
 .services .icon { background: transparent; border: 1px solid var(--line); border-radius: 50%; }
 .stickybar { background: var(--ink); color: var(--on-ink); }
@@ -188,8 +188,8 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .stickybar .btn--primary { background: var(--paper); color: var(--ink); }
 .stickybar .icon-btn { color: var(--on-ink); border-color: var(--ink-line) !important; }
 .lightbox { background: #070d12; }
-.process li::before { background: transparent; border: 1px solid var(--ink); color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 400; }
-.motto { background: transparent; border-left: 1px solid var(--accent-deco); border-radius: 0; font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 400; }
+.process li::before { background: transparent; border: 1px solid var(--ink); color: var(--ink); font-family: var(--font-display); font-weight: var(--fw-display); font-size: 18px; font-weight: 400; }
+.motto { background: transparent; border-left: 1px solid var(--accent-deco); border-radius: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 30px; line-height: 38px; font-weight: 400; }
 .wizard { background: var(--paper); color: var(--text); box-shadow: var(--sh-3); }
 .tile span { border-radius: var(--r-box); border-color: var(--line-strong); }
 .tile input:checked + span { border-color: var(--ink); background: transparent; box-shadow: inset 0 0 0 1px var(--ink); }
@@ -198,7 +198,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .radio:has(input:checked), .checks label:has(input:checked) { border-color: var(--ink); background: transparent; }
 .wizard__progress li.is-done::before, .wizard__progress li[aria-current]::before { background: var(--ink); }
 .trust .icon { color: var(--accent-deco); }
-.notfound__code { color: transparent; -webkit-text-stroke: 1px var(--ink); font-family: var(--font-display); font-weight: 400; font-size: 160px; }
+.notfound__code { color: transparent; -webkit-text-stroke: 1px var(--ink); font-family: var(--font-display); font-weight: var(--fw-display); font-size: 160px; }
 
 /* --- Prémiový detail: filmová hlavička, podnavigace, přehled ------------------------- */
 .d-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(88svh, 860px); display: flex; }
@@ -216,7 +216,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .d-hero__title { display: grid; gap: var(--s-4); }
 .d-hero__side { display: grid; gap: var(--s-4); justify-items: start; }
 @media (min-width: 1024px) { .d-hero__side { justify-items: end; text-align: right; } }
-.d-hero__price { font-family: var(--font-display); font-size: clamp(36px, 4vw, 56px); line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; }
+.d-hero__price { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(36px, 4vw, 56px); line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; }
 .d-hero__cta { display: flex; gap: var(--s-2); flex-wrap: wrap; }
 .d-hero .badge--free { background: rgba(243, 244, 245, .14); color: var(--on-ink); border: 1px solid rgba(243, 244, 245, .3); }
 .d-subnav { position: sticky; top: var(--header-h); z-index: 45; background: rgba(243, 244, 245, .94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
@@ -224,7 +224,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .d-subnav .wide::-webkit-scrollbar { display: none; }
 .d-subnav a { flex: none; padding: var(--s-4) var(--s-3); font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; margin-bottom: -1px; }
 .d-subnav a:hover, .d-subnav a.is-on { color: var(--ink); border-color: var(--ink); }
-.d-subnav__price { margin-left: auto; align-self: center; padding-inline: var(--s-4); font-family: var(--font-display); font-size: 22px; color: var(--ink); white-space: nowrap; }
+.d-subnav__price { margin-left: auto; align-self: center; padding-inline: var(--s-4); font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; color: var(--ink); white-space: nowrap; }
 .d-subnav .d-subnav__cta { align-self: center; min-height: 40px; padding: 0 var(--s-5); color: var(--paper); border: 0; margin: 0; }
 .d-subnav .d-subnav__cta:hover { color: var(--paper); }
 @media (max-width: 1023px) { .d-subnav__price, .d-subnav .d-subnav__cta { display: none; } }
@@ -232,7 +232,7 @@ textarea.input { border-radius: var(--r-box); padding: var(--s-3) var(--s-4); }
 .d-overview__lead { color: var(--ink); max-width: 28ch; }
 .d-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-6); margin: 0; padding-top: var(--s-8); border-top: 1px solid var(--line); }
 @media (min-width: 768px) { .d-facts { grid-template-columns: repeat(5, 1fr); } }
-.d-facts dt { font-family: var(--font-display); font-size: clamp(36px, 3.6vw, 52px); line-height: 1; color: var(--ink); }
+.d-facts dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(36px, 3.6vw, 52px); line-height: 1; color: var(--ink); }
 .d-facts dd { margin: var(--s-2) 0 0; font-size: 13px; color: var(--text-muted); }
 body[data-page="detail"] .detail { padding-top: var(--s-12); }
 /* stickybar na desktopu se v prémiové verzi nezobrazuje – cenu a CTA nese podnavigace */

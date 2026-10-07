@@ -55,7 +55,7 @@
 
   /* --- Typografie --- */
   --font: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --font-display: "Inter Tight", "DM Sans", system-ui, sans-serif; --fw-display: 500;   /* současný grotesk – méně noblesní než serif, pořád editoriální */
 
   /* funkční škála – mobil */
   --fs-hero: 32px;  --lh-hero: 38px;
@@ -70,16 +70,16 @@
   --fs-btn: 15px;
 
   /* editoriální škála – fluidní, jen homepage a příběhové sekce */
-  --fs-display-xl: clamp(52px, 9vw, 144px);  --lh-display-xl: .92;
-  --fs-display: clamp(40px, 6vw, 96px);      --lh-display: .98;
-  --fs-display-sm: clamp(32px, 3.6vw, 56px); --lh-display-sm: 1.04;
-  --fs-statement: clamp(26px, 3vw, 44px);    --lh-statement: 1.18;
+  --fs-display-xl: clamp(44px, 7.2vw, 116px); --lh-display-xl: .94;
+  --fs-display: clamp(36px, 5vw, 80px);      --lh-display: 1;
+  --fs-display-sm: clamp(30px, 3.2vw, 48px); --lh-display-sm: 1.06;
+  --fs-statement: clamp(24px, 2.6vw, 38px);  --lh-statement: 1.22;
 
   /* --- Odsazení --- */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
   --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
   --s-32: 128px; --s-44: 176px;
-  --section-editorial: clamp(96px, 13vw, 200px);
+  --section-editorial: clamp(64px, 7.5vw, 128px);
 
   /* --- Layout --- */
   --content-max: 1280px;
@@ -87,7 +87,7 @@
   --text-max: 720px;
   --gutter: 20px;
   --gap: 16px;
-  --section-y: 64px;
+  --section-y: 56px;
   --header-h: 64px;
 
   /* --- Komponenty --- */
@@ -124,7 +124,7 @@
     --fs-card: 18px;  --lh-card: 26px;
     --gutter: 32px;
     --gap: 24px;
-    --section-y: 88px;
+    --section-y: 72px;
     --header-h: 72px;
   }
 }
@@ -136,7 +136,7 @@
     --fs-h2: 40px;    --lh-h2: 44px;
     --fs-h3: 24px;    --lh-h3: 32px;
     --gutter: 48px;
-    --section-y: 120px;
+    --section-y: 88px;
   }
 }
 

@@ -20,7 +20,7 @@ git subtree split --prefix site -b gh-pages && git push -f origin gh-pages
 |---|---|---|
 | Data, logika (filtry, mapa, galerie, průvodce odhadem, kalkulačka) | ✓ | ✓ shodné (`core.js`, `listing.js`, `detail.js`, `prodat.js`) |
 | Vizuální jazyk | světlý, funkční | dvě atmosféry: INK (tmavé „kino“) a PAPER (velmi světlá neutrální šedá #F3F4F5, „dokument“) |
-| Písmo | DM Sans | DM Sans + **Instrument Serif** (editoriální nadpisy) |
+| Písmo | DM Sans | DM Sans + **Inter Tight** (editoriální nadpisy) |
 | Homepage | seznam sekcí | příběh v 9 kapitolách: teze → úvod a čísla → vodorovná galerie nabídky → index kategorií → prodej → projekty → lidé → reference → závěr |
 | Detail nemovitosti | galerie + 2 sloupce | filmová hlavička přes celou šířku (fotka, H1, cena, video), lepící podnavigace s cenou a „Mám zájem“, přehled velkými čísly |
 | Pohyb | žádný | Lenis (plynulý scroll) + GSAP ScrollTrigger + SplitType |
