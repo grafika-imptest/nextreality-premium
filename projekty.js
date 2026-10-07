@@ -93,67 +93,63 @@ if (document.body.dataset.page === 'projekty' && document.getElementById('pj-gri
     if (F.st) u.set('st', F.st); if (F.loc) u.set('loc', F.loc); if (F.f.size) u.set('f', [...F.f].join(','));
     history.replaceState(null, '', location.pathname + '?' + u.toString() + location.hash);
     chips();
+    syncMap();
   }
 
-  // Animace v hlavičce: výkres domu, který se staví po patrech (dekorace, aria-hidden)
-  function buildSvg() {
-    const W = 520, H = 360, G = 316, FL = 6, FH = 36, X = 170, BW = 190;
-    let grid = '';
-    for (let x = 0; x <= W; x += 26) grid += `<line x1="${x}" y1="0" x2="${x}" y2="${G}"/>`;
-    for (let y = G; y >= 0; y -= 26) grid += `<line x1="0" y1="${y}" x2="${W}" y2="${y}"/>`;
-    const lit = new Set(['1-2', '3-0', '4-3', '5-1']);
-    let floors = '';
-    for (let i = 0; i < FL; i++) {
-      const y = G - (i + 1) * FH;
-      let win = '';
-      // přízemí: vstup uprostřed místo dvou oken
-      const cols = i === 0 ? [0, 3] : [0, 1, 2, 3];
-      cols.forEach(w => (win += `<rect class="bp-win${lit.has(i + '-' + w) ? ' is-lit' : ''}" x="${X + 18 + w * 42}" y="${y + 10}" width="22" height="${FH - 18}"/>`));
-      const door = i === 0 ? `<path class="bp-thin" d="M${X + BW / 2 - 14} ${G}v-26h28v26M${X + BW / 2} ${G}v-26"/>` : '';
-      floors += `<g class="bp-floor"><path class="bp-line" d="M${X} ${y + FH}V${y}H${X + BW}V${y + FH}"/>${win}${door}</g>`;
+  // Mapa projektů v hlavičce. CMS nemá souřadnice → dohledáno podle adresy / ulice v názvu (OSM Photon, 7. 10. 2026).
+  // approx = jen čtvrť nebo okolí (název projektu adresu neobsahuje) – pin má čárkovaný kroužek.
+  const GEO = {
+    'musilkova': [50.06726, 14.36732], 'v-zahradach-17': [50.11543, 14.47326], 'kolma-5': [50.10354, 14.51582],
+    'elisky-premyslovny-428': [49.97273, 14.39244], 'rezidence-jablonskeho-1': [49.73972, 13.38959], 'velehradska-24': [50.08031, 14.45327],
+    'palackeho-namesti-2': [50.07296, 14.41475], 'pod-pekarnami': [50.11126, 14.50361, 1], 'rezidence-gutovka': [50.06784, 14.49187, 1],
+    'bydleni-suchdolska': [50.13039, 14.38236, 1], 'vajgarska': [50.10046, 14.55433, 1], 'dum-u-tyrse': [50.07151, 14.38508, 1],
+    'maison-de-vary': [50.22529, 12.88179, 1], 'duo-zabehlice': [50.05096, 14.49381, 1], 'exkluzivni-bydleni-vyhledy-podoli': [50.0516, 14.42116, 1],
+    'Vila domy Plzeň Bukovec': [49.7699, 13.4397, 1], 'Výjimečný ranč v krajině Píseckých hor': [49.29429, 14.19426, 1],
+  };
+  let lmap = null, pins = {};
+  const key = p => p.slug || p.n;
+  function drawMap() {
+    const el = $('#pj-map');
+    if (lmap) { lmap.remove(); lmap = null; } pins = {};
+    const located = ALL.filter(p => GEO[key(p)]);
+    if (consent.get() !== 'yes' || !window.L) {
+      el.innerHTML = blocked('map', 300);
+      return;
     }
-    const top = G - FL * FH;
-    return `<svg viewBox="0 0 ${W} ${H}" role="presentation" focusable="false">
-      <g class="bp-grid" data-bp="grid">${grid}</g>
-      <g data-bp="side"><path class="bp-thin bp-draw" d="M40 ${G}V${G - 3 * FH}H${X}"/><path class="bp-thin bp-draw" d="M40 ${G - FH}H${X}M40 ${G - 2 * FH}H${X}"/>
-        <path class="bp-thin bp-draw" d="M${X + BW} ${G - 2 * FH}H${X + BW + 70}V${G}"/></g>
-      <g data-bp="floors">${floors}</g>
-      <path class="bp-line bp-draw" data-bp="roof" d="M${X - 8} ${top}H${X + BW + 8}M${X + 24} ${top}v-14h40v14"/>
-      <g data-bp="crane"><path class="bp-line bp-draw" d="M440 ${G}V36M428 ${G}V36M428 36h12M428 ${G}l12-24M440 ${G - 24}l-12-24M428 ${G - 48}l12-24M440 ${G - 72}l-12-24M428 ${G - 96}l12-24M440 ${G - 120}l-12-24M428 ${G - 144}l12-24M440 ${G - 168}l-12-24M428 ${G - 192}l12-24M440 ${G - 216}l-12-24"/>
-        <path class="bp-line bp-draw" d="M300 44H508M300 36H508M300 44l8-8M330 44l8-8M360 44l8-8M390 44l8-8M470 44l8-8M500 44l8-8M434 36V14L300 36M434 14l74 22"/>
-        <rect class="bp-line" x="476" y="44" width="28" height="18"/></g>
-      <g data-bp="hook"><line class="bp-thin" x1="352" y1="44" x2="352" y2="${top - 40}" data-bp="cable"/><path class="bp-accent" d="M346 ${top - 40}h12v8h-12zM352 ${top - 32}v6a5 5 0 1 1-5 5"/></g>
-      <g data-bp="dim"><path class="bp-thin bp-draw" d="M${X - 34} ${G}V${top}M${X - 40} ${G}h12M${X - 40} ${top}h12"/>
-        <text class="bp-label" x="${X - 44}" y="${(G + top) / 2}" text-anchor="end" transform="rotate(-90 ${X - 44} ${(G + top) / 2})" dy="0">${FL} NP</text></g>
-      <path class="bp-line bp-draw" data-bp="ground" d="M0 ${G}H${W}"/>
-      <path class="bp-accent bp-draw" data-bp="ground2" d="M${X} ${G + 6}H${X + BW}"/>
-      <text class="bp-label" x="0" y="${G + 30}">Řez A–A · ilustrace</text>
-    </svg>`;
+    el.innerHTML = '';
+    lmap = L.map(el, { zoomControl: false, scrollWheelZoom: false });
+    L.control.zoom({ position: 'topright', zoomInTitle: 'Přiblížit', zoomOutTitle: 'Oddálit' }).addTo(lmap);
+    lmap.attributionControl.setPrefix(false);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, className: 'pj-tiles', attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(lmap);
+    lmap.on('click', () => lmap.scrollWheelZoom.enable());
+    // názvy u pinů až po přiblížení (v přehledu ČR by se pražské projekty překrývaly)
+    lmap.on('zoomend', () => el.classList.toggle('is-near', lmap.getZoom() >= 13));
+    el.addEventListener('mouseleave', () => lmap?.scrollWheelZoom.disable());
+    located.forEach(p => {
+      const [lat, lng, approx] = GEO[key(p)];
+      const m = L.marker([lat, lng], { icon: L.divIcon({ className: 'pjpin-wrap', html: `<span class="pjpin${p.done ? ' is-done' : ''}${approx ? ' is-approx' : ''}"><em>${esc(p.n)}</em></span>`, iconSize: null }), title: p.n, riseOnHover: true, zIndexOffset: p.done ? 0 : 500 });
+      m.bindPopup(`${p.img ? `<img src="${esc(p.img)}" alt="">` : ''}<div class="pj-pop__b"><small>${esc(p.label || 'V prodeji')}${PJ.where(p) ? ' · ' + esc(PJ.where(p)) : ''}${approx ? ' · poloha orientační' : ''}</small><b>${esc(p.n)}</b><a href="${PJ.link(p)}">Detail projektu →</a></div>`, { className: 'pj-pop', closeButton: false, offset: [0, -10] });
+      m.on('mouseover', () => hot(key(p), true)); m.on('mouseout', () => hot(key(p), false));
+      pins[key(p)] = m;
+    });
+    const n = ALL.length - located.length;
+    if (n) el.insertAdjacentHTML('beforeend', `<span class="pj-map__note">${n} ${n === 1 ? 'projekt' : 'projekty'} bez známé polohy</span>`);
+    syncMap(true);
   }
-  function animateBuild() {
-    if (PJ.reduce() || !window.gsap || animateBuild.done) return;
-    animateBuild.done = true;
-    const root = $('#pj-build svg'), q = s => root.querySelectorAll(s);
-    q('.bp-draw').forEach(p => { const l = Math.ceil(p.getTotalLength()); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
-    const floors = q('.bp-floor'), top = 316 - 6 * 36;
-    const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.2 });
-    tl.from(root.querySelector('[data-bp="grid"]'), { opacity: 0, duration: 1.2, ease: 'power2.out' })
-      .to(root.querySelectorAll('[data-bp="ground"]'), { strokeDashoffset: 0, duration: 1.1 }, 0.1)
-      .to(root.querySelectorAll('[data-bp="crane"] .bp-draw'), { strokeDashoffset: 0, duration: 1.4, stagger: 0.12 }, 0.35)
-      .from(root.querySelector('[data-bp="crane"] rect'), { opacity: 0, duration: 0.6 }, 0.9)
-      .from(root.querySelector('[data-bp="hook"]'), { opacity: 0, duration: 0.6 }, 1.0)
-      .from(floors, { scaleY: 0, opacity: 0, transformOrigin: '50% 100%', duration: 0.9, stagger: 0.22, ease: 'power4.out' }, 1.1)
-      .from(q('.bp-floor .bp-win'), { opacity: 0, duration: 0.5, stagger: 0.03, ease: 'power2.out' }, 1.4)
-      .from(root.querySelector('[data-bp="cable"]'), { attr: { y2: 316 - 60 }, duration: 6 * 0.22 + 0.9, ease: 'power2.inOut' }, 1.1)
-      .from(root.querySelector('[data-bp="hook"] .bp-accent'), { y: 316 - 60 - (top - 40), duration: 6 * 0.22 + 0.9, ease: 'power2.inOut' }, 1.1)
-      .to(root.querySelectorAll('[data-bp="roof"], [data-bp="side"] .bp-draw, [data-bp="dim"] .bp-draw, [data-bp="ground2"]'), { strokeDashoffset: 0, duration: 1.1, stagger: 0.1 }, 2.4)
-      .from(root.querySelector('[data-bp="dim"] text'), { opacity: 0, duration: 0.6 }, 2.9);
-    // pojistka: když prohlížeč nespouští snímky (skrytá karta), ukáže se hotový stav
-    setTimeout(() => { if (tl.progress() < 1) tl.progress(1); }, 6000);
+  // piny = aktuální výsledek filtru; mapa se přizpůsobí výřezu
+  function syncMap(fit) {
+    if (!lmap) return;
+    const vis = ALL.filter(p => match(p) && pins[key(p)]);
+    Object.entries(pins).forEach(([k, m]) => (vis.some(p => key(p) === k) ? m.addTo(lmap) : m.remove()));
+    if (fit !== false && vis.length) lmap.fitBounds(L.latLngBounds(vis.map(p => GEO[key(p)].slice(0, 2))), { padding: [48, 48], maxZoom: 14, animate: !PJ.reduce() });
+  }
+  function hot(k, on) {
+    pins[k]?.getElement()?.querySelector('.pjpin')?.classList.toggle('is-hot', on);
+    $(`#pj-grid .pj-card[data-slug="${CSS.escape(k)}"]`)?.classList.toggle('is-hot', on);
   }
 
   window.PAGE = {
-    note: 'Štítky filtru se odvozují z dat: stav = label z CMS, lokalita = rozpoznaná z názvu a popisu (CMS nemá pole lokality), vlastnosti = klíčová slova ve faktech a popisu. 7 projektů „Realizováno“ má v CMS shodnou trojici faktů (výchozí text šablony) – v předloze se nezobrazuje ani nefiltruje. Ilustrace stavby je dekorace.',
+    note: 'Štítky filtru se odvozují z dat: stav = label z CMS, lokalita = rozpoznaná z názvu a popisu (CMS nemá pole lokality), vlastnosti = klíčová slova ve faktech a popisu. 7 projektů „Realizováno“ má v CMS shodnou trojici faktů (výchozí text šablony) – v předloze se nezobrazuje ani nefiltruje. Mapa: CMS nemá souřadnice projektů – dohledány podle adresy v názvu, u projektů bez adresy jen orientačně (čtvrť), Rezidence Zádušní bez polohy. Do CMS doplnit pole lat/lng.',
     render(k) {
       document.title = `Developerské projekty | ${OFFICES[k].name}`;
       ALL = PJ.list(k);
@@ -166,6 +162,7 @@ if (document.body.dataset.page === 'projekty' && document.getElementById('pj-gri
         .map(([v, l]) => `<div><dt data-count="${v}">${v}</dt><dd>${l}</dd></div>`).join('');
       $('#pj-grid').innerHTML = ALL.map(PJ.card).join('');
       apply(false);
+      drawMap();
     },
     checks() {
       const tags = $$('.pj-tag, .pj-status'), bad = tags.filter(t => { const s = getComputedStyle(t); return parseFloat(s.paddingLeft) < 8 || (parseFloat(s.borderTopWidth) === 0 && s.backgroundColor === 'rgba(0, 0, 0, 0)'); });
@@ -174,7 +171,9 @@ if (document.body.dataset.page === 'projekty' && document.getElementById('pj-gri
         + check('Filtr = karty', vis === ALL.filter(p => match(p)).length, vis + ' karet');
     },
     init() {
-      $('#pj-build').innerHTML = buildSvg();
+      document.addEventListener('consent', () => ALL.length && drawMap());
+      $('#pj-grid').addEventListener('mouseover', e => { const c = e.target.closest('.pj-card'); if (c && c !== hot.last) { if (hot.last) hot(hot.last.dataset.slug, false); hot.last = c; hot(c.dataset.slug, true); } });
+      $('#pj-grid').addEventListener('mouseleave', () => { if (hot.last) hot(hot.last.dataset.slug, false); hot.last = null; });
       document.addEventListener('click', e => {
         const c = e.target.closest('.pj-chip'); if (c && !c.disabled) {
           const k = c.dataset.k, v = c.dataset.v;
@@ -184,7 +183,6 @@ if (document.body.dataset.page === 'projekty' && document.getElementById('pj-gri
         }
         if (e.target.closest('#pj-reset, [data-pj-reset]')) { F.st = F.loc = ''; F.f.clear(); apply(true); }
       });
-      if (document.readyState === 'complete') animateBuild(); else addEventListener('load', animateBuild, { once: true });
     },
   };
 }

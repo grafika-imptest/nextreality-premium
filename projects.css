@@ -11,7 +11,7 @@
 .pj-status.is-done::before { background: var(--text-muted); }
 .on-ink .pj-status { background: rgba(243, 244, 245, .12); color: var(--on-ink); border-color: rgba(243, 244, 245, .3); }
 
-/* --- Hero výpisu s animací stavby ---------------------------------------------------- */
+/* --- Hero výpisu s mapou projektů ---------------------------------------------------- */
 .pj-hero { padding-block: var(--s-12) var(--s-10); border-bottom: 1px solid var(--line); overflow: hidden; }
 .pj-hero__in { display: grid; gap: var(--s-8); align-items: end; }
 .pj-hero h1 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(32px, 3.6vw, 48px); line-height: 1.04; letter-spacing: -.01em; color: var(--ink); max-width: 16ch; margin-top: var(--s-4); }
@@ -19,21 +19,36 @@
 .pj-hero__stats { display: flex; flex-wrap: wrap; gap: var(--s-8); margin: var(--s-8) 0 0; padding-top: var(--s-6); border-top: 1px solid var(--line); }
 .pj-hero__stats dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 40px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
 .pj-hero__stats dd { margin: var(--s-2) 0 0; font-size: 13px; color: var(--text-muted); }
-.pj-build { width: 100%; max-width: 560px; justify-self: end; color: var(--ink); }
-.pj-build svg { display: block; width: 100%; height: auto; overflow: visible; }
-.pj-build .bp-grid { stroke: var(--line); stroke-width: 1; }
-.pj-build .bp-line { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: square; }
-.pj-build .bp-thin { fill: none; stroke: currentColor; stroke-width: 1; opacity: .55; }
-.pj-build .bp-win { fill: currentColor; opacity: .14; }
-.pj-build .bp-win.is-lit { fill: var(--accent-deco); opacity: 1; }
-.pj-build .bp-accent { fill: none; stroke: var(--accent-deco); stroke-width: 1.5; }
-.pj-build .bp-label { font: 500 10px/1 var(--font); letter-spacing: .14em; fill: var(--text-muted); text-transform: uppercase; }
-@media (min-width: 1024px) { .pj-hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: var(--s-16); } .pj-hero { padding-block: var(--s-16) var(--s-12); } }
+/* mapa projektů – piny reagují na filtr štítků; bez souhlasu s cookies seznam lokalit */
+.pj-map { position: relative; width: 100%; height: clamp(320px, 38vw, 480px); border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden; background: var(--stone); isolation: isolate; }
+.pj-map .leaflet-container { width: 100%; height: 100%; background: var(--stone); font-family: var(--font); }
+.pj-map .pj-tiles { filter: grayscale(1) contrast(.92) brightness(1.04); }
+.pj-map .blocked { height: 100%; border: 0; border-radius: 0; }
+.pj-map__note { position: absolute; left: var(--s-3); bottom: var(--s-3); z-index: 500; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(243, 244, 245, .92); font-size: 11px; color: var(--text-muted); pointer-events: none; }
+.pjpin-wrap { background: none; border: 0; }
+.pjpin { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 6px; transform: translate(-14px, -14px); border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); font: 500 12px/1 var(--font); white-space: nowrap; border: 1px solid var(--ink); transition: background var(--dur-ui), color var(--dur-ui); cursor: pointer; }
+.pjpin em { font-style: normal; display: none; padding-right: 4px; }
+.pjpin:hover em, .pjpin.is-hot em, .pj-map.is-near .pjpin em { display: inline; }
+.pjpin::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-deco); flex: none; }
+.pjpin.is-done { background: var(--paper); color: var(--ink); border-color: var(--line-strong); }
+.pjpin.is-done::before { background: var(--text-muted); }
+.pjpin.is-approx::before { background: transparent; border: 1.5px dashed var(--accent-deco); }
+.pjpin.is-hot, .pjpin:hover { background: var(--accent-deco); color: var(--ink); border-color: var(--accent-deco); }
+.pjpin.is-hot::before, .pjpin:hover::before { background: var(--ink); }
+.pj-pop .leaflet-popup-content-wrapper { border-radius: var(--r-card); box-shadow: none; border: 1px solid var(--line); padding: 0; overflow: hidden; }
+.pj-pop .leaflet-popup-content { margin: 0; width: 240px !important; }
+.pj-pop img { display: block; width: 100%; height: 130px; object-fit: cover; }
+.pj-pop__b { padding: var(--s-3) var(--s-4) var(--s-4); display: grid; gap: 4px; }
+.pj-pop__b small { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.pj-pop__b b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 18px; line-height: 1.2; color: var(--ink); }
+.pj-pop__b a { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--ink); }
+.pj-card.is-hot .pj-card__media img { transform: scale(1.04); }
+@media (min-width: 1024px) { .pj-hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: var(--s-12); align-items: stretch; } .pj-map { height: auto; min-height: 420px; } .pj-hero { padding-block: var(--s-16) var(--s-12); } }
 @media (max-width: 767px) {
   .pj-hero { padding-block: var(--s-8) var(--s-6); }
   .pj-hero__in { gap: var(--s-6); }
   .pj-hero__lead { font-size: 16px; line-height: 26px; }
-  .pj-build { max-width: 240px; justify-self: start; }
+  .pj-map { height: 300px; }
   .pj-hero__stats { gap: var(--s-6); margin-top: var(--s-6); padding-top: var(--s-4); flex-wrap: nowrap; }
   .pj-hero__stats dt { font-size: 28px; }
   .pj-hero__stats dd { font-size: 12px; }
