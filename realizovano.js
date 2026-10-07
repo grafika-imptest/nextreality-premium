@@ -7,9 +7,18 @@
   const PER = 12;
   const R = { deal: 'all', shown: PER };
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches || qs.has('nomotion');
-  const sold = () => window.SOLD?.[dataKey(office)] || [];
-  const cityOf = x => ((x.place || x.loc || '').split(', ').at(-1) || '').split('-')[0].trim();
-  const kind = x => (x.rent ? 'Pronajato' : 'Prodáno');
+  // zdroj: realizované zakázky z webu kanceláře (SOLD); když je kancelář nezveřejňuje (TGH), použijí se
+  // její dokončené developerské projekty (PROJECTS, label „Realizováno“) – také skutečná data z webu
+  const PGEO = { 'dum-u-tyrse': [50.07151, 14.38508], 'palackeho-namesti-2': [50.07296, 14.41475], 'rezidence-jablonskeho-1': [49.73972, 13.38959],
+    'bydleni-suchdolska': [50.13039, 14.38236], 'velehradska-24': [50.08031, 14.45327], 'exkluzivni-bydleni-vyhledy-podoli': [50.0516, 14.42116] };
+  const PCITY = p => (/plzn|plzeň/i.test(p.n + ' ' + (p.d || '')) ? 'Plzeň' : /karlovar/i.test(p.n + ' ' + (p.d || '')) ? 'Karlovy Vary' : 'Praha');
+  const projDone = () => (window.PROJECTS?.[dataKey(office)] || []).filter(p => p.label === 'Realizováno')
+    .map(p => ({ proj: true, slug: p.slug, t: p.n, place: p.n, loc: PCITY(p), img: p.img, d: p.d, lat: PGEO[p.slug]?.[0], lng: PGEO[p.slug]?.[1] }));
+  const soldRaw = () => window.SOLD?.[dataKey(office)] || [];
+  const byProjects = () => !soldRaw().length && projDone().length > 0;
+  const sold = () => (soldRaw().length ? soldRaw() : projDone());
+  const cityOf = x => x.proj ? x.loc : ((x.place || x.loc || '').split(', ').at(-1) || '').split('-')[0].trim();
+  const kind = x => (x.proj ? 'Dokončeno' : x.rent ? 'Pronajato' : 'Prodáno');
   const TYPES = [['byt', 'Byty'], ['dum', 'Domy'], ['komercni', 'Komerční'], ['pozemek', 'Pozemky'], ['ostatni', 'Ostatní']];
   const obec = n => (n === 1 ? 'obec' : n >= 2 && n <= 4 ? 'obce' : 'obcí');
 
@@ -30,15 +39,15 @@
     const id = 'rz-seal-' + (++sealN);
     return `<span class="rz-seal" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="${id}" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
       <circle cx="50" cy="50" r="47" class="rz-seal__ring"/><circle cx="50" cy="50" r="28" class="rz-seal__ring rz-seal__ring--in"/>
-      <text class="rz-seal__txt"><textPath href="#${id}" textLength="228" lengthAdjust="spacing">${kind(x).toUpperCase()} · REALIZOVÁNO ·</textPath></text>
+      <text class="rz-seal__txt"><textPath href="#${id}" textLength="228" lengthAdjust="spacing">${x.proj ? 'DOKONČENO · VYPRODÁNO ·' : kind(x).toUpperCase() + ' · REALIZOVÁNO ·'}</textPath></text>
       <path class="rz-seal__check" d="M38 50.5l8 8L63 41.5"/></svg></span>`;
   };
   const rcard = x => `<article class="rz-card${x.img ? '' : ' is-empty'}">
       <div class="rz-card__media">${x.img ? `<img src="${esc(x.img)}" alt="" loading="lazy" onerror="this.parentElement.parentElement.classList.add('is-empty');this.remove()">` : ''}${seal(x)}</div>
       <div class="rz-card__body">
-        <div class="pcard__params">${params(x).map(p => `<span class="param">${esc(p)}</span>`).join('')}</div>
-        <h3 class="rz-card__loc">${esc(x.place || x.loc)}</h3>
-        <p class="rz-card__st"><span class="rz-card__dot" aria-hidden="true"></span>${kind(x)} · uzavřená zakázka</p>
+        <div class="pcard__params">${(x.proj ? ['Developerský projekt', x.loc] : params(x)).map(p => `<span class="param">${esc(p)}</span>`).join('')}</div>
+        <h3 class="rz-card__loc">${x.proj ? `<a href="${href('projekt.html', '&slug=' + x.slug)}">${esc(x.t)}</a>` : esc(x.place || x.loc)}</h3>
+        <p class="rz-card__st"><span class="rz-card__dot" aria-hidden="true"></span>${x.proj ? 'Dokončený a vyprodaný projekt' : kind(x) + ' · uzavřená zakázka'}</p>
       </div>
     </article>`;
 
@@ -93,7 +102,7 @@
     const cluster = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 48,
       iconCreateFunction: c => L.divIcon({ html: `<span>${c.getChildCount()}</span>`, className: 'rz-mcluster', iconSize: [44, 44] }) });
     cluster.addLayers(list.map(x => L.marker([x.lat, x.lng], { icon: L.divIcon({ className: 'rz-mpin', html: '<span></span>', iconSize: [16, 16] }), keyboard: true, title: `${kind(x)}: ${x.t}` })
-      .bindPopup(`<div class="rz-pop"><span class="rz-pop__st">${kind(x)}</span><b>${esc(x.place || x.loc)}</b><span>${esc(params(x).join(' · '))}</span></div>`, { closeButton: true, maxWidth: 260 })));
+      .bindPopup(`<div class="rz-pop"><span class="rz-pop__st">${kind(x)}</span><b>${esc(x.place || x.loc)}</b><span>${esc(x.proj ? 'Developerský projekt · ' + x.loc : params(x).join(' · '))}</span></div>`, { closeButton: true, maxWidth: 260 })));
     map.addLayer(cluster);
     if (list.length) map.fitBounds(L.latLngBounds(list.map(x => [x.lat, x.lng])).pad(0.08), { maxZoom: 12 });
     else map.setView([49.9, 15.3], 7);
@@ -134,7 +143,8 @@
   // --- hero: mozaika skutečných fotek realizací v archivní šedi ---
   function mosaic(list) {
     const imgs = list.filter(x => x.img).slice(0, 24).map(x => x.img);
-    if (imgs.length < 8) return '';
+    if (imgs.length < 4) return '';
+    while (imgs.length < 12) imgs.push(...imgs.slice(0, 12 - imgs.length)); // málo fotek (projekty) → opakují se
     const cols = 4, per = Math.ceil(imgs.length / cols);
     return Array.from({ length: cols }, (_, i) => {
       const set = imgs.slice(i * per, i * per + per).map(s => `<img src="${esc(s)}" alt="" loading="lazy" decoding="async">`).join('');
@@ -143,7 +153,7 @@
   }
 
   window.PAGE = {
-    note: 'Realizace = window.SOLD (Stars: 184 z webu kanceláře, TGH: web je nezveřejňuje → prázdný stav). Čísla se počítají z dat; objem je součet posledních inzerovaných cen prodejů, ne kupní ceny. Data neobsahují datum uzavření, proto stránka nemá časovou osu.',
+    note: 'Realizace = window.SOLD (Stars: 184 z webu kanceláře). TGH realizace nezveřejňuje → ukazují se jeho dokončené developerské projekty (PROJECTS, label Realizováno; Rezidence Zádušní bez polohy na mapě). Čísla se počítají z dat; objem je součet posledních inzerovaných cen prodejů, ne kupní ceny. Data neobsahují datum uzavření, proto stránka nemá časovou osu.',
     init() {
       $('#rz-filter').addEventListener('click', e => {
         const b = e.target.closest('[data-deal]'); if (!b) return;
@@ -160,11 +170,14 @@
       R.deal = 'all'; R.shown = PER;
 
       $('#rz-mosaic').innerHTML = mosaic(list);
-      $('#rz-lead').innerHTML = has
+      const P = byProjects();
+      $('#rz-lead').innerHTML = P
+        ? `<b>Domy, které jsme dovedli od rekonstrukce až k poslednímu předanému bytu.</b> Tady už nic nenabízíme – tady ukazujeme, co máme za sebou.`
+        : has
         ? `<b>Prodeje i pronájmy, které jsme dovedli až k podpisu.</b> Tady už nic nenabízíme – tady ukazujeme, co máme za sebou.`
         : `Uzavřené zakázky ukazujeme otevřeně – jako doklad práce, ne jako nabídku. Archiv této kanceláře se připravuje.`;
       $('#rz-hero-stat').innerHTML = has
-        ? `<span class="rz-hero__n" data-count="${s.total}">${num(s.total)}</span><span class="rz-hero__nl">realizovaných zakázek<br>na webu kanceláře</span>`
+        ? `<span class="rz-hero__n" data-count="${s.total}">${num(s.total)}</span><span class="rz-hero__nl">${P ? 'dokončených<br>developerských projektů' : 'realizovaných zakázek<br>na webu kanceláře'}</span>`
         : '';
 
       ['#rz-nums', '#rz-map-sec', '#zed'].forEach(id => ($(id).hidden = !has));
@@ -177,18 +190,19 @@
         return;
       }
 
-      const st = [[s.total, 'realizovaných zakázek'], [s.sale, s.sale === 1 ? 'prodej' : s.sale <= 4 ? 'prodeje' : 'prodejů'], [s.rent, s.rent === 1 ? 'pronájem' : s.rent <= 4 ? 'pronájmy' : 'pronájmů'], [s.cities, obec(s.cities) + ' a měst']];
-      if (s.priced) st.push([Math.round(s.vol / 1e6), 'mil. Kč v inzerovaných cenách prodejů', '*']);
+      const st = P ? [[s.total, 'dokončených projektů'], [s.cities, s.cities === 1 ? 'město' : s.cities <= 4 ? 'města' : 'měst']] : [[s.total, 'realizovaných zakázek'], [s.sale, s.sale === 1 ? 'prodej' : s.sale <= 4 ? 'prodeje' : 'prodejů'], [s.rent, s.rent === 1 ? 'pronájem' : s.rent <= 4 ? 'pronájmy' : 'pronájmů'], [s.cities, obec(s.cities) + ' a měst']];
+      if (!P && s.priced) st.push([Math.round(s.vol / 1e6), 'mil. Kč v inzerovaných cenách prodejů', '*']);
       $('#rz-stats').innerHTML = st.map(([n, l, mark]) => `<div data-reveal><dt><span data-count="${n}">${num(n)}</span>${mark ? '<sup>*</sup>' : ''}</dt><dd>${l}</dd></div>`).join('');
-      $('#rz-types').innerHTML = bars(s.types, Math.max(...s.types.map(t => t[1])));
+      $('#rz-types').innerHTML = s.types.length ? bars(s.types, Math.max(...s.types.map(t => t[1]))) : bars([['Developerské projekty', s.total]], s.total);
       const top = s.places.slice(0, 6);
       $('#rz-places').innerHTML = bars(top, top[0][1]);
       $('#rz-note').textContent = (s.priced ? `* Součet posledních inzerovaných cen ${num(s.priced)} prodaných nemovitostí. Nejde o skutečné kupní ceny. ` : '')
-        + `Počítáno z ${num(s.total)} realizací zveřejněných na webu kanceláře. Lokalita = obec z adresy nabídky.`;
+        + (P ? `Kancelář dnes nezveřejňuje jednotlivé realizované zakázky – ukazujeme ${num(s.total)} dokončených developerských projektů z jejího webu.` : `Počítáno z ${num(s.total)} realizací zveřejněných na webu kanceláře. Lokalita = obec z adresy nabídky.`);
 
       drawFilter(s);
       drawWall();
-      $('#rz-all').href = href('vypis.html', '&status=sold');
+      $('#rz-all').firstChild.textContent = P ? 'Všechny realizované projekty ' : 'Celý archiv ve výpisu ';
+      $('#rz-all').href = P ? href('projekty.html', '&st=Realizov%C3%A1no') : href('vypis.html', '&status=sold');
       drawMap();
       armBars();
       armPath();

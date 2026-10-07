@@ -1,6 +1,6 @@
 /* ==========================================================================
    Kontakty – prémiová verze. Načítá se po premium.css.
-   Pořadí: 1) KDE (INK: hlavička, mapa + karty kanceláří) → 2) formulář → 3) fakturace → 4) makléři.
+   Pořadí: 1) KDE (světlá PAPER varianta – klient nechtěl kontakty v černé: hlavička, mapa + karty kanceláří) → 2) formulář → 3) fakturace → 4) makléři.
    Bez stínů, 1px linky, rádius 999 px interakce / 4 px boxy. Zelená jen jako akcent (na INK čitelná).
    ========================================================================== */
 
@@ -180,3 +180,40 @@
 .ct-team__chips .chip[aria-pressed="true"] span { color: var(--accent-deco); }
 .ct-team__more p { margin-top: var(--s-6); color: var(--text-muted); font-size: var(--fs-small); }
 @media (max-width: 599px) { .kschema__more { display: none; } .kschema__bar { padding: var(--s-3); } .kschema__bar .btn { min-height: 40px; } }
+
+/* --- Světlá varianta (klient: kontakty ne v černé) -------------------------------
+   Sekce výše jsou psané pro INK přes proměnné → v rozsahu hlavičky a scény je přemapujeme na PAPER. */
+.ct-hero, .ct-stage {
+  --on-ink: var(--ink); --on-ink-muted: var(--text-muted); --ink-line: var(--line); --ink-2: var(--stone);
+}
+.ct-stage { background: var(--paper); color: var(--text); border-top: 1px solid var(--line); padding-top: var(--s-10); }
+.ct-hero { border-bottom: 0; }
+.ct-cities button span { color: var(--accent-2); background: var(--stone); }
+/* mapa: světlé šedé dlaždice jako výpis a projekty */
+.ct-mapframe, .ct-map.leaflet-container { background: var(--stone); border-color: var(--line); }
+.ct-map .ct-tiles { filter: grayscale(1) contrast(.92) brightness(1.04); }
+.ct-map .leaflet-control-zoom a, .ct-fit { background: rgba(243, 244, 245, .94); }
+.ct-map .leaflet-control-zoom a:hover { background: var(--paper); color: var(--ink); }
+.ct-map .leaflet-control-attribution { background: rgba(243, 244, 245, .8); }
+.kpin__lbl { background: rgba(243, 244, 245, .95); border-color: var(--line-strong); }
+.kpin--city .kpin__lbl b { color: var(--ink); }
+/* schéma bez cookies ve světlé */
+.ct-map.is-schema { background: radial-gradient(120% 90% at 50% 40%, #fbfbfc 0%, var(--stone) 75%); }
+.kschema__grid { stroke: #dfe2e5; }
+.kschema__deg { fill: #9aa1a8; }
+.kschema__net { stroke: rgba(45, 94, 69, .45); }
+.kschema__ring { stroke: rgba(45, 94, 69, .2); }
+.kschema__lead { stroke: rgba(45, 94, 69, .5); }
+.kschema__lens { fill: rgba(243, 244, 245, .96); }
+.kschema__bar { background: rgba(243, 244, 245, .96); }
+.kschema__bar .btn { border-color: var(--ink); color: var(--ink); }
+.kschema__bar .btn:hover { background: var(--ink); color: var(--paper); }
+.kschema__lenslbl, .kschema__city.is-on b { color: var(--accent-2); }
+/* karty kanceláří */
+.ofc.is-on { background: linear-gradient(90deg, rgba(133, 185, 41, .1), transparent 70%); }
+.ofc__num, .ofc__addr .icon, .ofc__dir a .icon, .ofc__locate .icon { color: var(--accent-2); }
+.ofc__dir a:hover, .ofc__team:hover { color: var(--accent-2); }
+.ofc__faces img { border-color: var(--paper); }
+.ofc__actions .btn--primary { background: var(--ink); color: var(--paper); }
+.ofc__actions .btn--primary:hover { background: var(--accent-hover); color: var(--paper); }
+.ofc__actions .btn--secondary:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }

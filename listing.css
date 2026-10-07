@@ -256,3 +256,11 @@ html.cmp-lock { overflow: hidden; }
   .cmp-best { display: table; margin: 2px 0 0; }
 }
 @media (min-width: 1024px) { .filters #f-type { width: 172px; } } /* počty v možnostech */
+
+/* zavření mapy a nápověda k výřezu */
+.lmap__close { position: absolute; z-index: 600; top: var(--s-4); left: var(--s-4); display: inline-flex; align-items: center; gap: var(--s-2); min-height: 40px; padding: 0 var(--s-4) 0 var(--s-3); border-radius: var(--r-pill); border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: 600 14px/1 var(--font); cursor: pointer; }
+.lmap__close:hover { border-color: var(--ink); }
+.lmap__close .icon { width: 18px; height: 18px; }
+.lmap__hint { position: absolute; z-index: 600; left: var(--s-4); top: calc(var(--s-4) + 52px); max-width: min(420px, calc(100% - 2 * var(--s-4))); margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-card); background: var(--ink); color: var(--on-ink, #fff); font-size: 13px; line-height: 19px; transition: opacity var(--dur-ui), transform var(--dur-ui); pointer-events: none; }
+.lmap__hint b { color: var(--accent-deco); }
+.lmap__hint.is-gone { opacity: 0; transform: translateY(8px); }

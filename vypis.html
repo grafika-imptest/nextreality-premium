@@ -118,13 +118,15 @@
       <div class="lmap__head">
         <p class="lmap__info" id="lmap-info" aria-live="polite"></p>
         <button type="button" class="btn btn--ghost lmap__fit" id="lmap-fit" hidden>Zobrazit vše</button>
-        <label class="lmap__live"><input type="checkbox" id="lmap-live" checked> Hledat při posunu mapy</label>
+        <label class="lmap__live" title="Seznam ukazuje jen nabídky v zobrazené části mapy. Vypnutím se seznam aktualizuje až tlačítkem Hledat v této oblasti."><input type="checkbox" id="lmap-live" checked> Seznam podle výřezu mapy</label>
       </div>
       <div class="lmap__list" id="lmap-list" data-lenis-prevent></div>
     </aside>
     <div class="lmap__stage">
       <div class="mapview__map" id="map"></div>
       <button type="button" class="btn btn--primary lmap__redo" id="lmap-redo" hidden>Hledat v této oblasti</button>
+      <button type="button" class="lmap__close" data-view="list"><svg class="icon"><use href="#i-x"/></svg>Zavřít mapu</button>
+      <p class="lmap__hint" id="lmap-hint"><b>Výřez:</b> mapu posuňte nebo přibližte tlačítky + / − – seznam ukáže jen nabídky v zobrazené oblasti. Kolečkem myši přibližujete po kliknutí do mapy.</p>
     </div>
   </section>
 </main>
