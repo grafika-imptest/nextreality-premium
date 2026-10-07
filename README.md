@@ -56,7 +56,7 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Všechny | písmo nadpisů Inter Tight (místo Instrument Serif), menší mezery mezi sekcemi, patička s vektorovým logotypem NEXT | tokens.css, premium.css, core.js |
 | Výpis | více lokalit se štítky a počty, druhy nemovitosti (komerční → kanceláře, sklady…), mapa synchronizovaná se seznamem, porovnání až 4 nabídek | vypis.html, listing.js, listing.css (logika shodná se standardem) |
 | Detail | výrazný makléř s profilem, přepínač Hypotéka / Investice (orientační výnosy) | detail.html, detail.js, detail.css |
-| Projekty | filtr štítků (stav, lokalita, vlastnosti), animace stavby v hero, opravené štítky; detail s galerií, lightboxem, jednotkami a makléřem | projekty.*, projekt.*, projects.css |
+| Projekty | filtr štítků (stav, lokalita, vlastnosti), mapa projektů v hero (piny reagují na filtr), opravené štítky; detail s galerií, lightboxem, jednotkami a makléřem | projekty.*, projekt.*, projects.css |
 | Realizováno | nová stránka: razítko Prodáno, čísla z dat, mapa realizací, výzva k prodeji | realizovano.* |
 | Chci prodat | „Jste na správném místě“, kontaktní formulář nahoře, čísla místo slibů | prodat.*, prodat.css |
 | Kontakty | nejdřív mapa kanceláří (schéma bez souhlasu s cookies), karty kanceláří, pak formulář a makléři | kontakty.* |

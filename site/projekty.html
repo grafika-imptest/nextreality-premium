@@ -12,12 +12,13 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="projects.css">
 </head>
 <body data-page="projekty">
 <div id="site-header"></div>
 <main>
-  <!-- Hlavička výpisu: text vlevo, výkres stavby vpravo (animace patro po patru, při ?nomotion / reduced-motion hotový stav) -->
+  <!-- Hlavička výpisu: text vlevo, mapa projektů vpravo (piny reagují na filtr štítků) -->
   <section class="pj-hero" aria-labelledby="pj-h1">
     <div class="wide pj-hero__in">
       <div>
@@ -26,7 +27,7 @@
         <p class="pj-hero__lead">Objevte developerské projekty, které přinášejí moderní bydlení, promyšlenou architekturu a atraktivní lokality. Nabízíme nové byty pro vlastní bydlení i investici.</p>
         <dl class="pj-hero__stats" id="pj-stats"></dl>
       </div>
-      <div class="pj-build" id="pj-build" aria-hidden="true"></div>
+      <div class="pj-map" id="pj-map" role="region" aria-label="Mapa developerských projektů" data-lenis-prevent></div>
     </div>
   </section>
 
@@ -41,6 +42,7 @@
 <div id="site-footer"></div>
 <script src="data.js"></script>
 <script src="data/phase3.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="core.js"></script>
 <script src="projekty.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
