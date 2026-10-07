@@ -140,3 +140,15 @@
 .mk-form { padding: var(--s-8); border: 1px solid var(--line); border-radius: var(--r-box); min-width: 0; }
 @media (max-width: 599px) { .mk-form { padding: var(--s-5); } }
 .mk-thanks { border: 0; padding: 0; }
+
+/* portrét v hero: větší a bez rámečku – fotka se do tmavé plochy rozplyne (pozadí fotek z CRM se liší od INK) */
+.mk-hero__photo { background: none; border-radius: 0; overflow: visible; }
+.mk-hero__photo img { -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent), linear-gradient(to right, transparent, #000 14%, #000 86%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 70%, transparent), linear-gradient(to right, transparent, #000 14%, #000 86%, transparent); mask-composite: intersect; }
+@media (min-width: 600px) and (max-width: 1023px) {
+  .mk-hero__in { grid-template-columns: minmax(0, 1fr) 340px; }
+}
+@media (min-width: 1024px) {
+  .mk-hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: end; }
+  .mk-hero__photo { width: auto; max-width: 100%; height: min(760px, calc(100svh - var(--header-h) - 48px)); aspect-ratio: 4 / 5; margin-bottom: calc(-1 * var(--s-16)); }
+  .mk-hero__photo img { height: 100%; }
+}
