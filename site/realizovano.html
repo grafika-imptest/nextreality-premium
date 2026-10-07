@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="cs" data-office="tgh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Realizováno | NEXT Reality</title>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) { document.documentElement.classList.add('js-motion'); setTimeout(() => { if (!window.gsap) document.documentElement.classList.remove('js-motion'); }, 2500); }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="realizovano.css">
+</head>
+<body data-page="realizovano">
+<div id="site-header"></div>
+<main>
+  <!-- 01 · HERO – teze: tohle je uzavřené -->
+  <section class="rz-hero on-ink" data-over-hero aria-labelledby="rz-h">
+    <div class="rz-hero__wall" id="rz-mosaic" aria-hidden="true"></div>
+    <div class="wide rz-hero__in">
+      <nav class="crumbs rz-hero__crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Realizováno</span></nav>
+      <div class="rz-hero__head">
+        <span class="t-label eyebrow">Realizováno · <span data-bind="name"></span></span>
+        <h1 class="d-xl rz-hero__h" id="rz-h" data-split="now">Podepsáno. Předáno. <em>Uzavřeno.</em></h1>
+      </div>
+      <div class="rz-hero__foot">
+        <p class="t-lead rz-hero__lead" id="rz-lead"></p>
+        <div class="rz-hero__stat" id="rz-hero-stat"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · CESTA ZAKÁZKY – co je za námi (škrtá se se scrollem) -->
+  <section class="rz-path-sec" aria-labelledby="rz-path-h">
+    <div class="wide rz-path-sec__in">
+      <div class="rz-path-sec__side">
+        <span class="t-label eyebrow" data-reveal>Co znamená realizováno</span>
+        <h2 class="sr-only" id="rz-path-h">Cesta zakázky od nabídky k podpisu</h2>
+        <p class="statement rz-path-sec__p" data-reveal>Realizovaná zakázka už není nabídka. Prošla celou cestou – od zveřejnění až po podpis smlouvy.</p>
+      </div>
+      <ol class="rz-path" id="rz-path">
+        <li><span class="rz-path__no">01</span><span class="rz-path__w">V nabídce</span></li>
+        <li><span class="rz-path__no">02</span><span class="rz-path__w">Rezervováno</span></li>
+        <li class="rz-path__final"><span class="rz-path__no">03</span><span class="rz-path__w">Realizováno<i class="rz-path__dot" aria-hidden="true"></i></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 03 · ČÍSLA – počítáno z dat realizací -->
+  <section class="rz-nums" id="rz-nums" aria-labelledby="rz-nums-h">
+    <div class="wide">
+      <div class="rz-head"><span class="t-label eyebrow" data-reveal>V číslech</span><h2 class="d-sm" id="rz-nums-h" data-split>Co máme za sebou</h2></div>
+      <dl class="rz-stats" id="rz-stats" data-reveal-group></dl>
+      <div class="rz-breaks">
+        <div><h3 class="t-label rz-breaks__h">Podle typu</h3><ul class="rz-bars" id="rz-types"></ul></div>
+        <div><h3 class="t-label rz-breaks__h">Nejčastější lokality</h3><ul class="rz-bars" id="rz-places"></ul></div>
+      </div>
+      <p class="rz-note" id="rz-note"></p>
+    </div>
+  </section>
+
+  <!-- 04 · MAPA – kde už jsme uzavírali -->
+  <section class="rz-map-sec on-ink" id="rz-map-sec" aria-labelledby="rz-map-h">
+    <div class="wide">
+      <div class="rz-head"><span class="t-label eyebrow" data-reveal>Mapa realizací</span><h2 class="d-sm" id="rz-map-h" data-split>Kde už jsme uzavírali</h2></div>
+      <div class="rz-map" id="rz-map"></div>
+    </div>
+  </section>
+
+  <!-- 05 · ZEĎ REALIZACÍ – pečeť dopadne při vjetí do obrazovky -->
+  <section class="rz-wall-sec" id="zed" aria-labelledby="rz-wall-h">
+    <div class="wide">
+      <div class="rz-head rz-head--row">
+        <div><span class="t-label eyebrow" data-reveal>Archiv</span><h2 class="d-sm" id="rz-wall-h" data-split>Zeď realizací</h2></div>
+        <div class="seg" role="group" aria-label="Typ obchodu" id="rz-filter"></div>
+      </div>
+      <div class="rz-wall" id="rz-wall"></div>
+      <div class="rz-wall__more">
+        <p class="t-small" id="rz-wall-info" aria-live="polite"></p>
+        <button class="btn btn--secondary" id="rz-more" type="button">Zobrazit další</button>
+        <a class="btn btn--ghost" id="rz-all">Celý archiv ve výpisu <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prázdný stav – kancelář realizace na webu nezveřejňuje -->
+  <section class="rz-empty-sec" id="rz-empty" hidden aria-labelledby="rz-empty-h">
+    <div class="wide">
+      <div class="rz-empty">
+        <span class="t-label eyebrow">Archiv realizací</span>
+        <h2 class="d-sm" id="rz-empty-h">Archiv se připravuje</h2>
+        <p id="rz-empty-p"></p>
+        <div class="rz-empty__cta"><a class="btn btn--primary" data-href="vypis.html">Aktuální nabídka <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · ZÁVĚR – další příběh -->
+  <section class="rz-final on-ink" aria-labelledby="rz-fin-h">
+    <div class="wide rz-final__in">
+      <h2 class="d-xl" id="rz-fin-h" data-split>Další realizace může být <em>ta vaše.</em></h2>
+      <div class="rz-final__row">
+        <p class="t-lead">Řekněte nám o své nemovitosti. Projdeme s vámi cenu, postup i termíny – a dovedeme prodej až k podpisu.</p>
+        <div class="rz-final__cta"><a class="btn btn--primary" data-href="prodat.html">Chci prodat <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="btn btn--secondary" data-href="prodat.html#odhad">Odhad ceny zdarma</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="data.js"></script>
+<script src="data/tgh-listings.js"></script>
+<script src="data/stars-listings.js"></script>
+<script src="core.js"></script>
+<script src="realizovano.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

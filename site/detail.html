@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="detail.css">
 </head>
 <body data-page="detail">
 <div id="site-header"></div>
@@ -52,6 +53,8 @@
         <p class="statement d-overview__lead" id="d-lead" data-words></p>
         <dl class="d-facts" id="d-facts" data-reveal-group></dl>
         <div class="keyparams" id="d-key" hidden></div>
+        <!-- mobil/tablet: makléř hned pod přehledem (boční panel je až pod obsahem) -->
+        <div class="d-agent-strip" id="d-agent-strip"></div>
       </section>
 
       <section class="dsec" id="galerie" aria-labelledby="h-gal">
@@ -88,15 +91,41 @@
       </section>
 
       <section class="dsec" aria-labelledby="h-calc">
-        <h2 id="h-calc">Hypoteční kalkulačka</h2>
-        <form class="calc" id="calc" onsubmit="event.preventDefault()">
+        <div class="calc-head">
+          <h2 id="h-calc">Hypoteční kalkulačka</h2>
+          <!-- investiční výpočet je záměrně jen tichý přepínač u hypotéky (zadání klienta) -->
+          <div class="calc-tabs" role="tablist" aria-label="Typ výpočtu">
+            <button type="button" role="tab" id="t-mort" aria-selected="true" aria-controls="calc">Hypotéka</button>
+            <button type="button" role="tab" id="t-inv" aria-selected="false" aria-controls="calc-inv" tabindex="-1">Investice</button>
+          </div>
+        </div>
+        <form class="calc" id="calc" role="tabpanel" aria-labelledby="t-mort" onsubmit="event.preventDefault()">
           <div class="calc__grid">
             <div class="field"><label for="c-own">Vlastní zdroje</label><div class="input-suffix"><input class="input" id="c-own" inputmode="numeric" value="20"><span>%</span></div></div>
-            <div class="field"><label for="c-rate">Úroková sazba</label><div class="input-suffix"><input class="input" id="c-rate" inputmode="decimal" value="4,5"><span>% p. a.</span></div></div>
+            <div class="field"><label for="c-rate">Úroková sazba</label><div class="input-suffix input-suffix--w"><input class="input" id="c-rate" inputmode="decimal" value="4,5"><span>% p. a.</span></div></div>
             <div class="field"><label for="c-years">Doba splácení</label><div class="input-suffix"><input class="input" id="c-years" inputmode="numeric" value="30"><span>let</span></div></div>
           </div>
           <div class="calc__out"><span>Orientační měsíční splátka</span><b id="c-out"></b></div>
           <p class="calc__note">Výpočet je pouze orientační. Sazba je ilustrativní – upravte ji podle aktuální nabídky banky.</p>
+        </form>
+        <form class="calc calc--inv" id="calc-inv" role="tabpanel" aria-labelledby="t-inv" onsubmit="event.preventDefault()" hidden>
+          <p class="calc__lead"><span class="calc__tag">Orientační výpočet</span><span>Kolik by nemovitost mohla vynášet při pronájmu. Kupní cena <b id="i-price"></b>.</span></p>
+          <div class="calc__grid">
+            <div class="field"><label for="i-rent">Očekávaný nájem <span class="calc__est">odhad</span></label><div class="input-suffix input-suffix--w"><input class="input" id="i-rent" inputmode="numeric" aria-describedby="i-hint"><span>Kč/měs.</span></div></div>
+            <div class="field"><label for="i-cost">Náklady majitele <span class="calc__est">odhad</span></label><div class="input-suffix input-suffix--w"><input class="input" id="i-cost" inputmode="numeric" value="2 500" aria-describedby="i-hint"><span>Kč/měs.</span></div></div>
+            <div class="field"><label for="i-vac">Neobsazenost</label><div class="input-suffix input-suffix--w"><input class="input" id="i-vac" inputmode="decimal" value="1"><span>měs./rok</span></div></div>
+            <div class="field"><label for="i-own">Vlastní zdroje</label><div class="input-suffix"><input class="input" id="i-own" inputmode="numeric" value="20"><span>%</span></div></div>
+            <div class="field"><label for="i-rate">Úroková sazba</label><div class="input-suffix input-suffix--w"><input class="input" id="i-rate" inputmode="decimal" value="4,5"><span>% p. a.</span></div></div>
+            <div class="field"><label for="i-years">Doba splácení</label><div class="input-suffix"><input class="input" id="i-years" inputmode="numeric" value="30"><span>let</span></div></div>
+          </div>
+          <p class="calc__hint" id="i-hint"></p>
+          <dl class="inv-out" aria-live="polite">
+            <div><dt>Hrubý výnos</dt><dd id="i-gross"></dd><small>roční nájem / kupní cena</small></div>
+            <div><dt>Čistý výnos</dt><dd id="i-net"></dd><small>po nákladech a neobsazenosti</small></div>
+            <div><dt>Měsíční cashflow</dt><dd id="i-cf"></dd><small id="i-cf-sub"></small></div>
+            <div><dt>Návratnost</dt><dd id="i-pay"></dd><small>kupní cena / čistý roční příjem</small></div>
+          </dl>
+          <p class="calc__note">Výpočet je pouze orientační a nenahrazuje investiční ani daňové poradenství. Nezahrnuje náklady na pořízení (právní služby, odhad, poplatky bance), daň z příjmů z nájmu ani vývoj cen a nájmů. Nájem a náklady jsou předvyplněné odhady, ne údaje z nabídky.</p>
         </form>
       </section>
     </div>
@@ -105,7 +134,6 @@
       <div class="box" id="price-box">
         <div class="box__price" id="d-price"></div>
         <a class="btn btn--primary btn--block" href="#zajem">Mám zájem</a>
-        <a class="btn btn--secondary btn--block" id="d-call"><svg class="icon"><use href="#i-phone"/></svg><span></span></a>
         <div class="box__actions">
           <button class="btn btn--secondary" aria-pressed="false" data-toggle="Uloženo"><svg class="icon"><use href="#i-heart"/></svg><span>Uložit</span></button>
           <button class="btn btn--secondary" aria-pressed="false" data-toggle="Hlídáme cenu"><svg class="icon"><use href="#i-bell"/></svg><span>Hlídat cenu</span></button>
@@ -114,10 +142,7 @@
         </div>
         <p class="ref-no" id="d-ref"></p>
       </div>
-      <div class="box">
-        <div class="agent-mini" id="d-agent"></div>
-        <div class="agent-links" id="d-agent-links"></div>
-      </div>
+      <section class="box d-agent" id="d-agent" aria-label="Makléř nemovitosti"></section>
     </aside>
   </div>
 
@@ -127,7 +152,7 @@
         <span class="t-label eyebrow">Mám zájem</span>
         <h2 class="t-h2">Domluvte si prohlídku</h2>
         <p style="margin-top:var(--s-3);color:var(--text-muted)">Nejpozději do 24 hodin se ozveme nazpátek.</p>
-        <div class="agent-mini" style="margin-top:var(--s-6)" id="d-agent-2"></div>
+        <div class="d-broker" id="d-broker"></div>
       </div>
       <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, poptávka je odeslaná</h3><p>Makléř se vám ozve nejpozději do 24 hodin.</p></div>'">
         <div class="form__2">
@@ -181,6 +206,8 @@
 <script src="data.js"></script>
 <script src="data/tgh-listings.js"></script>
 <script src="data/detail-bzany.js"></script>
+<script src="data/phase3.js"></script>
+<script src="data/phase3-manual.js"></script>
 <script src="core.js"></script>
 <script src="detail.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>

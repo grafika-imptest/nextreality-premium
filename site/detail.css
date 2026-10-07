@@ -1,0 +1,96 @@
+/* ==========================================================================
+   NEXT Reality – PRÉMIOVÁ VERZE · detail nemovitosti (doplněk k premium.css)
+   1) Makléř v popředí: boční panel (desktop, lepí se), proužek pod přehledem (mobil/tablet),
+      velký portrét v sekci „Mám zájem“ – vše s proklikem na profil (makler.html).
+   2) Kalkulačka: tichý přepínač Hypotéka | Investice, orientační výnosový výpočet.
+   Bez stínů, 1px linky; interakce 999 px, boxy 4 px.
+   ========================================================================== */
+
+/* --- Makléř: společné ------------------------------------------------------- */
+.d-agent__name { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 30px; line-height: 34px; letter-spacing: -.01em; color: var(--ink); }
+.d-agent__name a, .d-broker__name a { color: inherit; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size var(--dur-ui) var(--ease); }
+.d-agent__name a:hover, .d-broker__name a:hover { background-size: 100% 1px; }
+.d-agent__role { margin: 0; font-size: var(--fs-small); line-height: var(--lh-small); color: var(--text-muted); }
+.d-agent__why { margin: 0; font-size: 15px; line-height: 23px; color: var(--text); }
+.d-agent__profile { display: inline-flex; align-items: center; gap: var(--s-2); justify-self: start; width: fit-content; padding-bottom: 2px; border-bottom: 1px solid currentColor; color: var(--ink); font-weight: 500; text-decoration: none; }
+.d-agent__profile .icon { width: 18px; height: 18px; transition: transform var(--dur-ui) var(--ease); }
+.d-agent__profile:hover { text-decoration: none; }
+.d-agent__profile:hover .icon { transform: translateX(4px); }
+:is(.d-agent, .d-agent-strip, .d-broker) img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; transition: transform 1.2s var(--ease); }
+:is(.d-agent__photo, .d-agent-strip__photo, .d-broker__photo) { display: block; overflow: hidden; background: var(--stone); }
+:is(.d-agent__photo, .d-broker__photo):hover img { transform: scale(1.03); }
+
+/* --- Boční panel (desktop) ---------------------------------------------------- */
+.d-agent { gap: var(--s-5); padding: var(--s-6); }
+.d-agent__photo { margin: calc(-1 * var(--s-6)) calc(-1 * var(--s-6)) 0; aspect-ratio: 5 / 4; border-radius: var(--r-card) var(--r-card) 0 0; }
+.d-agent__id { display: grid; gap: var(--s-2); }
+.d-agent__id .eyebrow { margin-bottom: var(--s-1); }
+.d-agent__actions { display: grid; gap: var(--s-2); }
+/* na mobilu/tabletu je boční panel až pod obsahem – makléře tam nese proužek a sekce Mám zájem */
+@media (max-width: 1023px) { .d-agent { display: none; } }
+/* lepí se pod podnavigací, jen když se celý vejde na výšku okna */
+@media (min-width: 1024px) and (min-height: 840px) {
+  .aside .d-agent { position: sticky; top: calc(var(--header-h) + 59px + var(--s-6)); }
+}
+
+/* --- Proužek pod přehledem (mobil / tablet) ------------------------------------- */
+.d-agent-strip { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s-4); align-items: center; padding-top: var(--s-6); border-top: 1px solid var(--line); }
+.d-agent-strip__photo { width: 72px; aspect-ratio: 4 / 5; border-radius: var(--r-card); }
+.d-agent-strip__id { display: grid; gap: 2px; min-width: 0; }
+.d-agent-strip__id .t-label { color: var(--text-muted); text-transform: uppercase; }
+.d-agent-strip .d-agent__name { font-size: 24px; line-height: 30px; }
+.d-agent-strip__actions { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.d-agent-strip__actions .btn { padding-inline: var(--s-4); }
+@media (min-width: 640px) {
+  .d-agent-strip { grid-template-columns: 88px minmax(0, 1fr) auto; }
+  .d-agent-strip__photo { width: 88px; }
+  .d-agent-strip__actions { grid-column: auto; display: flex; }
+}
+@media (min-width: 1024px) { .d-agent-strip { display: none; } }
+
+/* --- Sekce Mám zájem: velký portrét ---------------------------------------------- */
+.d-broker { display: grid; gap: var(--s-6); margin-top: var(--s-8); padding-top: var(--s-8); border-top: 1px solid var(--line-strong); }
+.d-broker__photo { aspect-ratio: 4 / 5; max-width: 280px; border-radius: var(--r-card); background: var(--paper); }
+.d-broker__body { display: grid; gap: var(--s-3); align-content: start; min-width: 0; }
+.d-broker__name { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(30px, 2.8vw, 40px); line-height: 1.05; letter-spacing: -.02em; color: var(--ink); }
+.d-broker__motto { margin: var(--s-2) 0 0; padding-left: var(--s-4); border-left: 1px solid var(--accent-deco); font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 26px; color: var(--ink); }
+.d-broker__links { display: grid; gap: var(--s-2); margin-top: var(--s-2); }
+.d-broker__links a { display: flex; align-items: center; gap: var(--s-2); color: var(--ink); font-weight: 500; text-decoration: none; overflow-wrap: break-word; min-width: 0; }
+.d-broker__links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.d-broker__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-5); margin-top: var(--s-2); }
+.d-broker__foot span { font-size: var(--fs-small); color: var(--text-muted); }
+/* dvousloupcově jen když je na to místo (levý sloupec sekce je na 1024–1279 px úzký) */
+#zajem .contact > div:first-child { container-type: inline-size; }
+@container (min-width: 500px) {
+  .d-broker { grid-template-columns: minmax(160px, 220px) minmax(0, 1fr); align-items: start; }
+  .d-broker__photo { max-width: none; }
+}
+
+/* --- Kalkulačka: přepínač Hypotéka | Investice -------------------------------------- */
+.calc-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3) var(--s-4); }
+.calc-head h2 { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 30px; line-height: 36px; color: var(--ink); }
+.calc-tabs { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: var(--r-pill); }
+.calc-tabs button { height: 32px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: none; font: inherit; font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--text-muted); cursor: pointer; transition: background var(--dur-micro), color var(--dur-micro); }
+.calc-tabs button:hover { color: var(--ink); }
+.calc-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.calc-tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.calc[hidden] { display: none; }
+
+.input-suffix--w .input { padding-right: 88px; }
+.calc .input { width: 100%; font-variant-numeric: tabular-nums; }
+.calc__lead { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin: 0; font-size: 15px; line-height: 22px; color: var(--text); }
+.calc__lead b { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.calc__tag { display: inline-flex; align-items: center; height: 24px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-pill); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600; color: var(--ink); }
+.calc__est { display: inline-block; margin-left: var(--s-1); padding: 0 6px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); font-size: 10.5px; line-height: 16px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); vertical-align: 1px; }
+.calc__hint { margin: 0; font-size: 13px; line-height: 20px; color: var(--text-muted); }
+
+.inv-out { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-4); margin: 0; padding-top: var(--s-5); border-top: 1px solid var(--line); }
+@media (min-width: 768px) { .inv-out { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.inv-out > div { display: grid; gap: var(--s-1); align-content: start; min-width: 0; }
+.inv-out dt { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.inv-out dd { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(24px, 2.2vw, 30px); line-height: 1.1; letter-spacing: -.01em; color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.inv-out dd.is-neg { color: var(--danger); }
+.inv-out small { font-size: 12px; line-height: 17px; color: var(--text-muted); }
+/* štítek „odhad“ může label zalomit – pole v řadě zarovnáme k dolní hraně, aby inputy lícovaly */
+.calc--inv .calc__grid { align-items: end; }
+.calc--inv .field { align-content: end; }

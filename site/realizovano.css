@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Realizováno – uzavřené zakázky (jen tato stránka, načítá se po premium.css)
+   Skryté výchozí stavy animací platí jen pod třídou .is-armed, kterou přidá JS,
+   až když animaci opravdu nastaví. Bez JS / bez pohybu je vidět konečný stav.
+   ========================================================================== */
+
+.rz-head { display: grid; gap: var(--s-3); margin-bottom: var(--s-10); }
+.rz-head--row { align-items: end; }
+@media (min-width: 768px) { .rz-head--row { grid-template-columns: minmax(0, 1fr) auto; } }
+
+/* --- 01 Hero --------------------------------------------------------------- */
+.rz-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(100svh, 920px); display: flex; }
+.rz-hero.is-empty { min-height: auto; }
+.rz-hero.is-empty .rz-hero__in { padding-top: calc(var(--header-h) + var(--s-16)); }
+.rz-hero__wall { position: absolute; inset: 0; z-index: -2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-inline: 8px; opacity: .38; }
+@media (max-width: 767px) { .rz-hero__wall { grid-template-columns: repeat(2, 1fr); } .rz-hero__col:nth-child(n+3) { display: none; } }
+.rz-hero__col { overflow: hidden; }
+.rz-hero__track { display: grid; gap: 8px; }
+.rz-hero__col:nth-child(even) .rz-hero__track { margin-top: -18%; }
+.rz-hero__track img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-card); filter: grayscale(1) contrast(1.05); }
+.js-motion .rz-hero__track { animation: rz-drift 90s linear infinite; }
+.js-motion .rz-hero__col:nth-child(even) .rz-hero__track { animation-direction: reverse; animation-duration: 110s; }
+@keyframes rz-drift { to { transform: translateY(-50%); } }
+.rz-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
+  linear-gradient(180deg, color-mix(in srgb, var(--ink) 80%, transparent) 0%, color-mix(in srgb, var(--ink) 55%, transparent) 40%, var(--ink) 96%),
+  linear-gradient(90deg, color-mix(in srgb, var(--ink) 70%, transparent) 0%, transparent 70%); }
+.rz-hero__in { display: grid; grid-template-rows: auto 1fr auto; gap: var(--s-8); width: 100%; padding-block: calc(var(--header-h) + var(--s-6)) var(--s-10); }
+.rz-hero__crumbs, .rz-hero__crumbs a, .rz-hero__crumbs [aria-current] { color: rgba(243, 244, 245, .75); }
+.rz-hero__crumbs { grid-row: 1; margin: 0; }
+.rz-hero__foot { grid-row: 3; }
+.rz-hero__head { grid-row: 2; align-self: end; display: grid; gap: var(--s-5); }
+.rz-hero__head .eyebrow { color: var(--on-ink); }
+.rz-hero__h { color: var(--on-ink); max-width: 12ch; }
+.rz-hero__h em { color: var(--accent-deco); }
+.rz-hero__foot { display: grid; gap: var(--s-8); align-items: end; padding-top: var(--s-8); border-top: 1px solid rgba(243, 244, 245, .2); }
+@media (min-width: 1024px) { .rz-hero__foot { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
+.rz-hero .rz-hero__lead { color: rgba(243, 244, 245, .82); max-width: 46ch; margin: 0; }
+.rz-hero .rz-hero__lead b { color: var(--on-ink); font-weight: 500; }
+.rz-hero__stat { display: flex; align-items: end; gap: var(--s-4); }
+.rz-hero__stat:empty { display: none; }
+.rz-hero__n { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(64px, 9vw, 144px); line-height: .82; letter-spacing: -.05em; color: var(--accent-deco); font-variant-numeric: tabular-nums; }
+.rz-hero__nl { font-size: var(--fs-small); line-height: var(--lh-small); color: var(--on-ink-muted); padding-bottom: .4em; }
+
+/* --- 02 Cesta zakázky – přeškrtnuté stavy --------------------------------- */
+.rz-path-sec { padding-block: var(--section-editorial); border-bottom: 1px solid var(--line); }
+.rz-path-sec__in { display: grid; gap: var(--s-10); }
+@media (min-width: 1024px) { .rz-path-sec__in { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-16); align-items: end; } }
+.rz-path-sec__side { display: grid; gap: var(--s-5); align-content: end; }
+.rz-path-sec__p { color: var(--ink); max-width: 24ch; margin: 0; }
+.rz-path { list-style: none; margin: 0; padding: 0; display: grid; }
+.rz-path li { --s: 1; display: flex; align-items: baseline; gap: var(--s-4); padding-block: var(--s-4); border-top: 1px solid var(--line); }
+.rz-path li:last-child { border-bottom: 1px solid var(--line); }
+.rz-path__no { flex: none; width: 2.5em; font-size: var(--fs-label); letter-spacing: var(--ls-label); font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.rz-path__w { position: relative; font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display); line-height: 1.05; letter-spacing: -.04em; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+/* první dva stavy: už za námi – přeškrtnout a ztlumit */
+.rz-path li:not(.rz-path__final) .rz-path__w { color: color-mix(in srgb, var(--ink) calc(100% - var(--s) * 70%), var(--line-strong)); }
+.rz-path li:not(.rz-path__final) .rz-path__w::after { content: ""; position: absolute; left: -2%; right: -2%; top: 54%; height: 2px; background: var(--ink); transform: scaleX(var(--s)); transform-origin: left; }
+/* poslední stav: rozsvítí se */
+.rz-path__final .rz-path__w { opacity: calc(.18 + var(--s) * .82); }
+.rz-path__dot { display: inline-block; width: .2em; height: .2em; margin-left: .06em; border-radius: 50%; background: var(--accent-deco); transform: scale(var(--s)); }
+/* bez scrubu (nomotion / bez GSAP) = konečný stav díky --s: 1 výše */
+
+/* --- 03 Čísla --------------------------------------------------------------- */
+.rz-nums { padding-block: var(--section-editorial); }
+.rz-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-8) var(--s-6); margin: 0; padding-top: var(--s-8); border-top: 1px solid var(--ink); }
+@media (min-width: 768px) { .rz-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .rz-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.rz-stats dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -.04em; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rz-stats dt sup { font-size: .35em; vertical-align: top; margin-left: .1em; color: var(--text-muted); }
+.rz-stats dd { margin: var(--s-2) 0 0; font-size: var(--fs-small); color: var(--text-muted); max-width: 22ch; }
+.rz-breaks { display: grid; gap: var(--s-10); margin-top: var(--s-16); }
+@media (min-width: 768px) { .rz-breaks { grid-template-columns: 1fr 1fr; gap: var(--s-16); } }
+.rz-breaks__h { margin: 0 0 var(--s-4); color: var(--text-muted); }
+.rz-bars { list-style: none; margin: 0; padding: 0; display: grid; }
+.rz-bars li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2) var(--s-4); padding-block: var(--s-3); border-top: 1px solid var(--line); align-items: baseline; }
+.rz-bars__l { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; color: var(--ink); overflow-wrap: anywhere; }
+.rz-bars__n { font-variant-numeric: tabular-nums; font-weight: 500; color: var(--ink); }
+.rz-bars__t { grid-column: 1 / -1; height: 2px; background: var(--line); overflow: hidden; }
+.rz-bars__t i { display: block; height: 100%; width: var(--w); background: var(--ink); transform-origin: left; transition: transform 1.4s var(--ease); }
+.is-armed .rz-bars:not(.is-in) .rz-bars__t i { transform: scaleX(0); }
+.rz-bars li:nth-child(2) i { transition-delay: 80ms; } .rz-bars li:nth-child(3) i { transition-delay: 160ms; }
+.rz-bars li:nth-child(4) i { transition-delay: 240ms; } .rz-bars li:nth-child(5) i { transition-delay: 320ms; } .rz-bars li:nth-child(6) i { transition-delay: 400ms; }
+.rz-note { margin: var(--s-10) 0 0; font-size: 13px; line-height: 20px; color: var(--text-muted); max-width: 80ch; }
+
+/* --- 04 Mapa ------------------------------------------------------------------ */
+.rz-map-sec { padding-block: var(--section-editorial); }
+.rz-map { position: relative; height: clamp(420px, 62vh, 640px); border-radius: var(--r-card); overflow: hidden; background: var(--ink-2); }
+.rz-map > .blocked { height: 100%; border-radius: var(--r-card); }
+.rz-map .leaflet-container, .rz-map.leaflet-container { font-family: var(--font); background: #e8eaec; }
+.rz-mpin { background: none; border: 0; }
+.rz-mpin span { display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); border: 3px solid var(--accent-deco); }
+.rz-mpin:hover span, .rz-mpin:focus span { background: var(--accent-deco); }
+.rz-mcluster { background: none; }
+.rz-mcluster span { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--paper); font: 600 14px/1 var(--font); outline: 6px solid rgba(133, 185, 41, .45); }
+.rz-map .leaflet-popup-content-wrapper { border-radius: var(--r-card); box-shadow: none; border: 1px solid var(--ink); background: var(--paper); }
+.rz-map .leaflet-popup-tip { box-shadow: none; background: var(--paper); border: 1px solid var(--ink); }
+.rz-map .leaflet-popup-content { margin: var(--s-4); }
+.rz-map .leaflet-control-zoom a { border-radius: 0; }
+.rz-map .leaflet-bar { border-radius: var(--r-card); box-shadow: none; border: 1px solid var(--line-strong); overflow: hidden; }
+.rz-pop { display: grid; gap: 2px; font: 400 13px/18px var(--font); color: var(--text); }
+.rz-pop b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 17px; line-height: 22px; color: var(--ink); }
+.rz-pop__st { font-size: var(--fs-label); letter-spacing: var(--ls-label); font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+
+/* --- 05 Zeď realizací + pečeť -------------------------------------------------- */
+.rz-wall-sec { padding-block: var(--section-editorial); }
+.rz-filter__n { opacity: .6; font-variant-numeric: tabular-nums; margin-left: 2px; }
+.rz-wall { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-10) var(--gap); }
+@media (min-width: 600px) { .rz-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .rz-wall { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .rz-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.rz-card { position: relative; min-width: 0; }
+.rz-card__media { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r-card); overflow: hidden; background: var(--stone); }
+.rz-card__media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.04); opacity: .9; transition: filter 1.2s var(--ease), opacity 1.2s var(--ease), transform 1.4s var(--ease); }
+.rz-card:hover .rz-card__media img { filter: grayscale(0); opacity: 1; transform: scale(1.04); }
+.rz-card.is-empty .rz-card__media { background: var(--ink); }
+.rz-card__body { display: grid; gap: var(--s-1); padding-top: var(--s-4); }
+.rz-card__loc { margin: 0; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; line-height: 28px; letter-spacing: -.005em; color: var(--ink); overflow-wrap: anywhere; }
+.rz-card__st { margin: 0; display: flex; align-items: center; gap: var(--s-2); font-size: 13px; color: var(--text-muted); }
+.rz-card__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); flex: none; }
+
+.rz-seal { position: absolute; right: var(--s-3); bottom: var(--s-3); width: 92px; height: 92px; display: grid; place-items: center; color: var(--on-ink);
+  transform: rotate(-10deg); transition: transform .7s cubic-bezier(.2, 1.3, .35, 1), opacity .25s linear; transition-delay: calc(var(--d, 0ms) + 120ms); }
+.rz-seal svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.rz-seal__ring { fill: var(--ink); stroke: var(--accent-deco); stroke-width: 1.5; }
+.rz-seal__ring--in { fill: none; stroke: rgba(243, 244, 245, .25); stroke-width: 1; }
+.rz-seal__txt { fill: var(--on-ink); font: 600 8.6px/1 var(--font); letter-spacing: .12em; }
+.rz-seal__check { fill: none; stroke: var(--accent-deco); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 0; transition: stroke-dashoffset .5s var(--ease); transition-delay: calc(var(--d, 0ms) + 620ms); }
+.rz-seal::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--accent-deco); opacity: 0; pointer-events: none; }
+
+/* výchozí stav (jen když JS animaci nastavil): fotka ještě v barvě, pečeť nad kartou */
+.is-armed .rz-card:not(.is-closed) .rz-card__media img { filter: grayscale(0); opacity: 1; }
+.is-armed .rz-card:not(.is-closed) .rz-seal { opacity: 0; transform: scale(1.9) rotate(-28deg); transition: none; }
+.is-armed .rz-card:not(.is-closed) .rz-seal__check { stroke-dashoffset: 40; transition: none; }
+.is-armed .rz-card.is-closed .rz-card__media img { transition-delay: calc(var(--d, 0ms) + 380ms); }
+.is-armed .rz-card.is-closed .rz-seal::after { animation: rz-ripple .9s var(--ease) both; animation-delay: calc(var(--d, 0ms) + 560ms); }
+.is-armed .rz-card.is-closed .rz-card__media { animation: rz-impact .5s var(--ease) both; animation-delay: calc(var(--d, 0ms) + 560ms); }
+@keyframes rz-ripple { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(1.7); } }
+@keyframes rz-impact { 0% { transform: scale(1); } 30% { transform: scale(.985); } 100% { transform: scale(1); } }
+
+.rz-wall__more { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-6); margin-top: var(--s-12); padding-top: var(--s-6); border-top: 1px solid var(--line); }
+.rz-wall__more p { margin: 0 auto 0 0; color: var(--text-muted); }
+
+/* --- Prázdný stav ------------------------------------------------------------- */
+.rz-empty-sec { padding-block: var(--section-editorial); }
+.rz-empty { display: grid; gap: var(--s-4); justify-items: start; padding: var(--s-10) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.rz-empty p { margin: 0; max-width: 60ch; color: var(--text-muted); }
+.rz-empty__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
+
+/* --- 06 Závěr ------------------------------------------------------------------- */
+.rz-final { padding-block: var(--section-editorial); }
+.rz-final__in { display: grid; gap: var(--s-10); }
+.rz-final h2 em { color: var(--accent-deco); }
+.rz-final__row { display: grid; gap: var(--s-6); align-items: end; padding-top: var(--s-8); border-top: 1px solid rgba(243, 244, 245, .2); }
+@media (min-width: 1024px) { .rz-final__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
+.rz-final__row p { color: rgba(243, 244, 245, .8); max-width: 44ch; margin: 0; }
+.rz-final__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rz-hero__track { animation: none !important; }
+  .rz-seal, .rz-card__media img, .rz-bars__t i { transition: none !important; }
+}
+/* podklad OSM ztlumený do šedi – piny a clustery zůstávají kontrastní */
+.rz-map .leaflet-tile-pane { filter: grayscale(1) contrast(.92) brightness(1.04); }

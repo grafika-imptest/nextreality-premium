@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Makléř | NEXT Reality</title>
+<meta name="description" content="Osobní stránka makléře NEXT Reality – o mně, aktuální nabídka, realizované obchody, reference a přímý kontakt.">
 <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,41 +13,117 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="makler.css">
 </head>
 <body data-page="makleri">
 <div id="site-header"></div>
-<main>
-  <div class="container profile">
-    <aside class="profile__card" aria-label="Kontakt na makléře">
-      <a class="back" data-href="makleri.html"><svg class="icon"><use href="#i-arrow-left"/></svg>Všichni makléři</a>
-      <div class="profile__photo"><img id="pf-img" alt=""></div>
-      <div><h1 id="pf-name"></h1><p class="profile__role" id="pf-role"></p></div>
-      <div class="agent-links" id="pf-links"></div>
-      <a class="btn btn--primary btn--block" href="#kontakt-maklere">Domluvit konzultaci</a>
-      <a class="btn btn--secondary btn--block" data-href="prodat.html#odhad">Odhad ceny zdarma</a>
-    </aside>
-    <div class="profile__main">
-      <blockquote class="motto" id="pf-motto"></blockquote>
-      <div class="stats-row" id="pf-stats"></div>
-      <section class="profile__bio" aria-labelledby="h-bio"><h2 class="t-h3" id="h-bio">O mně</h2><div id="pf-bio" style="display:grid;gap:var(--s-4)"></div></section>
-      <section aria-labelledby="h-off">
-        <div class="section-head" style="margin-bottom:var(--s-4)"><h2 class="t-h3" id="h-off">Moje aktuální nemovitosti v nabídce</h2></div>
-        <div class="grid-cards grid-cards--3" id="pf-cards"></div>
-      </section>
+<main class="mk">
+  <!-- 1 · Hero: portrét, jméno, kontakt, čísla -->
+  <section class="mk-hero on-ink" id="top" data-over-hero>
+    <div class="container mk-hero__in">
+      <div class="mk-hero__text">
+        <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><a data-href="makleri.html">Makléři</a><span aria-hidden="true">/</span><span aria-current="page" id="mk-crumb"></span></nav>
+        <span class="t-label eyebrow" id="mk-office"></span>
+        <h1 class="mk-hero__name" id="mk-name"></h1>
+        <p class="mk-hero__role" id="mk-role"></p>
+        <p class="mk-hero__lead" id="mk-lead"></p>
+        <div class="mk-hero__cta" id="mk-cta"></div>
+        <dl class="mk-nums" id="mk-nums"></dl>
+        <div id="mk-nums-demo"></div>
+      </div>
+      <figure class="mk-hero__photo" id="mk-photo" data-clip></figure>
     </div>
-  </div>
+  </section>
 
-  <section class="section section--tint" id="kontakt-maklere">
-    <div class="container contact">
-      <div><span class="t-label eyebrow">Kontakt</span><h2 class="t-h2">Dejte mi vědět, s čím vám můžu pomoct</h2>
-        <p style="margin-top:var(--s-3);color:var(--text-muted)">Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
-      <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, zpráva je odeslaná</h3><p>Ozvu se vám nejpozději do 24 hodin.</p></div>'">
+  <nav class="mk-subnav" aria-label="Obsah stránky makléře">
+    <div class="container mk-subnav__in">
+      <a href="#o-mne">O mně</a><a href="#pochlubit">Čím se mohu pochlubit</a><a href="#nabidka">Nabídka</a><a href="#realizace">Realizace</a><a href="#reference">Reference</a>
+      <a class="btn btn--primary mk-subnav__cta" href="#kontakt" data-topic="Osobní schůzka">Domluvit schůzku</a>
+    </div>
+  </nav>
+
+  <!-- 2 · O mně -->
+  <section class="mk-sec" id="o-mne" aria-labelledby="h-omne">
+    <div class="container mk-about">
+      <div class="mk-about__head">
+        <span class="t-label eyebrow">01 · O mně</span>
+        <h2 class="mk-h2" id="h-omne" data-split>Kdo se postará o&nbsp;vaši nemovitost</h2>
+        <blockquote class="mk-motto" id="mk-motto"></blockquote>
+      </div>
+      <div class="mk-bio" id="mk-bio"></div>
+    </div>
+  </section>
+
+  <!-- 3 · Čím se mohu pochlubit -->
+  <section class="mk-sec on-ink" id="pochlubit" aria-labelledby="h-hl">
+    <div class="container">
+      <div class="mk-head">
+        <span class="t-label eyebrow">02 · Čím se mohu pochlubit</span>
+        <h2 class="mk-h2" id="h-hl" data-split>Fakta, ne sliby</h2>
+        <p class="mk-head__p">Údaje z nabídky a z profilu makléře. Ocenění a roky praxe doplňuje makléř sám v CMS – předloha je nevymýšlí.</p>
+      </div>
+      <ul class="mk-hls" id="mk-hl"></ul>
+    </div>
+  </section>
+
+  <!-- 4 · Co vám mohu nabídnout -->
+  <section class="mk-sec" id="nabidka" aria-labelledby="h-off">
+    <div class="container">
+      <div class="mk-head mk-head--row">
+        <div><span class="t-label eyebrow">03 · Nabídka</span><h2 class="mk-h2" id="h-off" data-split>Co vám mohu nabídnout</h2></div>
+        <div class="mk-head__side"><span class="mk-count" id="mk-offer-n"></span><a class="btn btn--ghost" data-href="vypis.html">Celá nabídka kanceláře <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      </div>
+      <div id="mk-offer-demo"></div>
+      <div class="mk-grid" id="mk-offer"></div>
+      <div class="mk-more"><button class="btn btn--secondary" type="button" id="mk-offer-more" hidden></button></div>
+    </div>
+  </section>
+
+  <!-- 5 · Co už jsem dokázal -->
+  <section class="mk-sec mk-sec--stone" id="realizace" aria-labelledby="h-sold">
+    <div class="container">
+      <div class="mk-head mk-head--row">
+        <div><span class="t-label eyebrow">04 · Realizace</span><h2 class="mk-h2" id="h-sold" data-split>Co už jsem dokázal</h2></div>
+        <div class="mk-head__side"><span class="mk-count" id="mk-sold-n"></span></div>
+      </div>
+      <div id="mk-sold-demo"></div>
+      <div class="mk-grid mk-grid--sold" id="mk-sold"></div>
+      <div class="mk-more"><button class="btn btn--secondary" type="button" id="mk-sold-more" hidden></button></div>
+    </div>
+  </section>
+
+  <!-- 6 · Co o mně říkají -->
+  <section class="mk-sec on-ink" id="reference" aria-labelledby="h-ref">
+    <div class="container">
+      <div class="mk-head mk-head--row">
+        <div><span class="t-label eyebrow">05 · Reference</span><h2 class="mk-h2" id="h-ref" data-split>Co o mně říkají</h2><p class="mk-head__p" id="mk-ref-src"></p></div>
+        <div class="mk-ratings" id="mk-ratings"></div>
+      </div>
+      <div id="mk-ref-demo"></div>
+      <div class="mk-refs" id="mk-refs"></div>
+    </div>
+  </section>
+
+  <!-- 7 · Kontakt -->
+  <section class="mk-sec" id="kontakt" aria-labelledby="h-k">
+    <div class="container mk-k">
+      <div class="mk-k__side">
+        <span class="t-label eyebrow">06 · Kontakt</span>
+        <h2 class="mk-h2" id="h-k">Napište mi, s čím vám můžu pomoct</h2>
+        <p class="mk-muted">Ozvu se vám nejpozději do 24 hodin. Raději voláte? Zavolejte mi přímo.</p>
+        <div class="mk-k__card" id="mk-k-card"></div>
+        <div class="agent-links mk-k__links" id="mk-k-links"></div>
+      </div>
+      <form class="form mk-form" id="mk-form">
+        <input type="hidden" id="mk-k-to" name="makler">
+        <div class="field"><label for="k-topic">S čím potřebujete pomoct</label>
+          <select class="select" id="k-topic" name="tema"><option>Prodej nemovitosti</option><option>Koupě nemovitosti</option><option>Pronájem</option><option>Odhad ceny</option><option>Osobní schůzka</option><option>Jiný dotaz</option></select></div>
         <div class="form__2">
           <div class="field"><label for="k-name">Jméno a příjmení *</label><input class="input" id="k-name" autocomplete="name" required></div>
           <div class="field"><label for="k-tel">Telefon *</label><input class="input" id="k-tel" type="tel" autocomplete="tel" required></div>
         </div>
         <div class="field"><label for="k-mail">E-mail *</label><input class="input" id="k-mail" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="k-msg">Zajímá vás něco konkrétního?</label><textarea class="input" id="k-msg"></textarea></div>
+        <div class="field"><label for="k-msg">Zpráva</label><textarea class="input" id="k-msg"></textarea></div>
         <label class="check"><input type="checkbox" required> <span>Souhlasím se zpracováním osobních údajů. <a href="#">Jak s nimi nakládáme</a></span></label>
         <div><button class="btn btn--primary">Odeslat zprávu</button></div>
       </form>
@@ -56,34 +133,11 @@
 <div id="site-footer"></div>
 <script src="data.js"></script>
 <script src="data/tgh-listings.js"></script>
+<script src="data/stars-listings.js"></script>
 <script src="data/phase3.js"></script>
 <script src="data/phase3-manual.js"></script>
+<script src="makler.js"></script>
 <script src="core.js"></script>
-<script>
-// Detail makléře – profil + jeho aktuální nabídky (spárované s daty výpisu podle URL nabídky)
-window.PAGE = {
-  note: 'Předloha má plná data jen pro Zdeňka Kubáta (TGH). Jiný makléř ze seznamu ukáže kontakty a prázdný stav bio.',
-  render() {
-    const slug = qs.get('slug') || 'zdenek-kubat';
-    const all = [...(BROKERS.tgh || []), ...(BROKERS.stars || [])];
-    const base = (qs.get('name') && all.find(b => b.n === qs.get('name'))) || all.find(b => b.slug === slug) || all.find(b => b.slug === 'zdenek-kubat');
-    const D = base.slug === BROKER_DETAIL.slug ? BROKER_DETAIL : null;
-    document.title = `${base.n} – ${base.r} | ${base.office}`;
-    $('#pf-img').src = D?.portrait || base.img; $('#pf-img').alt = base.n;
-    $('#pf-name').textContent = base.n;
-    $('#pf-role').textContent = `${base.r} · ${base.office}`;
-    $('#pf-links').innerHTML = `${base.tel ? `<a href="tel:${base.tel.replace(/\s/g, '')}">${ico('phone')}${esc(base.tel)}</a>` : ''}${base.mail ? `<a href="mailto:${esc(base.mail)}">${ico('mail')}${esc(base.mail)}</a>` : ''}`;
-    $('#pf-motto').hidden = !D?.motto;
-    if (D?.motto) $('#pf-motto').innerHTML = `${ico('quote')}${esc(D.motto)}`;
-    $('#pf-bio').innerHTML = D?.bio?.length ? D.bio.map(p => `<p>${esc(p)}</p>`).join('') : `<div class="dempty">${ico('user')}<div><b>Makléř zatím nemá vyplněný profil</b><span>Kontaktujte ho přímo telefonem nebo e-mailem.</span></div></div>`;
-    const mine = D ? (LISTINGS.tgh || []).filter(x => D.hrefs.includes(x.href)) : [];
-    $('#pf-cards').closest('section').hidden = !D;
-    $('#pf-cards').innerHTML = mine.length ? mine.map(x => card(x)).join('') : `<div class="dempty" style="grid-column:1/-1">${ico('dum')}<div><b>Žádná nemovitost v aktuální nabídce</b><span>Nové nabídky se tu objeví automaticky.</span></div></div>`;
-    $('#pf-stats').innerHTML = D ? `<div><b>${mine.length}</b><span>nemovitostí v nabídce</span></div><div><b>${esc(base.office.replace('NEXT REALITY ', ''))}</b><span>kancelář</span></div>` : '';
-    $('#k-msg').placeholder = `Zpráva pro: ${base.n}`;
-  },
-};
-</script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>

@@ -90,15 +90,16 @@
 <script>
 const SCREENS = [
   ['index.html', 'dum', '1 · Homepage', 'Hero s vyhledáváním → nabídka → chci prodat → makléři → reference → projekty → kontakt'],
-  ['vypis.html', 'list', '2 · Výpis – seznam', 'Filtry, řazení, stránkování, hlídací pes, realizované'],
-  ['vypis.html|&view=map', 'map', '3 · Výpis – mapa', 'Přepínač Seznam / Mapa, piny s cenou, shlukování'],
-  ['detail.html', 'image', '4 · Detail nemovitosti', 'Galerie, parametry, popis, vybavení, PENB, půdorys, mapa, makléř'],
-  ['prodat.html', 'chat', '5 · Chci prodat', 'Odhad ceny jako hlavní vstup do poptávky'],
+  ['vypis.html', 'list', '2 · Výpis – seznam', 'Více lokalit se štítky, druhy nemovitostí (komerční → kanceláře…), porovnání až 4 nabídek'],
+  ['vypis.html|&view=map', 'map', '3 · Výpis – mapa', 'Seznam synchronizovaný s mapou, hledání ve výřezu, cenové piny, porovnání'],
+  ['detail.html', 'image', '4 · Detail nemovitosti', 'Filmová hlavička, výrazný makléř s profilem, kalkulačka Hypotéka | Investice'],
+  ['prodat.html', 'chat', '5 · Chci prodat', 'Jste na správném místě – kontaktní formulář nahoře, čísla místo slibů, odhad ceny'],
   ['makleri.html', 'people', '6 · Přehled makléřů', 'Filtr kanceláře, hledání jména'],
-  ['makler.html|&slug=zdenek-kubat', 'user', '7 · Detail makléře', 'Profil + jeho nabídky'],
-  ['projekty.html', 'projekt', '8 · Developerské projekty', 'Přehled a detail (Musílkova 39) s tabulkou jednotek'],
-  ['kontakty.html', 'pin', '9 · Kontakty', 'Pobočky TGH / kancelář Stars'],
-  ['404.html', 'empty', '10 · 404 a bez výsledků', 'Obecná 404, „už není v nabídce“ (?variant=sold), prázdný výsledek ve výpisu'],
+  ['makler.html|&slug=zdenek-kubat', 'user', '7 · Detail makléře', 'Osobní web makléře: o mně, čím se chlubím, nabídka, realizace, reference, formulář'],
+  ['projekty.html', 'projekt', '8 · Developerské projekty', 'Filtr štítků, animace stavby; detail s galerií, jednotkami a makléřem'],
+  ['realizovano.html', 'check', '9 · Realizováno', 'Uzavřené obchody: razítko Prodáno, čísla z dat, mapa realizací'],
+  ['kontakty.html', 'pin', '10 · Kontakty', 'Nejdřív mapa kanceláří, pak detaily, formulář a makléři podle kanceláří'],
+  ['404.html', 'empty', '11 · 404 a bez výsledků', 'Obecná 404, „už není v nabídce“ (?variant=sold), prázdný výsledek ve výpisu'],
 ];
 window.PAGE = {
   note: 'Rozcestník předlohy. Kancelář přepínej tady v panelu – drží se při proklikávání.',

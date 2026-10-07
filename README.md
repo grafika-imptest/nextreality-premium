@@ -32,7 +32,7 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 ## Pravidla prémiové verze
 1. **Brand zůstává.** Zelená NEXT #85B929 je jediný akcent. Na bílé neprošla kontrastem (2,3 : 1) – na tmavé INK #0D1A24 má **7,3 : 1**, proto je prémiová verze postavená na tmavých kapitolách a zelená je v nich čitelná (kurzíva v nadpisech, čísla, linky).
 2. **Velká typografie jen v editoriálu** (dohoda 6. 10. 2026): hero homepage až 144 px fluidně. **Funkční stránky drží zadání** – H1 ≤ 48 px na všech šířkách (ověřeno měřením), 4 karty v řadě na výpisu, základ 16 px, první nemovitost nad ohybem.
-3. **Pohyb jen s účelem.** Spouštěné animace ease-out (expo / power4), scrubované lineární, stagger 0,06–0,12 s, odhalení 1,1 s. Funkční obsah (výsledky výpisu, filtry, formuláře) se neanimuje.
+3. **Pohyb jen s účelem.** Spouštěné animace ease-out (expo / power4), scrubované lineární, stagger 0,06–0,12 s, odhalení 1,1 s. Funkční obsah (výsledky výpisu, filtry, formuláře) se neanimuje – výjimka: jemné prolnutí karet při filtrování projektů (0,32 s, na přání klienta).
 4. **Přístupnost a výkon:** `prefers-reduced-motion` vypne plynulý scroll i odhalování. Když se knihovny z CDN nenačtou, obsah se zobrazí bez animace (pojistka 2,5 s). Mapy, galerie a panely mají vlastní scroll (Lenis do nich nezasahuje). Bez WebGL – kvůli výkonu na mobilu a kolísavé kvalitě fotek z CRM.
 
 ## Motion specifikace
@@ -49,6 +49,20 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Makléři | najetí / fokus / na dotyku doscrollování doprostřed | prolnutí neutrálního portrétu do úsměvu: zpoždění 0,3 s, 1,6 s ease-in-out; návrat 0,9 s |
 | Hero video (TGH) | načtení stránky | fotka hned, video (dron nad Staroměstským náměstím, 20 s smyčka) se prolne po načtení; 1280 px 3,6 MB / 1920 px 7,1 MB podle šířky obrazovky; vypnuté při reduced-motion, úsporném režimu dat a `?nomotion`; tlačítko pauzy (WCAG 2.2.2) |
 | Hlavička | homepage + detail | průhledná nad tmavou fotkou, po odscrollování pevná |
+
+## Kolo připomínek klienta (7. 10. 2026)
+| Stránka | Co přibylo | Soubory |
+|---|---|---|
+| Všechny | písmo nadpisů Inter Tight (místo Instrument Serif), menší mezery mezi sekcemi, patička s vektorovým logotypem NEXT | tokens.css, premium.css, core.js |
+| Výpis | více lokalit se štítky a počty, druhy nemovitosti (komerční → kanceláře, sklady…), mapa synchronizovaná se seznamem, porovnání až 4 nabídek | vypis.html, listing.js, listing.css (logika shodná se standardem) |
+| Detail | výrazný makléř s profilem, přepínač Hypotéka / Investice (orientační výnosy) | detail.html, detail.js, detail.css |
+| Projekty | filtr štítků (stav, lokalita, vlastnosti), animace stavby v hero, opravené štítky; detail s galerií, lightboxem, jednotkami a makléřem | projekty.*, projekt.*, projects.css |
+| Realizováno | nová stránka: razítko Prodáno, čísla z dat, mapa realizací, výzva k prodeji | realizovano.* |
+| Chci prodat | „Jste na správném místě“, kontaktní formulář nahoře, čísla místo slibů | prodat.*, prodat.css |
+| Kontakty | nejdřív mapa kanceláří (schéma bez souhlasu s cookies), karty kanceláří, pak formulář a makléři | kontakty.* |
+| Detail makléře | osobní web: o mně, čím se chlubím, nabídka, realizace, reference, formulář (i ve standardu) | makler.* |
+
+**Mezery v datech (pro CMS/CRM):** makléř u nabídky, prodané zakázky, reference i projektu; souřadnice, telefon, e-mail a otevírací doba kanceláří; ocenění a praxe makléřů; datum realizace; realizace TGH (dnes se nezveřejňují). Mapové podklady: CARTO bez klíče už nefunguje, předloha používá OpenStreetMap – pro produkci vybrat poskytovatele s klíčem (Mapy.cz / CARTO / vlastní dlaždice). Logotyp v patičce je překreslený podle rastru – nahradit oficiálním SVG.
 
 ## Portréty makléřů – úprava výrazu (Magnific)
 Na homepage TGH se makléři po najetí myší jemně usmějí. Páry obrázků (`assets/agents/*-a.jpg` výchozí, `*-b.jpg` úsměv) mají stejný výřez, takže jde jen o prolnutí.

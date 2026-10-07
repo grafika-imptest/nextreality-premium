@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Detail makléře – PRÉMIOVÁ VERZE („vlastní web makléře“)
+   Načítá se po premium.css. Atmosféry: hero INK → O mně PAPER → Pochlubit INK →
+   Nabídka PAPER → Realizace STONE → Reference INK → Kontakt PAPER.
+   Funkční pravidla: H1 ≤ 48 px (--fs-hero), základ 16 px, bez stínů, 999 px interakce / 4 px boxy.
+   ========================================================================== */
+
+/* --- Hero ---------------------------------------------------------------- */
+.mk-hero { padding-block: calc(var(--header-h) + var(--s-8)) var(--s-12); overflow: hidden; }
+.mk-hero__in { display: grid; gap: var(--s-8); grid-template-columns: minmax(0, 1fr); align-items: end; }
+.mk-hero__text { display: grid; gap: var(--s-4); justify-items: start; min-width: 0; }
+.mk-hero .crumbs, .mk-hero .crumbs a, .mk-hero .crumbs [aria-current] { color: rgba(243, 244, 245, .72); margin-bottom: var(--s-4); }
+.mk-hero .crumbs a:hover { color: var(--on-ink); }
+.mk-hero__name { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-hero); line-height: var(--lh-hero); letter-spacing: -.02em; color: var(--on-ink); max-width: 16ch; overflow-wrap: anywhere; }
+.mk-hero__role { color: var(--accent-deco); font-weight: 500; margin: 0; }
+.mk-hero__lead { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-statement); line-height: var(--lh-statement); color: var(--on-ink) !important; max-width: 30ch; margin: var(--s-2) 0 0; }
+.mk-hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+.mk-hero__cta .btn { gap: var(--s-2); }
+.mk-hero__photo { margin: 0; order: -1; width: 100%; aspect-ratio: 1; border-radius: var(--r-box); overflow: hidden; background: var(--ink-2); display: grid; place-items: center; color: var(--on-ink-muted); }
+.mk-hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
+.mk-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); width: 100%; margin: var(--s-6) 0 0; padding-top: var(--s-6); border-top: 1px solid var(--ink-line); }
+.mk-nums dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(30px, 3.4vw, 48px); line-height: 1; color: var(--on-ink); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: var(--s-2); }
+.mk-nums dt .icon { width: .6em; height: .6em; color: var(--accent-deco); fill: currentColor; }
+.mk-nums dd { margin: var(--s-2) 0 0; font-size: 13px; line-height: 18px; color: var(--on-ink-muted); }
+@media (max-width: 599px) {
+  .mk-hero__cta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+  .mk-hero__cta .btn { padding-inline: var(--s-3); }
+  .mk-hero__cta .btn:first-child { grid-column: 1 / -1; }
+  .mk-hero__photo { aspect-ratio: 4 / 3; }
+  .mk-hero__photo img { object-position: center 22%; }
+}
+@media (max-width: 419px) { .mk-hero__cta { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 600px) and (max-width: 1023px) {
+  .mk-hero__in { grid-template-columns: minmax(0, 1fr) 260px; align-items: start; }
+  .mk-hero__photo { order: 0; aspect-ratio: 4 / 5; margin-top: var(--s-10); }
+}
+@media (min-width: 1024px) {
+  .mk-hero { padding-block: calc(var(--header-h) + var(--s-12)) var(--s-16); }
+  .mk-hero__in { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: var(--s-16); }
+  .mk-hero__photo { order: 0; justify-self: end; max-width: 460px; }
+}
+
+/* --- Podnavigace „mého webu“ --------------------------------------------- */
+.mk-subnav { position: sticky; top: var(--header-h); z-index: 45; background: rgba(243, 244, 245, .94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.mk-subnav__in { display: flex; gap: var(--s-1); overflow-x: auto; scrollbar-width: none; align-items: center; }
+.mk-subnav__in::-webkit-scrollbar { display: none; }
+.mk-subnav a:not(.btn) { flex: none; padding: var(--s-4) var(--s-3); font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; margin-bottom: -1px; }
+.mk-subnav a:not(.btn):hover, .mk-subnav a.is-on { color: var(--ink); border-color: var(--ink); }
+.mk-subnav a.is-muted { opacity: .6; }
+.mk-subnav__cta { margin-left: auto; flex: none; min-height: 40px; padding: 0 var(--s-5); }
+@media (max-width: 767px) { .mk-subnav__cta { display: none; } }
+
+/* --- Sekce ---------------------------------------------------------------- */
+.mk-sec { padding-block: var(--section-editorial); scroll-margin-top: calc(var(--header-h) + 52px); }
+.mk-sec--stone { background: var(--stone); }
+.mk-h2 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: -.03em; color: var(--ink); margin-top: var(--s-3); max-width: 20ch; }
+.on-ink .mk-h2 { color: var(--on-ink); }
+.mk-head { margin-bottom: var(--s-10); display: grid; gap: var(--s-2); }
+.mk-head--row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--s-6); }
+.mk-head__p { max-width: 60ch; margin-top: var(--s-3); color: var(--text-muted); }
+.mk-head__side { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-6); }
+.mk-count { font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.mk-muted { color: var(--text-muted); }
+
+/* označení ukázkových dat a polí CMS (poctivá předloha) */
+.mk-demo { display: inline-flex; align-items: flex-start; gap: var(--s-2); margin: 0 0 var(--s-6); padding: var(--s-2) var(--s-4); border: 1px dashed var(--line-strong); border-radius: var(--r-box); font-size: 13px; line-height: 18px; color: var(--text-muted); max-width: 72ch; }
+.mk-demo .icon { width: 16px; height: 16px; flex: none; margin-top: 1px; }
+.mk-hero .mk-demo, .on-ink .mk-demo { border-color: var(--ink-line); color: var(--on-ink-muted); margin-top: var(--s-4); }
+.mk-cms { display: grid; gap: var(--s-1); padding: var(--s-5) var(--s-6); border: 1px dashed var(--line-strong); border-radius: var(--r-box); color: var(--text-muted); font-size: 14px; }
+.mk-cms b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: .01em; }
+
+/* --- O mně ---------------------------------------------------------------- */
+.mk-about { display: grid; gap: var(--s-10); }
+.mk-about__head { display: grid; gap: var(--s-2); align-content: start; }
+.mk-motto { margin: var(--s-6) 0 0; padding: 0 0 0 var(--s-6); border-left: 1px solid var(--accent-deco); font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 30px; color: var(--ink); }
+.mk-motto .icon { display: none; }
+.mk-motto .mk-cms { margin-left: calc(-1 * var(--s-6)); border-left-style: dashed; }
+.mk-bio { display: grid; gap: var(--s-5); max-width: 64ch; }
+.mk-bio p { margin: 0; }
+.mk-bio__lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink); }
+@media (min-width: 1024px) {
+  .mk-about { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--s-16); }
+  .mk-about__head { position: sticky; top: calc(var(--header-h) + 80px); }
+}
+
+/* --- Čím se mohu pochlubit ------------------------------------------------- */
+.mk-hls { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0 var(--s-8); }
+@media (min-width: 600px) { .mk-hls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .mk-hls { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.mk-hl { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-8) 0; border-top: 1px solid var(--ink-line); min-width: 0; }
+.mk-hl > .icon { width: 28px; height: 28px; color: var(--accent-deco); }
+.mk-hl__n { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -.04em; color: var(--accent-deco); font-variant-numeric: tabular-nums; }
+.mk-hl__v { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 26px; line-height: 32px; color: var(--on-ink); overflow-wrap: anywhere; }
+.mk-hl span { color: var(--on-ink); }
+.mk-hl small { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--on-ink-muted); }
+.mk-hl--slot { border-top-style: dashed; color: var(--on-ink-muted); }
+.mk-hl--slot > .icon { color: var(--on-ink-muted); }
+.mk-hl--slot b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; line-height: 28px; color: var(--on-ink); }
+.mk-hl--slot span { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 20px; color: var(--on-ink-muted); }
+
+/* --- Nabídka a realizace ---------------------------------------------------- */
+.mk-grid { display: grid; gap: var(--s-10) var(--gap); grid-template-columns: 1fr; }
+@media (min-width: 600px) { .mk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .mk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .mk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mk-span { grid-column: 1 / -1; }
+.mk-more { display: flex; justify-content: center; margin-top: var(--s-10); }
+.mk-more:has([hidden]) { display: none; }
+.mk-grid--sold .pcard__price { color: var(--text-muted); }
+.mk-grid--sold .pcard__fav { display: none; }
+.mk-grid--sold .badge--sold { background: var(--ink); color: var(--paper); }
+
+/* --- Reference ------------------------------------------------------------- */
+.mk-refs { display: grid; gap: var(--s-8); grid-template-columns: 1fr; }
+@media (min-width: 768px) { .mk-refs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .mk-refs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.on-ink .mk-ref { border-top-color: var(--ink-line); margin: 0; }
+.on-ink .mk-ref blockquote { color: var(--on-ink); -webkit-line-clamp: 7; }
+.on-ink .mk-ref footer b { color: var(--on-ink); }
+.on-ink .mk-ref footer span { color: var(--on-ink-muted); }
+.on-ink .mk-ref .ref__avatar { background: var(--accent-deco); color: var(--ink); }
+.mk-ratings { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.mk-ratings div { display: grid; grid-template-columns: auto auto; align-items: center; gap: 0 var(--s-2); }
+.mk-ratings .icon { color: var(--accent-deco); fill: currentColor; }
+.mk-ratings b { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 40px; line-height: 1; color: var(--on-ink); }
+.mk-ratings span { grid-column: 1 / -1; font-size: 13px; color: var(--on-ink-muted); }
+.on-ink .mk-head__p { color: var(--on-ink-muted); }
+
+/* --- Kontakt -------------------------------------------------------------- */
+.mk-k { display: grid; gap: var(--s-10); }
+@media (min-width: 1024px) { .mk-k { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--s-16); } }
+.mk-k__side { display: grid; gap: var(--s-4); align-content: start; }
+.mk-k__card { display: flex; align-items: center; gap: var(--s-4); padding-top: var(--s-6); margin-top: var(--s-2); border-top: 1px solid var(--line); }
+.mk-k__card b { display: block; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 22px; line-height: 28px; color: var(--ink); }
+.mk-k__card span { font-size: 14px; color: var(--text-muted); }
+.mk-k__photo { width: 72px; height: 72px; flex: none; border-radius: var(--r-box); overflow: hidden; background: var(--stone); display: grid; place-items: center; }
+.mk-k__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.mk-k__links a { overflow-wrap: anywhere; }
+.mk-k__links .icon { color: var(--ink); }
+.mk-form { padding: var(--s-8); border: 1px solid var(--line); border-radius: var(--r-box); min-width: 0; }
+@media (max-width: 599px) { .mk-form { padding: var(--s-5); } }
+.mk-thanks { border: 0; padding: 0; }
