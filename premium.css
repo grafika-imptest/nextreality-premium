@@ -253,3 +253,9 @@ body[data-page="detail"] .detail { padding-top: var(--s-12); }
   .js-motion [data-reveal] { opacity: 1; transform: none; }
   .js-motion [data-clip] { clip-path: none; }
 }
+
+/* --- Mobilní menu: prémiová úprava --- */
+.drawer { background: rgba(13, 26, 36, .6); backdrop-filter: blur(4px); }
+.drawer__panel { box-shadow: none; border-left: 1px solid var(--line); padding: var(--s-5) var(--s-6) var(--s-8); overflow-y: auto; }
+.drawer__nav a { font-family: var(--font-display); font-weight: var(--fw-display); font-size: 24px; line-height: 1.2; letter-spacing: -.02em; padding: var(--s-4) 0; }
+.drawer__nav a:hover { color: var(--accent-2); }
