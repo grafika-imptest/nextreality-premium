@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Realitní rádce NEXT (AI chat) – jen prémiová verze. Načítá se po premium.css.
+   Plovoucí tlačítko → panel vpravo (desktop) / celá obrazovka (mobil). Bez stínů kromě plovoucího panelu.
+   ========================================================================== */
+.rad-fab { position: fixed; z-index: 75; right: var(--gutter); bottom: var(--s-6); display: inline-flex; align-items: center; gap: var(--s-3); height: 52px; padding: 0 var(--s-3) 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); font: 500 15px/1 var(--font); cursor: pointer; transition: transform var(--dur-ui) var(--ease), background var(--dur-ui); }
+.rad-fab:hover { transform: translateY(-2px); background: var(--accent-hover); }
+.rad-fab__dot { position: relative; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-deco); }
+.rad-fab__dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--accent-deco); opacity: 0; animation: rad-pulse 2.6s var(--ease) infinite; }
+@keyframes rad-pulse { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(1.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .rad-fab__dot::after { animation: none; } }
+.rad-fab__ai { height: 26px; padding-inline: 9px; display: inline-grid; place-items: center; border-radius: var(--r-pill); background: rgba(243, 244, 245, .12); color: var(--accent-deco); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+body.rad-open .rad-fab { opacity: 0; pointer-events: none; }
+body.has-cmpbar .rad-fab { bottom: calc(var(--lx-cmpbar-h, 72px) + var(--s-4)); }
+@media (max-width: 1023px) { body:has(.stickybar) .rad-fab { bottom: 84px; } }
+@media (max-width: 479px) { .rad-fab__l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .rad-fab { padding-inline: var(--s-4) var(--s-3); } }
+
+/* --- panel --- */
+.rad { position: fixed; z-index: 90; right: var(--s-3); top: var(--s-3); bottom: var(--s-3); width: min(440px, calc(100vw - 2 * var(--s-3))); display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--sh-3); overflow: hidden; }
+.rad[hidden] { display: none; }
+.js-motion .rad:not([hidden]) { animation: rad-in .5s var(--ease); }
+@keyframes rad-in { from { opacity: 0; transform: translateY(16px) scale(.985); } }
+@media (max-width: 599px) { .rad { inset: 0; width: auto; border: 0; border-radius: 0; } }
+
+.rad__head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); padding: var(--s-4) var(--s-4) var(--s-4) var(--s-5); background: var(--ink); color: var(--on-ink); }
+.rad__head h2 { margin: 0; display: flex; align-items: center; gap: var(--s-2); font-family: var(--font-display); font-weight: var(--fw-display); font-size: 20px; line-height: 1.2; letter-spacing: -.01em; color: var(--on-ink); }
+.rad__head p { margin: 2px 0 0; font-size: 13px; color: var(--on-ink-muted); }
+.rad__beta { height: 20px; padding-inline: 8px; display: inline-grid; place-items: center; border-radius: var(--r-pill); border: 1px solid rgba(133, 185, 41, .5); color: var(--accent-deco); font: 600 10px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; }
+.rad__x { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: var(--r-pill); background: transparent; color: var(--on-ink); cursor: pointer; }
+.rad__x:hover { background: rgba(243, 244, 245, .1); }
+/* avatar = zelené kolečko se jiskrou (odkaz na „e“ v logu NEXT) */
+.rad__av, .rad-msg__av { position: relative; flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--accent-deco); }
+.rad__av::after, .rad-msg__av::after { content: ""; position: absolute; inset: 0; margin: auto; width: 46%; height: 46%; background: var(--ink); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+.rad-msg__av { width: 28px; height: 28px; margin-top: 2px; }
+
+.rad__modes { display: flex; gap: var(--s-2); padding: var(--s-3) var(--s-4); overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); background: var(--stone); }
+.rad__modes::-webkit-scrollbar { display: none; }
+.rad__modes button { flex: none; height: 32px; padding-inline: var(--s-3); border-radius: var(--r-pill); border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); font: 500 13px/1 var(--font); cursor: pointer; }
+.rad__modes button:hover { border-color: var(--ink); }
+
+.rad__log { overflow-y: auto; overscroll-behavior: contain; padding: var(--s-5) var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: var(--s-4); scroll-padding-top: var(--s-4); }
+.rad-msg { display: flex; gap: var(--s-3); max-width: 100%; }
+.rad-msg--me { justify-content: flex-end; }
+.rad-msg__b { min-width: 0; font-size: 15px; line-height: 23px; color: var(--text); }
+.rad-msg--ai .rad-msg__b { flex: 1; display: grid; gap: var(--s-3); }
+.rad-msg--ai .rad-msg__b > p { margin: 0; }
+.rad-msg--ai .rad-msg__b b { color: var(--ink); font-weight: 600; }
+.rad-msg--me .rad-msg__b { max-width: 82%; padding: var(--s-3) var(--s-4); border-radius: 18px 18px 4px 18px; background: var(--ink); color: var(--on-ink); }
+.js-motion .rad-msg--ai.is-in .rad-msg__b > * { animation: rad-up .5s var(--ease) both; }
+.js-motion .rad-msg--ai.is-in .rad-msg__b > *:nth-child(2) { animation-delay: .08s; }
+.js-motion .rad-msg--ai.is-in .rad-msg__b > *:nth-child(3) { animation-delay: .16s; }
+.js-motion .rad-msg--ai.is-in .rad-msg__b > *:nth-child(4) { animation-delay: .24s; }
+@keyframes rad-up { from { opacity: 0; transform: translateY(8px); } }
+.rad-typing { display: inline-flex; gap: 4px; padding: 10px 0; }
+.rad-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); animation: rad-dot 1s infinite ease-in-out; }
+.rad-typing i:nth-child(2) { animation-delay: .15s; } .rad-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes rad-dot { 0%, 80%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: translateY(-3px); } }
+
+/* chipy: návrhy dalších kroků a pochopená kritéria */
+.rad-sugg, .rad-crit, .rad-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.rad-chip { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 4px 12px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: 500 13px/1.3 var(--font); text-align: left; cursor: pointer; }
+.rad-sugg .rad-chip:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.rad-crit { align-items: center; padding: var(--s-3); border: 1px dashed var(--line-strong); border-radius: var(--r-card); }
+.rad-crit__l { width: 100%; font-size: 11px; letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.rad-chip--crit { cursor: default; background: var(--accent-soft); border-color: transparent; padding-right: 6px; }
+.rad-chip--crit:not(:has(button)) { padding-right: 12px; }
+.rad-chip--crit button { width: 20px; height: 20px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; padding: 0; }
+.rad-chip--crit button:hover { background: rgba(13, 26, 36, .1); }
+.rad-chip--crit .icon { width: 12px; height: 12px; }
+
+/* nabídky v odpovědi */
+.rad-cards { display: grid; gap: var(--s-2); }
+.rad-card { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-2); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); color: var(--text); text-decoration: none; transition: border-color var(--dur-micro); }
+.rad-card:hover { border-color: var(--ink); }
+.rad-card__img { aspect-ratio: 4 / 3; border-radius: 2px; overflow: hidden; background: var(--stone); }
+.rad-card__img img { width: 100%; height: 100%; object-fit: cover; }
+.rad-card__b { display: grid; gap: 2px; min-width: 0; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.rad-card__b b { font-size: 15px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.rad-card__b em { font-style: normal; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rad-all { justify-self: start; display: inline-flex; align-items: center; gap: var(--s-2); font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; }
+.rad-all:hover { border-color: var(--ink); }
+.rad-all .icon { width: 16px; height: 16px; }
+.rad-note { margin: 0; font-size: 13px; line-height: 19px; color: var(--text-muted); }
+.rad-actions .btn { min-height: 40px; font-size: 14px; padding-inline: var(--s-4); }
+
+/* předání makléři */
+.rad-hand { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-3); border-radius: var(--r-card); background: var(--ink); color: var(--on-ink); }
+.rad-hand__img { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; background: var(--ink-2); }
+.rad-hand__img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.rad-hand__b { display: grid; min-width: 0; }
+.rad-hand__b small { font-size: 11px; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--accent-deco); font-weight: 600; }
+.rad-hand__b b { color: var(--on-ink) !important; font-size: 16px; }
+.rad-hand__b span { font-size: 13px; color: var(--on-ink-muted); }
+.rad-hand__a { grid-column: 1 / -1; display: flex; gap: var(--s-2); }
+.rad-hand__a .btn { flex: 1; min-height: 40px; font-size: 14px; gap: var(--s-2); }
+.rad-hand__a .btn--primary { background: var(--accent-deco); color: var(--ink); }
+.rad-hand__a .btn--secondary { border-color: rgba(243, 244, 245, .35); color: var(--on-ink); background: transparent; }
+.rad-lead { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); }
+.rad-lead p { margin: 0; font-size: 13px; line-height: 19px; color: var(--text-muted); }
+.rad-lead .input { height: 44px; }
+.rad-lead__ok { display: flex; gap: var(--s-2); align-items: flex-start; font-size: 12px; line-height: 17px; color: var(--text-muted); }
+.rad-done { display: flex; gap: var(--s-2); margin: 0; padding: var(--s-3); border-radius: var(--r-card); background: var(--accent-soft); color: var(--ink); font-size: 14px; }
+.rad-done .icon { flex: none; color: var(--st-free); }
+
+/* vstup */
+.rad__form { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--s-2); margin: 0 var(--s-4); padding: 6px 6px 6px var(--s-4); border: 1px solid var(--line-strong); border-radius: 26px; background: var(--surface); }
+.rad__form:focus-within { border-color: var(--ink); }
+.rad__form textarea { resize: none; border: 0; background: none; padding: 10px 0; font: 400 16px/22px var(--font); color: var(--ink); outline: none; max-height: 120px; }
+.rad__send { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--ink); color: var(--paper); cursor: pointer; }
+.rad__send:hover { background: var(--accent-hover); }
+.rad__legal { margin: 0; padding: var(--s-2) var(--s-5) var(--s-3); font-size: 11px; line-height: 16px; color: var(--text-muted); text-align: center; }
+.rad__proto { display: block; color: var(--accent-2); }
+
+/* --- vstupy na stránkách --- */
+/* homepage hero: „řekněte to vlastními slovy“ */
+.p-hero__ai { display: inline-flex; align-items: center; gap: var(--s-3); margin-top: var(--s-3); padding: 8px 16px 8px 8px; border-radius: var(--r-pill); border: 1px solid rgba(243, 244, 245, .3); background: rgba(13, 26, 36, .35); backdrop-filter: blur(10px); color: var(--on-ink); font: 400 14px/1.3 var(--font); text-decoration: none; cursor: pointer; max-width: 100%; }
+.p-hero__ai:hover { border-color: var(--accent-deco); }
+.p-hero__ai .rad__av { width: 28px; height: 28px; }
+.p-hero__ai q { color: var(--on-ink-muted); quotes: "„" "“"; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-hero__ai b { font-weight: 600; white-space: nowrap; }
+@media (max-width: 599px) { .p-hero__ai q { display: none; } }
+
+/* homepage kapitola „Realitní rádce“ */
+.p-rad { padding-block: var(--section-editorial); border-top: 1px solid var(--line); }
+.p-rad__in { display: grid; gap: var(--s-12); align-items: center; }
+@media (min-width: 1024px) { .p-rad__in { grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: var(--s-16); } }
+.p-rad__h em { color: var(--accent-2); }
+.p-rad__lead { margin-top: var(--s-5); max-width: 52ch; color: var(--text-muted); font-size: var(--fs-lead); line-height: var(--lh-lead); }
+.p-rad__list { list-style: none; margin: var(--s-8) 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.p-rad__list li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-4); padding-block: var(--s-4); border-bottom: 1px solid var(--line); }
+.p-rad__list .icon { width: 28px; height: 28px; stroke-width: 1.2; color: var(--ink); --icon-accent: var(--accent-deco); }
+.p-rad__list b { display: block; color: var(--ink); font-weight: 600; }
+.p-rad__list span { color: var(--text-muted); font-size: 15px; line-height: 23px; }
+.p-rad__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-8); }
+/* ukázka rozhovoru vpravo (statická, jen ilustrace chování) */
+.p-rad__demo { position: relative; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); overflow: hidden; }
+.p-rad__demo .rad__head { padding-block: var(--s-3); }
+.p-rad__demo .rad__head h2 { font-size: 17px; }
+.p-rad__demo .rad__log { overflow: visible; padding-bottom: var(--s-5); }
+.p-rad__demo .rad__x { display: none; }
+.p-rad__tag { display: block; padding: var(--s-3) var(--s-4); border-top: 1px solid var(--line); font-size: 11px; color: var(--text-muted); text-align: right; }
+
+/* detail: rádce u makléře */
+.d-ask { display: inline-flex; align-items: center; gap: var(--s-2); width: 100%; justify-content: center; min-height: 44px; border-radius: var(--r-pill); border: 1px dashed var(--line-strong); background: transparent; color: var(--ink); font: 500 14px/1 var(--font); cursor: pointer; }
+.d-ask:hover { border-style: solid; border-color: var(--ink); }
+.d-ask .rad__av { width: 22px; height: 22px; }
+.rad-sugg .rad-crit__l { width: 100%; } .rad-chip small { color: var(--text-muted); font-size: 12px; } .rad-sugg .rad-chip:hover small { color: inherit; }

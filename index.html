@@ -13,6 +13,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="premium.css">
 <link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="home">
 <div id="site-header"></div>
@@ -28,6 +29,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
       </div>
       <div class="p-hero__foot">
         <p class="t-lead p-hero__lead" data-reveal data-delay=".5"><b data-bind="total"></b> nemovitostí v aktuální nabídce <span data-bind="region"></span>. Byty, domy, pozemky i komerční prostory.</p>
+        <div class="p-hero__searchcol">
         <form class="p-search" id="search" role="search" data-reveal data-delay=".7">
           <div class="seg seg--on-ink" role="group" aria-label="Typ nabídky">
             <button type="button" aria-pressed="true" data-deal="prodej">Koupit</button>
@@ -44,6 +46,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
           </div>
           <button class="btn btn--primary p-search__btn" id="search-btn" type="submit"><span>Zobrazit <b id="live-count"></b></span><svg class="icon"><use href="#i-arrow"/></svg></button>
         </form>
+        <button type="button" class="p-hero__ai" data-radce="" data-reveal data-delay=".9"><span class="rad__av" aria-hidden="true"></span><b>Nebo to řekněte rádci vlastními slovy</b><q>3+kk v Praze do 9 milionů s balkonem</q></button>
+        </div>
       </div>
     </div>
     <a class="p-hero__scroll" href="#uvod" aria-label="Pokračovat dolů"><span></span></a>
@@ -76,6 +80,34 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
       <div class="p-index__list" data-hover-list>
         <ul id="cats"></ul>
         <figure class="hover-fig" aria-hidden="true"><img alt=""></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04b · REALITNÍ RÁDCE (AI) – nová služba jako součást webu; ukázka vpravo je statická ilustrace chování -->
+  <section class="p-rad" id="radce" aria-labelledby="rad-sec-h">
+    <div class="wide p-rad__in">
+      <div>
+        <span class="t-label eyebrow" data-reveal>Novinka · Realitní rádce</span>
+        <h2 class="d-sm p-rad__h" id="rad-sec-h" data-split>Zeptejte se vlastními slovy. <em>Odpoví hned, i v neděli večer.</em></h2>
+        <p class="p-rad__lead" data-reveal>Rádce zná aktuální nabídku kanceláře. Pomůže najít bydlení podle toho, co je pro vás důležité, spočítá orientační hypotéku, poradí s prodejem – a když přijde na věc, předá vás makléři, který zná lokalitu.</p>
+        <ul class="p-rad__list" data-reveal>
+          <li><svg class="icon"><use href="#i-search"/></svg><div><b>Hledá jako člověk</b><span>„Dům se zahradou do 30 minut od Prahy“ místo deseti filtrů. Navazující dotazy si pamatuje.</span></div></li>
+          <li><svg class="icon"><use href="#i-calc"/></svg><div><b>Počítá a vysvětluje</b><span>Orientační splátka, výnos z pronájmu, další kroky prodeje – srozumitelně a bez závazku.</span></div></li>
+          <li><svg class="icon"><use href="#i-user"/></svg><div><b>Nenahrazuje makléře</b><span>Jistotu ceny, prohlídku i smlouvu řeší člověk. Rádce mu předá shrnutí, ať nic neopakujete.</span></div></li>
+        </ul>
+        <div class="p-rad__cta" data-reveal><button type="button" class="btn btn--primary" data-radce="">Vyzkoušet rádce <svg class="icon"><use href="#i-arrow"/></svg></button><button type="button" class="btn btn--secondary" data-radce="Chci prodat byt">Chci prodat</button></div>
+      </div>
+      <div class="p-rad__demo" data-clip aria-hidden="true">
+        <div class="rad__head"><span class="rad__av"></span><div><h2>Realitní rádce <span class="rad__beta">AI · beta</span></h2><p>Zná aktuální nabídku · předá vás makléři</p></div></div>
+        <div class="rad__log">
+          <div class="rad-msg rad-msg--me"><div class="rad-msg__b">Hledám 2+kk v Praze do 8 milionů, ideálně blízko metra</div></div>
+          <div class="rad-msg rad-msg--ai"><span class="rad-msg__av"></span><div class="rad-msg__b"><p>Našel jsem několik bytů v aktuální nabídce. Blízkost metra ověří makléř – tady jsou ty, které sedí nejlépe:</p>
+            <div class="rad-crit"><span class="rad-crit__l">Rozumím takto</span><span class="rad-chip rad-chip--crit">Koupě</span><span class="rad-chip rad-chip--crit">byt · 2+kk</span><span class="rad-chip rad-chip--crit">Praha</span><span class="rad-chip rad-chip--crit">do 8 mil. Kč</span></div>
+            <div class="rad-cards" id="rad-demo-cards"></div></div></div>
+          <div class="rad-msg rad-msg--me"><div class="rad-msg__b">A jaká by byla hypotéka?</div></div>
+        </div>
+        <span class="p-rad__tag">Ilustrace rozhovoru · nabídky jsou skutečné</span>
       </div>
     </div>
   </section>
@@ -153,6 +185,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
 <script src="data/stars-listings.js"></script>
 <script src="data/phase3.js"></script>
 <script src="core.js"></script>
+<script src="rad.js"></script>
 <script src="home.js"></script>
 <script src="motion.js" defer></script>
 </body>
