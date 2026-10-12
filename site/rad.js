@@ -227,7 +227,7 @@
   function mount() {
     if ($('#rad')) return;
     document.body.insertAdjacentHTML('beforeend', `
-      <button type="button" class="rad-fab" id="rad-fab" aria-controls="rad" aria-expanded="false"><span class="rad-fab__dot" aria-hidden="true"></span><span class="rad-fab__l">Realitní rádce</span><span class="rad-fab__ai">AI</span></button>
+      <button type="button" class="rad-fab" id="rad-fab" aria-controls="rad" aria-expanded="false"><span class="rad__av rad-fab__av" aria-hidden="true"></span><span class="rad-fab__l">Realitní rádce</span><span class="rad-fab__ai">AI</span></button>
       <div class="rad" id="rad" role="dialog" aria-modal="false" aria-labelledby="rad-h" hidden data-lenis-prevent>
         <header class="rad__head">
           <span class="rad__av" aria-hidden="true"></span>
