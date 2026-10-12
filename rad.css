@@ -2,17 +2,17 @@
    Realitní rádce NEXT (AI chat) – jen prémiová verze. Načítá se po premium.css.
    Plovoucí tlačítko → panel vpravo (desktop) / celá obrazovka (mobil). Bez stínů kromě plovoucího panelu.
    ========================================================================== */
-.rad-fab { position: fixed; z-index: 75; right: var(--gutter); bottom: var(--s-6); display: inline-flex; align-items: center; gap: var(--s-3); height: 52px; padding: 0 var(--s-3) 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); font: 500 15px/1 var(--font); cursor: pointer; transition: transform var(--dur-ui) var(--ease), background var(--dur-ui); }
+.rad-fab { position: fixed; z-index: 75; right: var(--gutter); bottom: var(--s-6); display: inline-flex; align-items: center; gap: var(--s-3); height: 52px; padding: 0 var(--s-3) 0 9px; border: 0; border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); font: 500 15px/1 var(--font); cursor: pointer; transition: transform var(--dur-ui) var(--ease), background var(--dur-ui); }
 .rad-fab:hover { transform: translateY(-2px); background: var(--accent-hover); }
-.rad-fab__dot { position: relative; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-deco); }
-.rad-fab__dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--accent-deco); opacity: 0; animation: rad-pulse 2.6s var(--ease) infinite; }
+.rad-fab .rad-fab__av { width: 34px; height: 34px; }
+.rad-fab__av::before { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--accent-deco); opacity: 0; animation: rad-pulse 2.6s var(--ease) infinite; }
 @keyframes rad-pulse { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(1.8); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .rad-fab__dot::after { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .rad-fab__av::before { animation: none; } }
 .rad-fab__ai { height: 26px; padding-inline: 9px; display: inline-grid; place-items: center; border-radius: var(--r-pill); background: rgba(243, 244, 245, .12); color: var(--accent-deco); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
 body.rad-open .rad-fab { opacity: 0; pointer-events: none; }
 body.has-cmpbar .rad-fab { bottom: calc(var(--lx-cmpbar-h, 72px) + var(--s-4)); }
 @media (max-width: 1023px) { body:has(.stickybar) .rad-fab { bottom: 84px; } }
-@media (max-width: 479px) { .rad-fab__l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .rad-fab { padding-inline: var(--s-4) var(--s-3); } }
+@media (max-width: 479px) { .rad-fab__l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .rad-fab { padding-inline: 9px var(--s-3); } }
 
 /* --- panel --- */
 .rad { position: fixed; z-index: 90; right: var(--s-3); top: var(--s-3); bottom: var(--s-3); width: min(440px, calc(100vw - 2 * var(--s-3))); display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--sh-3); overflow: hidden; }
