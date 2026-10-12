@@ -106,7 +106,10 @@ function renderBroker() {
     <div class="d-agent__actions">
       <a class="btn btn--primary btn--block" href="tel:${b.tel0}">${ico('phone')}<span>${esc(b.tel)}</span></a>
       <a class="btn btn--secondary btn--block" href="mailto:${esc(b.mail)}">${ico('mail')}<span>Napsat e-mail</span></a>
-    </div>${profile}`;
+    </div>
+    <button type="button" class="d-ask" data-radce=""><span class="rad__av" aria-hidden="true"></span>Zeptat se rádce na tuto nemovitost</button>${profile}`;
+  // rádce zná kontext: název, cena a makléř této nabídky
+  window.RADCE?.context({ title: D.t || $('#d-h1')?.textContent || 'tuto nemovitost', price: D.price, broker: { n: b.n, r: b.r, tel: b.tel, img: b.square || b.img, mail: b.mail } });
   // mobil / tablet: proužek pod přehledem
   $('#d-agent-strip').innerHTML = `<a class="d-agent-strip__photo" href="${b.url}" tabindex="-1" aria-hidden="true"><img src="${esc(b.img)}" alt="" loading="lazy"></a>
     <div class="d-agent-strip__id"><span class="t-label">Nemovitost nabízí</span><b class="d-agent__name"><a href="${b.url}">${esc(b.n)}</a></b><span class="d-agent__role">${role}</span></div>

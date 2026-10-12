@@ -104,6 +104,12 @@ window.PAGE = {
         <a class="p-agent__tel" href="tel:${a.tel.replace(/\s/g, '')}">${esc(a.tel)}</a></article>`;
     }).join('');
     smileOnTouch();
+    // ukázka rádce: skutečné nabídky odpovídající ilustrovanému dotazu (2+kk, Praha, do 8 mil.)
+    if ($('#rad-demo-cards') && window.RADCE) {
+      const c = { deal: 'prodej', type: 'byt', disp: '2+kk', loc: 'Praha', pmax: 8e6 };
+      const hit = L.filter(x => RADCE.match(x, c));
+      $('#rad-demo-cards').innerHTML = (hit.length ? hit : L.filter(x => x.type === 'byt' && !x.rent)).filter((x, i, a) => a.findIndex(y => y.price === x.price && y.place === x.place) === i).slice(0, 2).map(RADCE.card).join('');
+    }
 
     $('#ratings').innerHTML = o.ratings.map(r => `<div><b class="d-sm">${String(r.v).replace('.', ',')}</b><span>${esc(r.src)}</span></div>`).join('');
     qi = 0; quote();

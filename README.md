@@ -64,6 +64,22 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 
 **Mezery v datech (pro CMS/CRM):** makléř u nabídky, prodané zakázky, reference i projektu; souřadnice, telefon, e-mail a otevírací doba kanceláří; ocenění a praxe makléřů; datum realizace; realizace TGH (dnes se nezveřejňují). Mapové podklady: CARTO bez klíče už nefunguje, předloha používá OpenStreetMap – pro produkci vybrat poskytovatele s klíčem (Mapy.cz / CARTO / vlastní dlaždice).
 
+## Realitní rádce (AI chat) – jen prémiová verze
+Rádce je ukázka, jak se AI stane součástí webu, ne přílepkem. Soubory `rad.js` + `rad.css` (načítá se na všech stránkách webu).
+
+**Inspirace (zjištěno 10/2026):** Redfin – konverzace přímo z hledací lišty, doptávání a navazující dotazy bez opakování kritérií, jasné další kroky (prohlídka, makléř, financování); uživatelé konverzačního hledání si prohlédli téměř 2× víc nemovitostí a o 47 % častěji požádali o prohlídku. Rightmove – tlačítko „Use AI“ v hledací liště, shortlist z živé nabídky. Sotheby's Côte d'Azur – concierge 24/7 pro první kontakt a předání makléři. V ČR jsem veřejně spuštěného AI rádce realitní kanceláře nenašel – příležitost odlišit se.
+
+| Vstup | Kde | Co dělá |
+|---|---|---|
+| Plovoucí tlačítko „Realitní rádce · AI“ | všude | otevře panel (desktop vpravo, mobil celá obrazovka), Esc zavře |
+| „Nebo to řekněte rádci vlastními slovy“ | hero homepage pod vyhledáváním | konverzační alternativa k filtrům |
+| Kapitola „Zeptejte se vlastními slovy“ | homepage | představení služby + ukázka rozhovoru se skutečnými nabídkami |
+| „Zeptat se rádce na tuto nemovitost“ | detail – panel makléře | rádce zná název, cenu a makléře nabídky |
+
+**Typy odpovědí:** pochopená kritéria jako odebíratelné štítky („Rozumím takto“) · karty nabídek z reálných dat + odkaz do výpisu s vyplněnými filtry · návrhy dalšího kroku · při nulovém výsledku konkrétní uvolnění s počty · orientační hypotéka · prodej (odhad ceny, postup) · předání makléři (telefon / „Domluvit“ s kontaktním formulářem a souhlasem). Na co data nestačí (vybavení, okolí, náklady), rádce **netipuje** a předá makléři.
+
+**V předloze neběží jazykový model** – odpovědi skládá skriptovaný parser (čeština vč. skloňování míst) nad reálnou nabídkou kanceláře. V produkci: LLM s nástroji `search_listings`, `mortgage_calc`, `handoff_to_agent` (zápis do CRM), `faq` z obsahu webu; stejné rozhraní a typy odpovědí. **Před spuštěním:** GDPR (souhlas, uchování konverzací), označení AI (AI Act – uživatel musí vědět, že mluví s AI), zákaz finančního poradenství (jen orientační výpočty), monitoring odpovědí, náklady na provoz LLM.
+
 ## Portréty makléřů – úprava výrazu (Magnific)
 Na homepage TGH se makléři po najetí myší jemně usmějí. Páry obrázků (`assets/agents/*-a.jpg` výchozí, `*-b.jpg` úsměv) mají stejný výřez, takže jde jen o prolnutí.
 - Upraveno v Magnificu modelem Google Nano Banana Pro, 10 generací × 75 kreditů = 750 kreditů (účet IMP net Grafika). Béžové pozadí fotek je lokálně přebarvené na šedou paletu webu.
