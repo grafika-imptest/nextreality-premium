@@ -22,6 +22,8 @@ const versionSwitch = () => `<div class="review__ver" role="group" aria-label="V
 const nab = (n, acc) => `${num(n)} ${n === 1 ? (acc ? 'nabídku' : 'nabídka') : n >= 2 && n <= 4 ? 'nabídky' : 'nabídek'}`;
 
 // --- Ikonová sada: 24×24, tah 1.8. 20 px v textu, 24 px samostatně ---
+// BROKERS_NAME_FIX: CRM u makléřů ve více kancelářích přilepuje název kanceláře ke jménu („Tomáš Böhm STYLE“) → zobrazit jen jméno
+Object.values(window.BROKERS || {}).forEach(list => list.forEach(b => { b.n = b.n.replace(/\s+(STYLE|VISION|BRIDGE|CAPITAL|HORIZONT|HEROES|VICTORY|STARS)$/, ''); }));
 const ICONS = {
   search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
   pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
@@ -131,7 +133,6 @@ function layout() {
       <div><h4>Služby</h4><ul><li><a data-href="prodat.html#odhad">Odhad ceny</a></li><li><a href="#">Právní služby</a></li><li><a href="#">Kalkulačka financování</a></li><li><a href="#">Výkupy nemovitostí</a></li></ul></div>
       <div><h4>O nás</h4><ul><li><a data-href="makleri.html">Makléři</a></li><li><a data-href="kontakty.html">Kontakty</a></li><li><a href="#">Reference</a></li><li><a href="#">Blog</a></li><li><a href="#">Kariéra</a></li></ul></div>
     </div>
-    <div class="footer__mark" aria-hidden="true" data-bind="mark"></div>
     <div class="footer__legal"><span>© 2026 <span data-bind="name"></span></span><a href="#">Ochrana osobních údajů</a><a href="#" id="cookie-reopen">Nastavení cookies</a></div>
   </div>
 </footer>`;
@@ -243,8 +244,10 @@ function baseChecks() {
   const root = parseFloat(getComputedStyle(document.documentElement).fontSize);
   const cw = Math.max(...$$('.container').map(c => c.clientWidth - parseFloat(getComputedStyle(c).paddingLeft) * 2));
   const ox = document.documentElement.scrollWidth > innerWidth + 1;
-  return check('H1 ≤ 48 px', h1 <= 48, h1 + ' px') + check('Root = 16 px', root === 16, root + ' px')
-    + check('Obsah ≤ 1280 px', cw <= 1280, Math.round(cw) + ' px') + check('Bez vodor. scrollu', !ox, ox ? 'přetéká' : 'ok');
+  // prezentační stránky mají editoriální nadpis (dohoda s klientem 10/2026); strop 48 px platí pro funkční stránky
+  const editorial = ['home', 'realizovano', 'makleri', 'makler', 'kontakty', 'projekty', 'prodat'].includes(document.body.dataset.page);
+  return (editorial ? check('H1 editoriální', null, h1 + ' px') : check('H1 ≤ 48 px', h1 <= 48, h1 + ' px')) + check('Root = 16 px', root === 16, root + ' px')
+    + (isFinite(cw) ? check('Obsah ≤ 1280 px', cw <= 1280, Math.round(cw) + ' px') : '') + check('Bez vodor. scrollu', !ox, ox ? 'přetéká' : 'ok');
 }
 function runChecks() {
   if (!$('#checks')) return;

@@ -14,17 +14,19 @@
 <link rel="stylesheet" href="premium.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="projects.css">
+<link rel="stylesheet" href="subpage.css">
 <link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="projekty">
 <div id="site-header"></div>
 <main>
   <!-- Hlavička výpisu: text vlevo, mapa projektů vpravo (piny reagují na filtr štítků) -->
-  <section class="pj-hero" aria-labelledby="pj-h1">
+  <section class="pj-hero ed-hero" aria-labelledby="pj-h1">
     <div class="wide pj-hero__in">
-      <div>
+      <div class="ed-hero__head pj-hero__text">
         <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Developerské projekty</span></nav>
-        <h1 id="pj-h1" data-split>Developerské projekty</h1>
+        <span class="t-label eyebrow">Novostavby · <span data-bind="name"></span></span>
+        <h1 class="ed-h1" id="pj-h1" data-split="now">Developerské <em>projekty.</em></h1>
         <p class="pj-hero__lead">Objevte developerské projekty, které přinášejí moderní bydlení, promyšlenou architekturu a atraktivní lokality. Nabízíme nové byty pro vlastní bydlení i investici.</p>
         <dl class="pj-hero__stats" id="pj-stats"></dl>
       </div>

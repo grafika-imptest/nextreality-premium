@@ -19,18 +19,22 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
 <div id="site-header"></div>
 
 <main>
-  <!-- 01 · TEZE – celoplošná fotka, editoriální nadpis, vyhledávání jako hlavní akce -->
+  <!-- 01 · TEZE – kancelář a náběr zakázek v popředí (web kanceláře ≠ inzertní server); hledání nabídky je sekundární -->
   <section class="p-hero on-ink" data-over-hero aria-labelledby="hero-h">
     <div class="p-hero__media" data-parallax="0.18"><img data-bind="hero" alt="" fetchpriority="high"><video class="p-hero__video" data-bind="hero-video" muted loop playsinline preload="none" aria-hidden="true" hidden></video></div>
     <div class="wide p-hero__in">
       <div class="p-hero__head">
         <span class="t-label eyebrow" data-reveal data-bind="region-short"></span>
-        <h1 class="d-xl p-hero__h" id="hero-h" data-split="now">Najděte místo, <em>kde chcete žít.</em></h1>
+        <h1 class="d-xl p-hero__h" id="hero-h" data-split="now">Vaše nemovitost <em>v dobrých rukou.</em></h1>
       </div>
       <div class="p-hero__foot">
-        <p class="t-lead p-hero__lead" data-reveal data-delay=".5"><b data-bind="total"></b> nemovitostí v aktuální nabídce <span data-bind="region"></span>. Byty, domy, pozemky i komerční prostory.</p>
-        <div class="p-hero__searchcol">
-        <form class="p-search" id="search" role="search" data-reveal data-delay=".7">
+        <div class="p-hero__offer">
+          <p class="t-lead p-hero__lead" data-reveal data-delay=".5">Prodáme nebo pronajmeme vaši nemovitost s kompletním servisem – od odhadu ceny po předání klíčů. <b data-bind="agents-count"></b> makléřů, kteří znají <span data-bind="region-loc"></span>.</p>
+          <div class="p-hero__cta" data-reveal data-delay=".6"><a class="btn btn--primary" data-href="prodat.html#odhad">Odhad ceny zdarma <svg class="icon"><use href="#i-arrow"/></svg></a><a class="btn btn--secondary" href="#makleri">Najít svého makléře</a></div>
+        </div>
+        <div class="p-hero__searchcol" data-reveal data-delay=".8">
+          <p class="p-hero__searchlbl">Hledáte nové bydlení? <span>Aktuálně <b data-bind="total"></b> nemovitostí v nabídce</span></p>
+        <form class="p-search p-search--slim" id="search" role="search">
           <div class="seg seg--on-ink" role="group" aria-label="Typ nabídky">
             <button type="button" aria-pressed="true" data-deal="prodej">Koupit</button>
             <button type="button" aria-pressed="false" data-deal="pronajem">Pronajmout</button>
@@ -46,7 +50,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
           </div>
           <button class="btn btn--primary p-search__btn" id="search-btn" type="submit"><span>Zobrazit <b id="live-count"></b></span><svg class="icon"><use href="#i-arrow"/></svg></button>
         </form>
-        <button type="button" class="p-hero__ai" data-radce="" data-reveal data-delay=".9"><span class="rad__av" aria-hidden="true"></span><b>Nebo to řekněte rádci vlastními slovy</b><q>3+kk v Praze do 9 milionů s balkonem</q></button>
+        <button type="button" class="p-hero__ai" data-radce=""><span class="rad__av" aria-hidden="true"></span><b>Nebo se zeptejte rádce vlastními slovy</b></button>
         </div>
       </div>
     </div>
@@ -58,33 +62,71 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
   <section class="p-intro" id="uvod">
     <div class="wide p-intro__in">
       <span class="t-label eyebrow" data-reveal>Od roku 2006</span>
-      <p class="statement p-intro__text" data-words>Pomáháme lidem najít domov i prodat nemovitost za nejlepší cenu. S kompletním právním servisem, inzercí až na 100 serverech a makléři, kteří svou lokalitu znají do posledního detailu.</p>
+      <p class="statement p-intro__text" data-words>Jsme realitní kancelář z vašeho regionu. Prodáváme a pronajímáme nemovitosti s kompletním právním servisem, inzercí až na 100 serverech a makléři, kteří svou lokalitu znají do posledního detailu.</p>
       <dl class="p-stats" id="stats" data-reveal-group></dl>
     </div>
   </section>
 
-  <!-- 03 · VYBRANÉ NEMOVITOSTI – vodorovná galerie (desktop připnutá, mobil swipe) -->
-  <section class="p-featured" data-hscroll aria-labelledby="feat-h">
-    <div class="wide p-featured__head">
-      <div><span class="t-label eyebrow" data-reveal>Aktuální nabídka</span><h2 class="d-sm" id="feat-h" data-split>Vybrané nemovitosti</h2></div>
-      <a class="btn btn--ghost" data-all href="vypis.html"><span>Celá nabídka (<span data-bind="total"></span>)</span><svg class="icon"><use href="#i-arrow"/></svg></a>
-    </div>
-    <div class="p-featured__track" data-track id="cards"></div>
-    <div class="wide"><div class="p-progress" aria-hidden="true"><span></span></div></div>
-  </section>
-
-  <!-- 04 · INDEX KATEGORIÍ – editoriální seznam, obrázek sleduje kurzor -->
-  <section class="p-index" aria-labelledby="idx-h">
+  <!-- 03 · LIDÉ – makléři hned po úvodu: web kanceláře prezentuje hlavně lidi -->
+  <section class="p-agents" id="makleri" aria-labelledby="ag-h">
     <div class="wide">
-      <div class="p-index__head"><span class="t-label eyebrow" data-reveal>Hledáte něco konkrétního?</span><h2 class="d-sm" id="idx-h" data-split>Procházejte podle typu</h2></div>
-      <div class="p-index__list" data-hover-list>
-        <ul id="cats"></ul>
-        <figure class="hover-fig" aria-hidden="true"><img alt=""></figure>
-      </div>
+      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Makléři</span><h2 class="d-sm" id="ag-h" data-split>Lidé, kteří znají vaši lokalitu</h2></div>
+        <a class="btn btn--ghost" data-href="makleri.html"><span>Všichni makléři (<span data-bind="agents-count"></span>)</span><svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="p-agents__grid" id="agents" data-reveal-group></div>
     </div>
   </section>
 
-  <!-- 04b · REALITNÍ RÁDCE (AI) – nová služba jako součást webu; ukázka vpravo je statická ilustrace chování -->
+  <!-- 04 · PRODEJ – tmavá „filmová“ kapitola, odhad ceny jako hlavní vstup -->
+  <section class="p-sell on-ink" id="prodat" aria-labelledby="sell-h">
+    <div class="wide p-sell__in">
+      <div>
+        <span class="t-label eyebrow" data-reveal>Chci prodat</span>
+        <h2 class="d" id="sell-h" data-split>Prodáváte? <em>Začněte cenou.</em></h2>
+        <ol class="p-sell__steps" data-reveal-group>
+          <li data-reveal><b>01</b><span>Odhad ceny nemovitosti – zdarma a nezávazně.</span></li>
+          <li data-reveal><b>02</b><span>Profesionální fotografie, video a 3D prohlídky, inzerce až na 100 serverech.</span></li>
+          <li data-reveal><b>03</b><span>Kompletní právní servis včetně advokátní úschovy až po předání nemovitosti.</span></li>
+        </ol>
+      </div>
+      <form class="p-estimate" id="estimate" data-reveal>
+        <h3 class="p-estimate__h">Online odhad ceny</h3>
+        <div class="field"><label for="e-type">Co prodáváte?</label><select class="select" id="e-type"><option>Byt</option><option>Dům</option><option>Pozemek</option><option>Komerční prostor</option></select></div>
+        <div class="field"><label for="e-addr">Adresa nemovitosti</label><input class="input" id="e-addr" placeholder="Ulice a číslo, obec"></div>
+        <button class="btn btn--primary btn--block">Pokračovat k odhadu <svg class="icon"><use href="#i-arrow"/></svg></button>
+        <p class="t-small">Nejpozději do 24 hodin se ozveme.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 05 · CO MÁME ZA SEBOU – doklad práce (realizace), ne nabídka -->
+  <section class="p-done" aria-labelledby="done-h">
+    <div class="wide">
+      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Realizováno</span><h2 class="d-sm" id="done-h" data-split>Co už máme za sebou</h2></div>
+        <a class="btn btn--ghost" data-href="realizovano.html">Všechny realizace <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="p-done__grid" id="done" data-reveal-group></div>
+    </div>
+  </section>
+
+  <!-- 06 · REFERENCE – tři najednou, jméno + město, delší text rozbalitelný; hodnocení s logy zdrojů -->
+  <section class="p-quotes" id="reference" aria-labelledby="q-h">
+    <div class="wide">
+      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Reference</span><h2 class="d-sm" id="q-h" data-split>Co o nás říkají klienti</h2></div>
+        <div class="p-ratings" id="ratings"></div></div>
+      <div class="p-refs" id="refs"></div>
+      <div class="p-refs__more"><button type="button" class="btn btn--secondary" id="refs-more" hidden>Další reference</button></div>
+    </div>
+  </section>
+
+  <!-- 07 · AKTUÁLNÍ NABÍDKA – až tady a jako ukázka práce: takhle prezentujeme nemovitosti klientů -->
+  <section class="p-featured p-featured--grid" aria-labelledby="feat-h">
+    <div class="wide">
+      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Aktuálně prodáváme</span><h2 class="d-sm" id="feat-h" data-split>Takhle prezentujeme nemovitosti našich klientů</h2></div>
+        <div class="p-featured__links"><a class="btn btn--ghost" data-href="projekty.html">Developerské projekty <svg class="icon"><use href="#i-arrow"/></svg></a><a class="btn btn--ghost" data-all href="vypis.html"><span>Celá nabídka (<span data-bind="total"></span>)</span><svg class="icon"><use href="#i-arrow"/></svg></a></div></div>
+      <div class="p-featured__grid" id="cards"></div>
+    </div>
+  </section>
+
+  <!-- 08 · REALITNÍ RÁDCE (AI) – nová služba jako součást webu; ukázka vpravo je statická ilustrace chování -->
   <section class="p-rad" id="radce" aria-labelledby="rad-sec-h">
     <div class="wide p-rad__in">
       <div>
@@ -109,55 +151,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.
         </div>
         <span class="p-rad__tag">Ilustrace rozhovoru · nabídky jsou skutečné</span>
       </div>
-    </div>
-  </section>
-
-  <!-- 05 · PRODEJ – tmavá „filmová“ kapitola, odhad ceny jako hlavní vstup -->
-  <section class="p-sell on-ink" id="prodat" aria-labelledby="sell-h">
-    <div class="wide p-sell__in">
-      <div>
-        <span class="t-label eyebrow" data-reveal>Chci prodat</span>
-        <h2 class="d" id="sell-h" data-split>Prodáváte? <em>Začněte cenou.</em></h2>
-        <ol class="p-sell__steps" data-reveal-group>
-          <li data-reveal><b>01</b><span>Odhad ceny nemovitosti – zdarma a nezávazně.</span></li>
-          <li data-reveal><b>02</b><span>Profesionální fotografie, video a 3D prohlídky, inzerce až na 100 serverech.</span></li>
-          <li data-reveal><b>03</b><span>Kompletní právní servis včetně advokátní úschovy až po předání nemovitosti.</span></li>
-        </ol>
-      </div>
-      <form class="p-estimate" id="estimate" data-reveal>
-        <h3 class="p-estimate__h">Online odhad ceny</h3>
-        <div class="field"><label for="e-type">Co prodáváte?</label><select class="select" id="e-type"><option>Byt</option><option>Dům</option><option>Pozemek</option><option>Komerční prostor</option></select></div>
-        <div class="field"><label for="e-addr">Adresa nemovitosti</label><input class="input" id="e-addr" placeholder="Ulice a číslo, obec"></div>
-        <button class="btn btn--primary btn--block">Pokračovat k odhadu <svg class="icon"><use href="#i-arrow"/></svg></button>
-        <p class="t-small">Nejpozději do 24 hodin se ozveme.</p>
-      </form>
-    </div>
-  </section>
-
-  <!-- 06 · PROJEKTY – velké střídavé řady, obrázek se odhaluje -->
-  <section class="p-projects" aria-labelledby="proj-h">
-    <div class="wide">
-      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Developerské projekty</span><h2 class="d-sm" id="proj-h" data-split>Nové bydlení a investice</h2></div>
-        <a class="btn btn--ghost" data-href="projekty.html">Všechny projekty <svg class="icon"><use href="#i-arrow"/></svg></a></div>
-      <div id="projects"></div>
-    </div>
-  </section>
-
-  <!-- 07 · LIDÉ – makléři jako portréty -->
-  <section class="p-agents" aria-labelledby="ag-h">
-    <div class="wide">
-      <div class="p-featured__head"><div><span class="t-label eyebrow" data-reveal>Makléři</span><h2 class="d-sm" id="ag-h" data-split>Lidé, kteří znají vaši lokalitu</h2></div>
-        <a class="btn btn--ghost" data-href="makleri.html">Všichni makléři <svg class="icon"><use href="#i-arrow"/></svg></a></div>
-      <div class="p-agents__grid" id="agents" data-reveal-group></div>
-    </div>
-  </section>
-
-  <!-- 08 · DŮVĚRA – jedna velká citace, hodnocení -->
-  <section class="p-quotes" id="reference" aria-labelledby="q-h">
-    <div class="wide p-quotes__in">
-      <div class="p-quotes__side"><span class="t-label eyebrow">Reference</span><h2 class="sr-only" id="q-h">Co o nás říkají klienti</h2><div class="p-ratings" id="ratings"></div>
-        <div class="p-quotes__nav"><button class="icon-btn" id="q-prev" aria-label="Předchozí reference"><svg class="icon icon--lg"><use href="#i-arrow-left"/></svg></button><span id="q-count" aria-live="polite"></span><button class="icon-btn" id="q-next" aria-label="Další reference"><svg class="icon icon--lg"><use href="#i-arrow"/></svg></button></div></div>
-      <figure class="p-quote" id="quote"></figure>
     </div>
   </section>
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chci prodat nemovitost – rychle a za nejlepší cenu | NEXT Reality</title>
-<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) { document.documentElement.classList.add('js-motion'); setTimeout(() => { if (!window.gsap) document.documentElement.classList.remove('js-motion'); }, 2500); }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
 <link rel="stylesheet" href="prodat.css">
+<link rel="stylesheet" href="subpage.css">
 <link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="prodat">
@@ -25,7 +26,7 @@
       <div class="sp-hero__intro">
         <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Chci prodat</span></nav>
         <span class="t-label eyebrow sp-eyebrow">Prodej nemovitosti</span>
-        <h1>Jste na správném <em>místě.</em></h1>
+        <h1 class="ed-h1" data-split="now">Jste na správném <em>místě.</em></h1>
         <p class="sp-hero__lead">Vaši nemovitost prodáme rychle a&nbsp;za nejlepší cenu, jakou trh nabízí. O&nbsp;všechno ostatní se postaráme&nbsp;my.</p>
         <a class="btn btn--alt sp-hero__jump" href="#kontakt">Nezávazně nás kontaktujte <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
@@ -70,9 +71,9 @@
   </section>
 
   <!-- 2 · Co pro vás uděláme -->
-  <section class="section sp-sec">
+  <section class="section sp-sec ed-sec">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Co pro vás uděláme</span><h2 class="t-h2">Od nacenění po předání klíčů</h2><p>Celý prodej vedeme za vás. Vy se rozhodujete, my zařídíme všechno ostatní.</p></div></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Co pro vás uděláme</span><h2 class="t-h2" data-split>Od nacenění po předání klíčů</h2><p>Celý prodej vedeme za vás. Vy se rozhodujete, my zařídíme všechno ostatní.</p></div></div>
       <ol class="sp-steps" id="process"></ol>
       <div class="sp-services">
         <h3 class="t-label">Součástí servisu</h3>
@@ -82,35 +83,35 @@
   </section>
 
   <!-- 3 · Proč s námi – jen ověřená čísla z dat kanceláře -->
-  <section class="section section--tint sp-sec">
+  <section class="section section--tint sp-sec ed-sec">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Proč prodat s námi</span><h2 class="t-h2">Čísla místo slibů</h2><p id="why-lead"></p></div></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Proč prodat s námi</span><h2 class="t-h2" data-split>Čísla místo <em>slibů.</em></h2><p id="why-lead"></p></div></div>
       <dl class="sp-stats" id="sp-stats"></dl>
     </div>
   </section>
 
   <!-- 4 · Makléři -->
-  <section class="section sp-sec">
+  <section class="section sp-sec ed-sec">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Váš makléř</span><h2 class="t-h2">Lidé, kteří znají vaši lokalitu</h2></div><a class="btn btn--secondary" data-href="makleri.html" id="all-agents">Všichni makléři <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Váš makléř</span><h2 class="t-h2" data-split>Lidé, kteří znají vaši lokalitu</h2></div><a class="btn btn--secondary" data-href="makleri.html" id="all-agents">Všichni makléři <svg class="icon"><use href="#i-arrow"/></svg></a></div>
       <div class="sp-agents" id="sp-agents"></div>
     </div>
   </section>
 
   <!-- 5 · Reference -->
-  <section class="section section--tint sp-sec">
+  <section class="section section--tint sp-sec ed-sec">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Reference</span><h2 class="t-h2">Co říkají naši klienti</h2></div><div class="sp-ratings" id="sp-ratings"></div></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Reference</span><h2 class="t-h2" data-split>Co říkají naši klienti</h2></div><div class="sp-ratings" id="sp-ratings"></div></div>
       <div class="sp-refs" id="sp-refs"></div>
     </div>
   </section>
 
   <!-- 6 · Odhad ceny – druhá cesta pro ty, kdo chtějí nejdřív znát cenu -->
-  <section class="section sp-ink sp-estimate">
+  <section class="section sp-ink sp-estimate ed-sec">
     <div class="container sell-hero">
       <div class="sp-estimate__intro">
         <span class="t-label eyebrow sp-eyebrow">Online odhad ceny</span>
-        <h2 class="t-h2">Kolik je vaše nemovitost dnes za&nbsp;to?</h2>
+        <h2 class="t-h2 ed-h2" data-split>Kolik je vaše nemovitost dnes za&nbsp;to?</h2>
         <p>Vyplňte čtyři krátké kroky. Makléř porovná vaši nemovitost s prodeji v okolí a pošle vám orientační tržní cenu – zdarma a nezávazně.</p>
         <div class="compare sp-compare">
           <div><h3>Odhad ceny od makléře</h3><p>Rychlé a nezávazné posouzení aktuální tržní hodnoty, založené na tržních datech a srovnávací analýze. Ideální pro počáteční orientaci, ať už zvažujete prodej, nebo se připravujete na jednání.</p></div>
@@ -193,32 +194,32 @@
   </section>
 
   <!-- 7 · Realizováno (jen kancelář s realizacemi na webu) -->
-  <section class="section sp-sec" id="sold-sec">
+  <section class="section sp-sec ed-sec" id="sold-sec">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Realizováno</span><h2 class="t-h2">Nedávno jsme prodali</h2></div><a class="btn btn--secondary" data-href="vypis.html" data-q="&status=sold">Všechny realizace <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Realizováno</span><h2 class="t-h2" data-split>Nedávno jsme prodali</h2></div><a class="btn btn--secondary" data-href="vypis.html" data-q="&status=sold">Všechny realizace <svg class="icon"><use href="#i-arrow"/></svg></a></div>
       <div class="grid-cards" id="sold"></div>
     </div>
   </section>
 
   <!-- 8 · Časté otázky -->
-  <section class="section section--tint sp-sec">
+  <section class="section section--tint sp-sec ed-sec">
     <div class="container sp-faq-wrap">
-      <div class="section-head"><div><span class="t-label eyebrow">Časté otázky</span><h2 class="t-h2">Než se rozhodnete</h2></div></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Časté otázky</span><h2 class="t-h2" data-split>Než se rozhodnete</h2></div></div>
       <div class="sp-faq" id="sp-faq"></div>
     </div>
   </section>
 
-  <!-- 9 · Závěr -->
-  <section class="section sp-ink sp-final">
-    <div class="container sp-final__in">
-      <div>
-        <span class="t-label eyebrow sp-eyebrow">Začněme</span>
-        <h2 class="t-h2">Prodej nemovitosti začíná jedním rozhovorem.</h2>
-        <p>Napište nám nebo si nechte nezávazně ocenit nemovitost. Ozveme se nejpozději do 24 hodin.</p>
-      </div>
-      <div class="sp-final__cta">
-        <a class="btn btn--alt" href="#kontakt">Napsat makléři <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn btn--secondary sp-btn-line" href="#odhad">Online odhad ceny</a>
+  <!-- 9 · Závěr – stejná kompozice jako závěr homepage / Realizováno -->
+  <section class="ed-final on-ink" aria-labelledby="sp-final-h">
+    <div class="container ed-final__in">
+      <span class="t-label eyebrow">Začněme</span>
+      <h2 class="ed-final__h" id="sp-final-h" data-split>Prodej nemovitosti začíná jedním <em>rozhovorem.</em></h2>
+      <div class="ed-final__row">
+        <p class="t-lead">Napište nám nebo si nechte nezávazně ocenit nemovitost. Ozveme se nejpozději do 24 hodin.</p>
+        <div class="ed-final__cta">
+          <a class="btn btn--alt" href="#kontakt">Napsat makléři <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#odhad">Online odhad ceny</a>
+        </div>
       </div>
     </div>
   </section>

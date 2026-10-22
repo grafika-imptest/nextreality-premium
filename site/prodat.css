@@ -15,7 +15,7 @@
 
 /* --- 1 · Úvod ------------------------------------------------------------------ */
 .sp-hero { padding-block: var(--s-10) var(--s-16); }
-.sp-hero__grid { display: grid; gap: var(--s-8); grid-template-areas: "intro" "form" "more"; }
+.sp-hero__grid { display: grid; gap: var(--s-8); grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "form" "more"; }
 .sp-hero__intro { grid-area: intro; display: grid; gap: var(--s-5); justify-items: start; align-content: start; }
 .sp-hero__intro .crumbs { margin-bottom: var(--s-2); }
 .sp-hero h1 { color: var(--on-ink); max-width: 14ch; }
@@ -23,7 +23,7 @@
 .page-hero .sp-hero__lead { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(20px, 1.9vw, 26px); line-height: 1.32; letter-spacing: -.005em; color: var(--on-ink); max-width: 30ch; margin: 0; }
 .sp-hero__jump { margin-top: var(--s-2); display: none; }
 .sp-hero__more { grid-area: more; display: grid; gap: var(--s-8); align-content: start; }
-.sp-contact { grid-area: form; min-width: 0; display: grid; gap: var(--s-4); }
+.sp-contact { grid-area: form; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
 @media (min-width: 1024px) {
   .sp-hero { padding-block: var(--s-12) var(--s-16); }
   .sp-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); grid-template-areas: "intro form" "more form"; grid-template-rows: auto 1fr; column-gap: var(--s-16); row-gap: var(--s-12); }

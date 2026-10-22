@@ -21,7 +21,7 @@ git subtree split --prefix site -b gh-pages && git push -f origin gh-pages
 | Data, logika (filtry, mapa, galerie, průvodce odhadem, kalkulačka) | ✓ | ✓ shodné (`core.js`, `listing.js`, `detail.js`, `prodat.js`) |
 | Vizuální jazyk | světlý, funkční | dvě atmosféry: INK (tmavé „kino“) a PAPER (velmi světlá neutrální šedá #F3F4F5, „dokument“) |
 | Písmo | DM Sans | DM Sans + **Inter Tight** (editoriální nadpisy) |
-| Homepage | seznam sekcí | příběh v 9 kapitolách: teze → úvod a čísla → vodorovná galerie nabídky → index kategorií → prodej → projekty → lidé → reference → závěr |
+| Homepage | seznam sekcí | **náběr zakázek** (připomínka klienta 10/2026: web kanceláře prezentuje kancelář, makléře a jejich práci; kupující jdou na portály): teze „Vaše nemovitost v dobrých rukou“ + odhad ceny → kdo jsme a čísla → makléři (telefon, e-mail) → jak prodáváme → realizace → reference (3 najednou, jméno + město, rozbalení, logo Google / Firmy.cz) → ukázka aktuální nabídky (4 karty na šířku) → rádce → kontakt. Hledání bydlení jen jako ztišený prvek v hero; developerské projekty odkazem. |
 | Detail nemovitosti | galerie + 2 sloupce | filmová hlavička přes celou šířku (fotka, H1, cena, video), lepící podnavigace s cenou a „Mám zájem“, přehled velkými čísly |
 | Pohyb | žádný | Lenis (plynulý scroll) + GSAP ScrollTrigger + SplitType |
 | Tvary | rádius 8/12 px, jemné stíny | jen 2 rádiusy (999 px interakce, 4 px média), **bez stínů**, 1px linky |
@@ -44,8 +44,6 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Hero / závěr / detail `[data-parallax]` | scroll (scrub) | posun fotky ±9 %, lineárně |
 | Úvodní věta `[data-words]` | scroll (scrub) | slova se rozsvěcují 0,16 → 1 |
 | Čísla `[data-count]` | vstup | dopočítání 1,6 s power3.out |
-| Vybrané nemovitosti | desktop s myší | sekce se připne a scroll posouvá galerii vodorovně; na dotyku nativní swipe se snapem |
-| Index kategorií | najetí myší | fotka typu nemovitosti sleduje kurzor (quickTo 0,6 s) |
 | Makléři | najetí / fokus / na dotyku doscrollování doprostřed | prolnutí neutrálního portrétu do úsměvu: zpoždění 0,3 s, 1,6 s ease-in-out; návrat 0,9 s |
 | Hero video (TGH) | načtení stránky | fotka hned, video (dron nad Staroměstským náměstím, 20 s smyčka) se prolne po načtení; 1280 px 3,6 MB / 1920 px 7,1 MB podle šířky obrazovky; vypnuté při reduced-motion, úsporném režimu dat a `?nomotion`; tlačítko pauzy (WCAG 2.2.2) |
 | Hlavička | homepage + detail | průhledná nad tmavou fotkou, po odscrollování pevná |
@@ -63,6 +61,13 @@ Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se 
 | Detail makléře | osobní web: o mně, čím se chlubím, nabídka, realizace, reference, formulář (i ve standardu) | makler.* |
 
 **Mezery v datech (pro CMS/CRM):** makléř u nabídky, prodané zakázky, reference i projektu; souřadnice, telefon, e-mail a otevírací doba kanceláří; ocenění a praxe makléřů; datum realizace; realizace TGH (dnes se nezveřejňují). Mapové podklady: CARTO bez klíče už nefunguje, předloha používá OpenStreetMap – pro produkci vybrat poskytovatele s klíčem (Mapy.cz / CARTO / vlastní dlaždice).
+
+## Kolo připomínek klienta 2 (22. 10. 2026)
+- **Princip:** web kanceláře slouží k prezentaci kanceláře, makléřů a jejich práce a k **náběru nových zakázek** – kupující jdou na portály a centrální web NEXT. Nabídka nemovitostí proto není v popředí.
+- **Homepage:** hero „Vaše nemovitost v dobrých rukou“ s odhadem ceny a výběrem makléře, ztišené hledání bydlení; makléři hned po úvodu (telefon i e-mail); nová kapitola Realizováno; reference 3 najednou s rozbalením a logy Google / Firmy.cz; nabídka jako mřížka 4 karet na šířku (bez vodorovného připnutí – klienta to rušilo, formát na výšku se nepoužívá); odstraněn index kategorií a developerské projekty (jen odkaz). Velký logotyp v patičce odstraněn.
+- **Podstránky:** `subpage.css` (třídy `ed-*`) sjednocuje podstránky s jazykem homepage / Realizováno – eyebrow, editoriální nadpis, čísla, tmavé závěrečné kapitoly. Prezentační stránky mají editoriální H1 (kontrola v panelu to toleruje), výpis a detail drží funkční strop 48 px.
+- **Makléři:** portréty (PNG výřezy) „vystupují“ z rámečku; obecné „Realitní makléř“ se nepíše, jen role s informací navíc (certifikace, ředitel, majitel).
+- **Data pro CMS:** u reference město (pole `c`), u makléře portrét jako výřez bez pozadí.
 
 ## Realitní rádce (AI chat) – jen prémiová verze
 Rádce je ukázka, jak se AI stane součástí webu, ne přílepkem. Soubory `rad.js` + `rad.css` (načítá se na všech stránkách webu).

@@ -71,7 +71,9 @@
     $('#mk-name').textContent = b.n;
     $('#mk-role').textContent = b.r ? (b.r[0].toUpperCase() + b.r.slice(1)).replace(/\s+[|I]\s+/g, ' · ') : 'Realitní makléř';
     const img = b.img || D?.portrait;
-    $('#mk-photo').innerHTML = img ? `<img src="${esc(img)}" alt="${esc(b.n)}" fetchpriority="high">` : ico('user', 'icon icon--lg');
+    // výřez postavy (PNG s průhledným pozadím, portrétní poměr) → postava vystupuje z obdélníku jako na stránce Makléři
+    $('#mk-photo').classList.remove('is-pop');
+    $('#mk-photo').innerHTML = img ? `<img src="${esc(img)}" alt="${esc(b.n)}" fetchpriority="high"${/\.png(\?|$)/i.test(img) ? ` onload="if (this.naturalWidth / this.naturalHeight < .85) this.parentNode.classList.add('is-pop')"` : ''}>` : ico('user', 'icon icon--lg');
     $('#mk-photo').classList.toggle('is-empty', !img);
     // úvodní věta: fakta z jeho nabídky (typy, lokality); motto je v sekci O mně, aby se neopakovalo
     const cities = top(mine.map(city)), types = top(mine.map(x => x.type), 2).map(t => TYPE_PL[t]);

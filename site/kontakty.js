@@ -292,7 +292,10 @@ function drawTeam() {
   const list = teamFilter ? CT.offices.find(x => x.key === teamFilter).brokers : (multi ? all.slice(0, 8) : all);
   $('#tym-chips').innerHTML = multi ? `<button class="chip" type="button" data-tf="" aria-pressed="${!teamFilter}">Všechny kanceláře</button>` + CT.offices.map(x => `<button class="chip" type="button" data-tf="${x.key}" aria-pressed="${teamFilter === x.key}">${esc(short(x.n))} <span>${x.brokers.length}</span></button>`).join('') : '';
   $('#tym-chips').hidden = !multi;
-  $('#tym-grid').innerHTML = list.map(a => `<article class="agent"><div class="agent__photo"><img src="${esc(a.img)}" alt="" loading="lazy"></div><div class="agent__body"><h3 class="agent__name">${esc(a.n)}</h3><p class="agent__role">${esc(a.r || 'Realitní makléř')}${multi ? ` · ${esc(short(a.office))}` : ''}</p><div class="agent__contact"><a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}<span>${esc(a.tel)}</span></a><a href="mailto:${esc(a.mail)}">${ico('mail')}<span>${esc(a.mail)}</span></a></div></div></article>`).join('');
+  // karta jako na stránce Makléři: generická role „Realitní makléř/ka“ se nepíše, kancelář zvlášť a stručně;
+  // neprůhledná / široká fotka (ne výřez postavy) → .is-flat = klasický ořez v obdélníku
+  const roleExtra = r => { const t = (r || '').replace(/\s+[I|]\s+/g, ' · ').trim(); return /^realitní\s+makléř(ka)?$/i.test(t) ? '' : t; };
+  $('#tym-grid').innerHTML = list.map(a => { const role = roleExtra(a.r); return `<article class="agent"><div class="agent__photo"><img src="${esc(a.img)}" alt="" loading="lazy" onload="if (this.naturalWidth / this.naturalHeight > .85) this.closest('.agent').classList.add('is-flat')" onerror="this.remove()"></div><div class="agent__body"><h3 class="agent__name">${esc(a.n)}</h3>${multi ? `<span class="agent__office">${esc(short(a.office))}</span>` : ''}${role ? `<p class="agent__role">${esc(role)}</p>` : ''}<div class="agent__contact"><a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}<span>${esc(a.tel)}</span></a><a href="mailto:${esc(a.mail)}" title="${esc(a.mail)}">${ico('mail')}<span class="agent__mail-full">${esc(a.mail)}</span><span class="agent__mail-short">Napsat e-mail</span></a></div></div></article>`; }).join('');
   const more = multi && !teamFilter && all.length > list.length;
   $('#tym-more').innerHTML = more ? `<p>Zobrazeno ${list.length} z ${all.length} profilů. Vyberte kancelář, nebo projděte všechny makléře.</p>` : '';
 }
@@ -351,7 +354,7 @@ window.PAGE = {
       [CT.offices.length, word(kancelar(CT.offices.length))],
       [CT.cities.length, word(mesto(CT.cities.length))],
       [CT.brokerCount, word(makler(CT.brokerCount))],
-    ]).map(([n, l]) => `<div><dt>${n}</dt><dd>${l}</dd></div>`).join('');
+    ]).map(([n, l]) => `<div><dt data-count="${n}">${n}</dt><dd>${l}</dd></div>`).join('');
     $('#ct-cities').innerHTML = CT.cities.map(c => `<li><button type="button" data-city="${esc(c.name)}">${esc(c.name)}<span>${c.offices.length}</span></button></li>`).join('');
     $('#ct-cities').hidden = single;
     $('#ct-list-e').textContent = single ? CT.offices[0].city : 'Pobočky';

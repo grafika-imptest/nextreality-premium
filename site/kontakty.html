@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kontakty | NEXT Reality</title>
-<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) { document.documentElement.classList.add('js-motion'); setTimeout(() => { if (!window.gsap) document.documentElement.classList.remove('js-motion'); }, 2500); }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -14,22 +14,26 @@
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
 <link rel="stylesheet" href="kontakty.css">
+<link rel="stylesheet" href="subpage.css">
 <link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="kontakty">
 <div id="site-header"></div>
 <main>
   <!-- 1 · KDE: hlavička + mapa a karty kanceláří (atmosféra INK) -->
-  <section class="page-hero page-hero--light ct-hero">
-    <div class="container ct-hero__in">
-      <div>
+  <section class="page-hero page-hero--light ct-hero ed-hero" aria-labelledby="ct-h1">
+    <div class="container ed-hero__in">
+      <div class="ed-hero__head">
         <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Kontakty</span></nav>
-        <h1 id="ct-h1">Kde nás najdete</h1>
-        <p id="ct-lead"></p>
+        <span class="t-label eyebrow">Kontakty · <span data-bind="name"></span></span>
+        <h1 class="ed-h1" id="ct-h1">Kde nás najdete</h1>
       </div>
-      <div class="ct-hero__side">
-        <dl class="ct-stats" id="ct-stats"></dl>
-        <ul class="ct-cities" id="ct-cities" aria-label="Města s kanceláří"></ul>
+      <div class="ed-hero__foot">
+        <p class="ed-hero__lead" id="ct-lead"></p>
+        <div class="ct-hero__side">
+          <dl class="ct-stats" id="ct-stats"></dl>
+          <ul class="ct-cities" id="ct-cities" aria-label="Města s kanceláří"></ul>
+        </div>
       </div>
     </div>
   </section>
@@ -49,9 +53,9 @@
   </section>
 
   <!-- 2 · DETAILY: formulář -->
-  <section class="section" id="kontakt">
+  <section class="section ed-sec" id="kontakt">
     <div class="container contact">
-      <div><span class="t-label eyebrow">Napište nám</span><h2 class="t-h2">Jsme tu pro vás</h2><p style="margin-top:var(--s-3);color:var(--text-muted)">Osobně s vámi projdeme každý detail. Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
+      <div class="ed-intro"><span class="t-label eyebrow">Napište nám</span><h2 class="ed-h2" data-split>Jsme tu pro <em>vás.</em></h2><p>Osobně s vámi projdeme každý detail. Nejpozději do 24 hodin se ozveme nazpátek.</p></div>
       <form class="form" onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;box&quot;><h3 class=&quot;t-h3&quot;>Děkujeme, zpráva je odeslaná</h3><p>Ozveme se nejpozději do 24 hodin.</p></div>'">
         <div class="form__2">
           <div class="field"><label for="c-name">Jméno a příjmení *</label><input class="input" id="c-name" autocomplete="name" required></div>
@@ -67,19 +71,19 @@
   </section>
 
   <!-- 3 · DETAILY: fakturační a právní údaje (jen kde jsou reálná data) -->
-  <section class="section section--tint ct-legal" id="fakturace" hidden>
+  <section class="section section--tint ct-legal ed-sec" id="fakturace" hidden>
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Fakturační údaje</span><h2 class="t-h2">Provozovatel a účty</h2></div></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Fakturační údaje</span><h2 class="t-h2" data-split>Provozovatel a účty</h2></div></div>
       <div class="ct-legal__grid" id="fakturace-body"></div>
     </div>
   </section>
 
   <!-- 4 · DETAILY: makléři podle kanceláře -->
-  <section class="section ct-team" id="tym">
+  <section class="section ct-team ed-sec" id="tym">
     <div class="container">
-      <div class="section-head"><div><span class="t-label eyebrow">Lidé</span><h2 class="t-h2" id="tym-h">Makléři podle kanceláře</h2></div><a class="btn btn--secondary" id="tym-all" data-href="makleri.html">Všichni makléři</a></div>
+      <div class="section-head"><div><span class="t-label eyebrow">Lidé</span><h2 class="t-h2" id="tym-h" data-split>Makléři podle kanceláře</h2></div><a class="btn btn--secondary" id="tym-all" data-href="makleri.html">Všichni makléři</a></div>
       <div class="ct-team__chips" id="tym-chips" role="group" aria-label="Filtr podle kanceláře"></div>
-      <div class="grid-agents" id="tym-grid"></div>
+      <div class="grid-agents agents-pop" id="tym-grid"></div>
       <div class="ct-team__more" id="tym-more"></div>
     </div>
   </section>

@@ -275,7 +275,7 @@ button, input, select { font: inherit; color: inherit; }
 .form { display: grid; gap: var(--s-4); }
 .form__2 { display: grid; gap: var(--s-4); }
 @media (min-width: 768px) { .form__2 { grid-template-columns: 1fr 1fr; } }
-textarea.input { height: auto; min-height: 120px; padding-block: var(--s-3); resize: vertical; line-height: var(--lh-body); }
+textarea.input { font: inherit; height: auto; min-height: 120px; padding-block: var(--s-3); resize: vertical; line-height: var(--lh-body); }
 .check { display: flex; gap: var(--s-3); align-items: start; font-size: var(--fs-small); color: var(--text-muted); }
 .check input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--accent); }
 
