@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Podstránky – společný editoriální jazyk (prémiová verze)
+   Klient (kolo 10/2026): „Realizováno vypadá jako z toho webu, ostatní jako bych byl
+   najednou na jiném webu.“ → jazyk homepage a Realizováno přenesený na podstránky:
+   eyebrow s linkou, velký display nadpis s odhalením po řádcích, 1px linky, čísla velkým
+   písmem, velkorysé mezery, kapitoly INK / PAPER, bez stínů, 999 px interakce / 4 px boxy.
+
+   Načítá se PO premium.css i po CSS stránky. Platí jen pro třídy ed-*, které podstránka
+   výslovně použije – funkční části (výpis, filtry, formuláře) se tím nemění.
+   Editoriální H1 až clamp(44px, 6vw, 88px) (dohoda: konzistence s HP > dřívější strop 48 px);
+   funkční H1 (výpis, detail) zůstává ≤ 48 px.
+   ========================================================================== */
+
+/* --- 1 · Editoriální úvod stránky ------------------------------------------ */
+.ed-hero { position: relative; padding-block: var(--s-12) var(--s-10); border-bottom: 1px solid var(--line); overflow: hidden; }
+.ed-hero.page-hero { padding-block: var(--s-12) var(--s-10); }
+.ed-hero.page-hero--light { background: var(--paper); }
+@media (min-width: 1024px) { .ed-hero, .ed-hero.page-hero { padding-block: var(--s-16) var(--s-12); } }
+.ed-hero.on-ink, .ed-hero.page-hero:not(.page-hero--light) { border-bottom-color: transparent; }
+
+.ed-hero__in { display: grid; gap: var(--s-10); }
+@media (min-width: 1024px) { .ed-hero__in { gap: var(--s-16); } }
+.ed-hero__head { display: grid; gap: var(--s-5); justify-items: start; min-width: 0; }
+.ed-hero__head .crumbs { margin: 0 0 var(--s-3); }
+.ed-hero .eyebrow { margin: 0; }
+.ed-hero.page-hero--light .eyebrow { color: var(--text-muted); }
+
+/* display H1 – stejný řez jako hero homepage / Realizováno, jen o stupeň menší */
+.ed-h1, .page-hero h1.ed-h1, .ed-hero h1.ed-h1 {
+  font-family: var(--font-display); font-weight: var(--fw-display);
+  font-size: clamp(44px, 6vw, 88px); line-height: .96; letter-spacing: -.045em;
+  color: var(--ink); max-width: 14ch; margin: 0; text-wrap: balance;
+}
+.on-ink .ed-h1, .page-hero:not(.page-hero--light) .ed-h1 { color: var(--on-ink); }
+.ed-h1 em { font-style: italic; font-weight: 400; }
+.on-ink .ed-h1 em, .page-hero:not(.page-hero--light) .ed-h1 em { color: var(--accent-deco); }
+
+/* pata úvodu: 1px linka, perex vlevo, čísla vpravo (jako Realizováno) */
+.ed-hero__foot { display: grid; gap: var(--s-8); align-items: end; padding-top: var(--s-8); border-top: 1px solid var(--line); }
+.on-ink .ed-hero__foot, .page-hero:not(.page-hero--light) .ed-hero__foot { border-top-color: rgba(243, 244, 245, .2); }
+@media (min-width: 1024px) { .ed-hero__foot { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
+.ed-hero__lead, .page-hero p.ed-hero__lead { margin: 0; max-width: 46ch; font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--text-muted); }
+.on-ink .ed-hero__lead, .page-hero:not(.page-hero--light) p.ed-hero__lead { color: rgba(243, 244, 245, .82); }
+
+/* čísla – velký display řez, oddělená 1px linkou */
+.ed-stats { display: flex; flex-wrap: wrap; gap: var(--s-6) 0; margin: 0; }
+.ed-stats > div { min-width: 0; padding-right: var(--s-8); }
+.ed-stats > div + div { padding-left: var(--s-8); border-left: 1px solid var(--line); }
+.on-ink .ed-stats > div + div { border-left-color: rgba(243, 244, 245, .2); }
+.ed-stats dt { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -.04em; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.on-ink .ed-stats dt { color: var(--on-ink); }
+.ed-stats dd { margin: var(--s-2) 0 0; font-size: var(--fs-small); color: var(--text-muted); }
+.on-ink .ed-stats dd { color: var(--on-ink-muted); }
+.ed-stats > div:last-child { padding-right: 0; }
+@media (max-width: 599px) { .ed-stats > div { padding-right: var(--s-5); } .ed-stats > div + div { padding-left: var(--s-5); } }
+
+/* --- 2 · Kapitoly a jejich hlavičky ------------------------------------------- */
+.ed-sec { padding-block: var(--section-editorial); }
+.ed-sec .section-head, .ed-head { margin-bottom: var(--s-10); align-items: end; }
+.ed-sec .section-head > div { display: grid; gap: var(--s-3); justify-items: start; }
+.ed-sec .section-head .eyebrow { margin: 0; }
+.ed-sec .section-head p { margin-top: var(--s-1); }
+/* nadpis kapitoly = .d-sm z homepage */
+.ed-sec .section-head .t-h2, .ed-h2 {
+  font-family: var(--font-display); font-weight: var(--fw-display);
+  font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: -.03em; color: var(--ink); max-width: 20ch; margin: 0;
+}
+.on-ink .ed-sec .section-head .t-h2, .ed-sec.on-ink .section-head .t-h2, .ed-sec.sp-ink .t-h2, .on-ink .ed-h2 { color: var(--on-ink); }
+.ed-sec.section--tint { background: var(--stone); }
+
+/* --- 3 · Závěrečná kapitola (INK) – jako závěr homepage / Realizováno ---------- */
+.ed-final { padding-block: var(--section-editorial); background: var(--ink); color: var(--on-ink); }
+.ed-final__in { display: grid; gap: var(--s-8); }
+.ed-final .eyebrow { color: var(--accent-deco); margin: 0; }
+.ed-final__h { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: -.04em; color: var(--on-ink); max-width: 16ch; margin: 0; }
+.ed-final__h em { color: var(--accent-deco); }
+.ed-final__row { display: grid; gap: var(--s-6); align-items: end; padding-top: var(--s-8); border-top: 1px solid rgba(243, 244, 245, .2); }
+@media (min-width: 1024px) { .ed-final__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-16); } }
+.ed-final__row p { color: rgba(243, 244, 245, .8); max-width: 48ch; margin: 0; }
+.ed-final__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+/* --- 4 · Karty makléřů: portrét „vystupuje“ z obdélníku ------------------------
+   Portréty z webů kanceláří (TGH 573×860, Stars 293×440) jsou PNG s průhledným pozadím
+   (ověřeno: rohy alfa 0, ořez postavy u spodní hrany). Obdélník je jen za postavou a začíná
+   níž – hlava a ramena přesahují jeho horní hranu. Neprůhledné / široké fotky (.is-flat,
+   pozná JS podle poměru stran) se vloží normálně oříznuté do obdélníku. */
+.agents-pop { --pop-box: color-mix(in srgb, var(--stone), var(--line) 40%); --pop-top: 24%; gap: var(--s-12) var(--gap); }
+@media (min-width: 768px) { .agents-pop { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-16) var(--s-6); } }
+@media (min-width: 1024px) { .agents-pop { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.section--tint .agents-pop, .ed-sec.section--tint .agents-pop { --pop-box: var(--paper); }
+.agents-pop .agent { overflow: visible; border: 0; border-radius: 0; background: transparent; min-width: 0; }
+.agents-pop .agent__photo { position: relative; aspect-ratio: 4 / 5; overflow: visible; border-radius: 0; background: none; isolation: isolate; }
+.agents-pop .agent__photo::before { content: ""; position: absolute; inset: var(--pop-top) 0 0; z-index: -1; border-radius: var(--r-box); background: var(--pop-box); transition: background var(--dur-ui) var(--ease); }
+/* jemná zelená linka na spodní hraně obdélníku – jediný akcent */
+.agents-pop .agent__photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent-deco); transform: scaleX(0); transform-origin: left; transition: transform .9s var(--ease); z-index: 1; }
+.agents-pop .agent__photo img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; background: none; filter: none; transform-origin: 50% 100%; transition: transform 1.2s var(--ease); }
+.agents-pop .agent:hover .agent__photo img, .agents-pop .agent:focus-within .agent__photo img { filter: none; transform: scale(1.04); }
+.agents-pop .agent:hover .agent__photo::before, .agents-pop .agent:focus-within .agent__photo::before { background: color-mix(in srgb, var(--pop-box) 88%, var(--ink)); }
+.agents-pop .agent:hover .agent__photo::after, .agents-pop .agent:focus-within .agent__photo::after { transform: scaleX(1); }
+/* fallback: neprůhledná / široká fotka → klasický ořez uvnitř obdélníku */
+.agents-pop .agent.is-flat .agent__photo img { position: absolute; inset: var(--pop-top) 0 0; height: auto; width: 100%; height: calc(100% - var(--pop-top)); object-fit: cover; object-position: center 20%; border-radius: var(--r-box); transform-origin: 50% 50%; }
+.agents-pop .agent.is-flat .agent__photo { overflow: hidden; }
+.agents-pop .agent.is-flat .agent__photo::before { z-index: 0; }
+/* bez fotky: ikona uprostřed obdélníku */
+.agents-pop .agent__photo > .icon { position: absolute; left: 50%; top: calc(var(--pop-top) + (100% - var(--pop-top)) / 2); transform: translate(-50%, -50%); width: 40px; height: 40px; color: var(--line-strong); }
+
+.agents-pop .agent__body { padding: var(--s-5) 0 0; gap: var(--s-2); display: flex; flex-direction: column; align-items: flex-start; }
+.agents-pop .agent__name { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(20px, 1.7vw, 24px); line-height: 1.2; letter-spacing: -.015em; color: var(--ink); overflow-wrap: anywhere; margin: 0; }
+.agents-pop .agent__name a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size var(--dur-ui) var(--ease); }
+.agents-pop .agent:hover .agent__name a { background-size: 100% 1px; }
+/* role jen když nese informaci navíc (Certifikovaný…, ředitel…) – generický „Realitní makléř“ se nepíše */
+.agents-pop .agent__role { min-height: 0; margin: 0; font-size: 13px; line-height: 18px; color: var(--text-muted); -webkit-line-clamp: 3; }
+.agents-pop .agent__office { order: -1; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.agents-pop .agent__contact { width: 100%; margin-top: auto; padding-top: var(--s-3); border-top: 1px solid var(--line); gap: var(--s-2); font-size: 14px; }
+.agents-pop .agent__contact a { max-width: 100%; min-height: 24px; color: var(--ink); }
+.agents-pop .agent__contact a:hover { color: var(--accent-2); }
+.agents-pop .agent__contact a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.agents-pop .agent__contact .icon { flex: none; color: var(--ink); }
+/* karta vyplní výšku řady, kontakt (margin-top: auto) drží na stejné lince napříč řadou */
+.agents-pop .agent { display: flex; flex-direction: column; }
+.agents-pop .agent__body { flex: 1; }
+@media (max-width: 599px) {
+  .agents-pop { gap: var(--s-10) var(--s-4); }
+  .agents-pop .agent__name { font-size: 18px; }
+  .agents-pop .agent__contact { font-size: 13px; }
+  .agents-pop .agent__mail-full { display: none; }
+}
+@media (min-width: 600px) { .agents-pop .agent__mail-short { display: none; } }
+@media (prefers-reduced-motion: reduce) { .agents-pop .agent__photo img, .agents-pop .agent__photo::after { transition: none; } }
+
+/* filtry nad mřížkou makléřů – lišta s 1px linkou */
+.ed-filters { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); align-items: end; justify-content: space-between; padding-bottom: var(--s-6); margin-bottom: var(--s-12); border-bottom: 1px solid var(--line); }
+.ed-filters .agent-filters { flex: 1 1 520px; margin: 0; }
+.ed-filters .results-bar__info { margin: 0; font-size: var(--fs-small); color: var(--text-muted); padding-bottom: 14px; }
+
+/* --- 5 · Výpis: hlavička ve stejném jazyce, funkční H1 ≤ 48 px ------------------ */
+.list-head--ed { padding-block: var(--s-10) var(--s-4); }
+.list-head--ed .eyebrow { display: flex; width: max-content; margin: 0 0 var(--s-4); }
+.list-head--ed .t-h1 { font-family: var(--font-display); font-weight: var(--fw-display); font-size: clamp(32px, 3.6vw, 48px); line-height: 1.02; letter-spacing: -.035em; color: var(--ink); }
+.list-head--ed .list-head__title { gap: var(--s-2) var(--s-4); }
+.list-head--ed .list-head__count { font-variant-numeric: tabular-nums; }
+@media (max-width: 767px) { .list-head--ed { padding-top: var(--s-6); } .list-head--ed .eyebrow { margin-bottom: var(--s-3); } }
+
+/* úvod sekce vedle obsahu (kontakty – formulář) */
+.ed-intro { display: grid; gap: var(--s-3); justify-items: start; align-content: start; }
+.ed-intro .eyebrow { margin: 0; }
+.ed-intro p { margin: var(--s-1) 0 0; color: var(--text-muted); max-width: 44ch; }
+.ed-h2 em, .ed-sec .section-head .t-h2 em { font-style: italic; font-weight: 400; }
+.on-ink .ed-h2 em, .sp-ink .t-h2 em { color: var(--accent-deco); }
+
+/* --- 6 · Projekty: editoriální úvod vedle mapy ------------------------------------ */
+.pj-hero.ed-hero .ed-h1 { font-size: clamp(44px, 5.4vw, 84px); max-width: 12ch; }
+.pj-hero .ed-hero__head { gap: var(--s-4); align-content: end; }
+.pj-hero .pj-hero__lead { margin-top: var(--s-2); max-width: 46ch; }
+.pj-hero .pj-hero__stats { width: 100%; margin-top: var(--s-6); padding-top: var(--s-6); }
+.pj-hero .pj-hero__stats dt { font-size: clamp(40px, 4.2vw, 64px); letter-spacing: -.04em; }
+@media (min-width: 1024px) and (max-width: 1279px) { .pj-hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-10); } }
+@media (max-width: 599px) { .pj-hero .pj-hero__stats dt { font-size: 36px; } }
+
+/* --- 7 · Detail nemovitosti / projektu: navazující kapitoly ------------------------ */
+.similar.ed-sec, .pj-more.ed-sec { background: var(--paper); }
+#zajem .ed-intro .d-broker { margin-top: var(--s-4); }
+
+/* --- 8 · Detail makléře: jméno v editoriální velikosti, portrét vystupuje z obdélníku -- */
+.mk-hero .mk-hero__name { font-size: clamp(44px, 5.6vw, 84px); line-height: .98; letter-spacing: -.04em; max-width: 12ch; }
+.mk-hero__photo.is-pop { position: relative; isolation: isolate; overflow: visible; background: none; aspect-ratio: 4 / 5; }
+.mk-hero__photo.is-pop::before { content: ""; position: absolute; inset: 22% 0 0; z-index: -1; border-radius: var(--r-box); background: var(--ink-2); border: 1px solid var(--ink-line); }
+.mk-hero__photo.is-pop img { object-fit: contain; object-position: center bottom; }
+@media (max-width: 599px) { .mk-hero__photo.is-pop { aspect-ratio: 4 / 5; max-width: 360px; justify-self: center; } }

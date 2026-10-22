@@ -123,7 +123,7 @@ body.has-cmpbar .rad-fab { bottom: calc(var(--lx-cmpbar-h, 72px) + var(--s-4)); 
 .p-rad { padding-block: var(--section-editorial); border-top: 1px solid var(--line); }
 .p-rad__in { display: grid; gap: var(--s-12); align-items: center; }
 @media (min-width: 1024px) { .p-rad__in { grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: var(--s-16); } }
-.p-rad__h em { color: var(--accent-2); }
+.p-rad__h em { color: var(--accent-deco); } /* brandová zelená i na světlé – nadpis je velký (≥ 30 px), na menší text se nepoužívá */
 .p-rad__lead { margin-top: var(--s-5); max-width: 52ch; color: var(--text-muted); font-size: var(--fs-lead); line-height: var(--lh-lead); }
 .p-rad__list { list-style: none; margin: var(--s-8) 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
 .p-rad__list li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-4); padding-block: var(--s-4); border-bottom: 1px solid var(--line); }

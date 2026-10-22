@@ -36,8 +36,32 @@ function heroVideo(P) {
   v.addEventListener('playing', () => { v.classList.add('is-playing'); btn.hidden = false; }, { once: true });
   v.play().catch(err => { if (err.name === 'NotAllowedError') v.hidden = btn.hidden = true; }); // autoplay zablokovaný → zůstane fotka
 }
-const CATS = [['byt', 'Byty'], ['dum', 'Domy'], ['pozemek', 'Pozemky'], ['komercni', 'Komerční prostory'], ['ostatni', 'Ostatní']];
-let qi = 0;
+const REF_STEP = 3;
+let refShown = REF_STEP;
+const RATING_LOGO = { 'Google': 'assets/logo-google.svg', 'Firmy.cz': 'assets/logo-firmy.svg' };
+// reference: jméno + město (CMS musí město dodat – pole c / city), dlouhý text se rozbalí na místě
+function refs() {
+  const all = OFFICES[office].refs, list = all.slice(0, refShown);
+  $('#refs').innerHTML = list.map((r, i) => `<figure class="p-ref" data-reveal>
+      <blockquote class="p-ref__q" id="ref-q-${i}"><p>„${esc(r.q)}“</p></blockquote>
+      <button type="button" class="p-ref__toggle" aria-expanded="false" aria-controls="ref-q-${i}" hidden>Číst celou referenci</button>
+      <figcaption><b>${esc(r.n)}</b>${r.c || r.city ? `<span>${esc(r.c || r.city)}</span>` : ''}${r.d ? `<small>${esc(r.d)}</small>` : ''}</figcaption></figure>`).join('');
+  // tlačítko jen tam, kde text opravdu přetéká oříznutí
+  requestAnimationFrame(() => $$('.p-ref').forEach(f => { const q = $('.p-ref__q', f); $('.p-ref__toggle', f).hidden = q.scrollHeight <= q.clientHeight + 2; }));
+  setTimeout(() => $$('.p-ref').forEach(f => { const q = $('.p-ref__q', f); if (!f.classList.contains('is-open')) $('.p-ref__toggle', f).hidden = q.scrollHeight <= q.clientHeight + 2; }), 400);
+  $('#refs-more').hidden = refShown >= all.length;
+}
+// realizace: z webu kanceláře (SOLD), jinak dokončené developerské projekty (TGH realizace nezveřejňuje)
+function done(k) {
+  const sold = window.SOLD?.[dataKey(k)] || [];
+  const items = sold.length
+    ? sold.filter(x => x.img).slice(0, 4).map(x => ({ img: x.img, t: x.place || x.loc, s: (x.rent ? 'Pronajato' : 'Prodáno'), p: params(x).slice(0, 2).join(' · ') }))
+    : (window.PROJECTS?.[dataKey(k)] || []).filter(p => p.label === 'Realizováno' && p.img).slice(0, 4).map(p => ({ img: p.img, t: p.n, s: 'Dokončeno', p: 'Developerský projekt', href: href('projekt.html', '&slug=' + p.slug) }));
+  $('#done').innerHTML = items.map(x => `<a class="p-done__item" href="${x.href || href('realizovano.html')}" data-reveal>
+      <span class="p-done__img"><img src="${esc(x.img)}" alt="" loading="lazy"><span class="p-done__seal">${ico('check')}${x.s}</span></span>
+      <span class="p-done__t">${esc(x.t)}</span><span class="p-done__p">${esc(x.p)}</span></a>`).join('');
+  $('.p-done').hidden = !items.length;
+}
 const listings = () => window.LISTINGS?.[dataKey(office)] || [];
 
 function liveCount() {
@@ -47,15 +71,8 @@ function liveCount() {
 }
 function updateCount() { $('#live-count').textContent = nab(liveCount(), true); }
 
-function quote() {
-  const refs = OFFICES[office].refs, r = refs[qi % refs.length];
-  $('#quote').innerHTML = `<blockquote class="d-sm">„${esc(r.q)}“</blockquote><figcaption><b>${esc(r.n)}</b>${r.d ? `<span>${esc(r.d)}</span>` : ''}</figcaption>`;
-  $('#q-count').textContent = `${(qi % refs.length) + 1} / ${refs.length}`;
-  if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.from('#quote > *', { opacity: 0, y: 24, duration: 0.9, ease: 'expo.out', stagger: 0.08 });
-}
-
 window.PAGE = {
-  note: 'Prémiová homepage: fotky z CRM mají kolísavé rozlišení (Stars 430×270) – velké formáty proto stojí na fotkách projektů a galerie, ne na kartách inzerátů.',
+  note: 'Homepage stojí na náběru zakázek (připomínka klienta 10/2026): hero = kancelář + odhad ceny, makléři hned po úvodu, prodej, realizace, reference; nabídka až níž jako ukázka práce. Reference: CMS musí doplnit město (pole c). Developerské projekty jen odkazem.',
   render(k) {
     const o = OFFICES[k], P = PREMIUM[k], L = listings();
     document.title = `Reality a nemovitosti ${o.region} | ${o.name}`;
@@ -64,6 +81,9 @@ window.PAGE = {
     $$('[data-bind="final"]').forEach(i => (i.src = P.final));
     $$('[data-bind="region"]').forEach(e => (e.textContent = o.region));
     $$('[data-bind="region-short"]').forEach(e => (e.textContent = P.short));
+    const brokers = (window.BROKERS?.[dataKey(k)] || o.agents).length;
+    $$('[data-bind="agents-count"]').forEach(e => (e.textContent = brokers));
+    $$('[data-bind="region-loc"]').forEach(e => (e.textContent = k === 'stars' ? 'Kladensko a okolí' : 'Prahu a okolí'));
     $$('[data-bind="total"]').forEach(e => (e.textContent = o.total));
     $$('[data-all]').forEach(a => (a.href = href('vypis.html')));
 
@@ -73,25 +93,7 @@ window.PAGE = {
     if (sold) stats.push([sold, 'realizovaných prodejů na mapě']); else if (o.satisfied) stats.push([parseInt(o.satisfied), 'spokojených klientů', ' %']);
     $('#stats').innerHTML = stats.map(([n, l, suf = '', plain]) => `<div data-reveal><dt><span${plain ? '' : ` data-count="${n}"`}>${plain ? n : num(n)}</span>${suf}</dt><dd>${l}</dd></div>`).join('');
 
-    $('#cards').innerHTML = o.listings.map(x => `<div class="p-featured__item">${card(x)}<a class="p-featured__cta" href="${href('detail.html')}" tabindex="-1">Detail nemovitosti ${ico('arrow')}</a></div>`).join('')
-      + `<a class="p-featured__more" href="${href('vypis.html')}"><span class="d-sm">Celá nabídka</span><span>${nab(o.total)} ${ico('arrow', 'icon icon--lg')}</span></a>`;
-
-    $('#cats').innerHTML = CATS.map(([t, l], i) => {
-      const n = o.cats[t] ?? L.filter(x => x.type === t).length;
-      const img = (L.find(x => x.type === t && x.img) || {}).img || '';
-      return `<li data-img="${esc(img)}"><a href="${href('vypis.html', '&type=' + t)}"><span class="p-index__no">0${i + 1}</span><span class="p-index__name">${l}</span><span class="p-index__n">${n ? nab(n) : 'Zobrazit'}</span>${ico('arrow', 'icon icon--lg')}</a></li>`;
-    }).join('');
-
-    const projs = k === 'stars' ? o.projects : (window.PROJECTS?.tgh || o.projects).slice(0, 3);
-    $('#projects').innerHTML = projs.map((p, i) => `<article class="p-proj${i % 2 ? ' is-rev' : ''}">
-        <a class="p-proj__media" data-clip href="${href('projekt.html', p.slug ? '&slug=' + p.slug : '')}" tabindex="-1" aria-hidden="true"><img src="${esc(p.img)}" alt="" loading="lazy"></a>
-        <div class="p-proj__body">
-          <span class="p-proj__no">0${i + 1}</span>
-          <h3 class="d-sm"><a href="${href('projekt.html', p.slug ? '&slug=' + p.slug : '')}">${esc(p.n)}</a></h3>
-          ${p.d ? `<p>${esc(p.d)}</p>` : ''}
-          ${p.facts?.length ? `<ul class="p-proj__facts">${p.facts.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
-          <a class="btn btn--ghost" href="${href('projekt.html', p.slug ? '&slug=' + p.slug : '')}">Detail projektu ${ico('arrow')}</a>
-        </div></article>`).join('');
+    $('#cards').innerHTML = o.listings.slice(0, 4).map(x => card(x)).join('');
 
     // portrétní páry (neutrální → úsměv při najetí). Upraveno v Magnificu (Nano Banana Pro), viz README.
     $('#agents').innerHTML = o.agents.map(a => {
@@ -100,8 +102,8 @@ window.PAGE = {
         <div class="p-agent__photo">${pair
           ? `<img src="assets/agents/${pair}-a.jpg" alt="" loading="lazy" width="640" height="960"><img class="p-agent__smile" src="assets/agents/${pair}-b.jpg" alt="" loading="lazy" width="640" height="960">`
           : `<img src="${esc(a.img)}" alt="" loading="lazy">`}</div>
-        <h3><a href="${href('makleri.html')}">${esc(a.n)}</a></h3><p>${esc(a.r)}</p>
-        <a class="p-agent__tel" href="tel:${a.tel.replace(/\s/g, '')}">${esc(a.tel)}</a></article>`;
+        <h3><a href="${href('makleri.html')}">${esc(a.n)}</a></h3>${/certifik|ředitel|majitel|senior|vedouc/i.test(a.r) ? `<p>${esc(a.r.split(' · ')[0])}</p>` : ''}
+        <a class="p-agent__tel" href="tel:${a.tel.replace(/\s/g, '')}">${esc(a.tel)}</a>${a.mail ? `<a class="p-agent__mail" href="mailto:${esc(a.mail)}">${esc(a.mail)}</a>` : ''}</article>`;
     }).join('');
     smileOnTouch();
     // ukázka rádce: skutečné nabídky odpovídající ilustrovanému dotazu (2+kk, Praha, do 8 mil.)
@@ -111,8 +113,9 @@ window.PAGE = {
       $('#rad-demo-cards').innerHTML = (hit.length ? hit : L.filter(x => x.type === 'byt' && !x.rent)).filter((x, i, a) => a.findIndex(y => y.price === x.price && y.place === x.place) === i).slice(0, 2).map(RADCE.card).join('');
     }
 
-    $('#ratings').innerHTML = o.ratings.map(r => `<div><b class="d-sm">${String(r.v).replace('.', ',')}</b><span>${esc(r.src)}</span></div>`).join('');
-    qi = 0; quote();
+    $('#ratings').innerHTML = o.ratings.map(r => `<div class="p-rating">${RATING_LOGO[r.src] ? `<img src="${RATING_LOGO[r.src]}" alt="" width="28" height="28">` : ico('star')}<b>${String(r.v).replace('.', ',')}</b><span>${esc(r.src)}</span></div>`).join('');
+    refShown = REF_STEP; refs();
+    done(k);
     updateCount();
     document.dispatchEvent(new Event('rendered'));
   },
@@ -151,7 +154,7 @@ window.PAGE = {
     list.addEventListener('mousedown', e => { const li = e.target.closest('li[data-v]'); if (li) { loc.value = li.dataset.v; updateCount(); } });
     loc.addEventListener('blur', () => setTimeout(() => { sug.classList.remove('is-open'); loc.setAttribute('aria-expanded', 'false'); }, 120));
     $('#estimate').addEventListener('submit', e => { e.preventDefault(); location.href = href('prodat.html') + '#odhad'; });
-    $('#q-prev').addEventListener('click', () => { const n = OFFICES[office].refs.length; qi = (qi % n + n - 1) % n; quote(); });
-    $('#q-next').addEventListener('click', () => { qi++; quote(); });
+    $('#refs').addEventListener('click', e => { const b = e.target.closest('.p-ref__toggle'); if (!b) return; const f = b.closest('.p-ref'), on = !f.classList.contains('is-open'); f.classList.toggle('is-open', on); b.setAttribute('aria-expanded', on); b.textContent = on ? 'Skrýt' : 'Číst celou referenci'; });
+    $('#refs-more').addEventListener('click', () => { refShown += REF_STEP; refs(); });
   },
 };

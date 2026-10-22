@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nemovitosti na prodej | NEXT Reality</title>
-<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) { document.documentElement.classList.add('js-motion'); setTimeout(() => { if (!window.gsap) document.documentElement.classList.remove('js-motion'); }, 2500); }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -15,15 +15,17 @@
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
 <link rel="stylesheet" href="listing.css">
+<link rel="stylesheet" href="subpage.css">
 <link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="vypis">
 <div id="site-header"></div>
 
 <main id="main">
-  <section class="list-head">
+  <section class="list-head list-head--ed">
     <div class="container">
       <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Nabídka nemovitostí</span></nav>
+      <span class="t-label eyebrow">Nabídka · <span data-bind="name"></span></span>
       <div class="list-head__title">
         <h1 class="t-h1" id="list-h1">Nemovitosti na prodej</h1>
         <span class="list-head__count" id="list-count"></span>

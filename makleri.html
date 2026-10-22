@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Makléři | NEXT Reality</title>
-<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) document.documentElement.classList.add('js-motion');</script>
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('nomotion')) { document.documentElement.classList.add('js-motion'); setTimeout(() => { if (!window.gsap) document.documentElement.classList.remove('js-motion'); }, 2500); }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -12,34 +12,51 @@
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="subpage.css">
 <link rel="stylesheet" href="rad.css">
 </head>
 <body data-page="makleri">
 <div id="site-header"></div>
 <main>
-  <section class="page-hero page-hero--light">
-    <div class="container">
-      <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Makléři</span></nav>
-      <h1>Kdo se postará o váš obchod</h1>
-      <p id="mk-lead"></p>
+  <!-- 01 · Úvod – stejný jazyk jako homepage / Realizováno (světlá kapitola) -->
+  <section class="page-hero page-hero--light ed-hero" aria-labelledby="mk-h1">
+    <div class="container ed-hero__in">
+      <div class="ed-hero__head">
+        <nav class="crumbs" aria-label="Drobečková navigace"><a data-href="index.html">Domů</a><span aria-hidden="true">/</span><span aria-current="page">Makléři</span></nav>
+        <span class="t-label eyebrow">Makléři · <span data-bind="name"></span></span>
+        <h1 class="ed-h1" id="mk-h1" data-split="now">Kdo se postará o&nbsp;váš <em>obchod.</em></h1>
+      </div>
+      <div class="ed-hero__foot">
+        <p class="ed-hero__lead" id="mk-lead"></p>
+        <dl class="ed-stats" id="mk-stats"></dl>
+      </div>
     </div>
   </section>
-  <section class="section" style="padding-top:var(--s-8)">
+
+  <!-- 02 · Tým – filtr + karty (portrét vystupuje z obdélníku) -->
+  <section class="ed-sec" aria-label="Seznam makléřů">
     <div class="container">
-      <form class="agent-filters" role="search" onsubmit="event.preventDefault()">
-        <div class="field"><label for="mk-q">Jméno makléře</label><div class="input-icon"><svg class="icon"><use href="#i-search"/></svg><input class="input" id="mk-q" placeholder="Např. Kubát" autocomplete="off"></div></div>
-        <div class="field" id="mk-office-f"><label for="mk-office">Kancelář</label><select class="select" id="mk-office"></select></div>
-      </form>
-      <p class="results-bar__info" id="mk-info" aria-live="polite" style="margin-bottom:var(--s-4)"></p>
-      <div class="grid-agents" id="mk-grid"></div>
+      <div class="ed-filters">
+        <form class="agent-filters" role="search" onsubmit="event.preventDefault()">
+          <div class="field"><label for="mk-q">Jméno makléře</label><div class="input-icon"><svg class="icon"><use href="#i-search"/></svg><input class="input" id="mk-q" placeholder="Např. Kubát" autocomplete="off"></div></div>
+          <div class="field" id="mk-office-f"><label for="mk-office">Kancelář</label><select class="select" id="mk-office"></select></div>
+        </form>
+        <p class="results-bar__info" id="mk-info" aria-live="polite"></p>
+      </div>
+      <div class="grid-agents agents-pop" id="mk-grid"></div>
       <div class="empty" id="mk-empty" hidden></div>
     </div>
   </section>
-  <section class="section section--dark">
-    <div class="container sell">
-      <div><span class="t-label eyebrow">Kariéra</span><h2 class="t-h2">Chcete se k nám přidat?</h2>
-        <p class="t-lead" style="margin-top:var(--s-3);color:rgba(255,255,255,.85);max-width:56ch">Staňte se součástí týmu NEXT REALITY a pracujte v prostředí, kde se spojuje profesionalita, osobní přístup a moderní technologie.</p></div>
-      <div><a class="btn btn--primary" href="#">Zjistit více o kariéře <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+
+  <!-- 03 · Závěr – kariéra (INK) -->
+  <section class="ed-final on-ink" aria-labelledby="mk-career-h">
+    <div class="container ed-final__in">
+      <span class="t-label eyebrow">Kariéra</span>
+      <h2 class="ed-final__h" id="mk-career-h" data-split>Chcete se k&nbsp;nám <em>přidat?</em></h2>
+      <div class="ed-final__row">
+        <p class="t-lead">Staňte se součástí týmu NEXT REALITY a pracujte v prostředí, kde se spojuje profesionalita, osobní přístup a moderní technologie.</p>
+        <div class="ed-final__cta"><a class="btn btn--primary" href="#">Zjistit více o kariéře <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      </div>
     </div>
   </section>
 </main>
@@ -50,24 +67,33 @@
 <script src="rad.js"></script>
 <script>
 // Přehled makléřů – reálná data z /makleri (TGH 33 makléřů ze 7 kanceláří, Stars 7)
-const agentCard = a => `<article class="agent">
-  <div class="agent__photo">${a.img ? `<img src="${esc(a.img)}" alt="" loading="lazy">` : ico('user', 'icon icon--lg')}</div>
+// Role: generické „Realitní makléř/ka“ se nepíše (je to jasné z kontextu stránky) – zobrazí se
+// jen role, která nese informaci navíc (Certifikovaný…, ředitel/ka kanceláře, majitel…).
+const roleExtra = r => { const t = (r || '').replace(/\s+[I|]\s+/g, ' · ').trim(); return /^realitní\s+makléř(ka)?$/i.test(t) ? '' : t; };
+const shortOffice = o => o.replace(/^NEXT\s+REALITY\s+/i, '');
+let multiOffice = false;
+const agentCard = a => { const role = roleExtra(a.r);
+  return `<article class="agent">
+  <div class="agent__photo">${a.img ? `<img src="${esc(a.img)}" alt="" loading="lazy" onload="window.flatCheck(this)" onerror="this.remove()">` : ico('user', 'icon icon--lg')}</div>
   <div class="agent__body">
-    <span class="agent__office">${esc(a.office)}</span>
     <h2 class="agent__name"><a href="${href('makler.html', a.slug ? '&slug=' + a.slug : '&name=' + encodeURIComponent(a.n))}">${esc(a.n)}</a></h2>
-    <p class="agent__role">${esc(a.r)}</p>
+    ${multiOffice ? `<span class="agent__office">${esc(shortOffice(a.office))}</span>` : ''}
+    ${role ? `<p class="agent__role">${esc(role)}</p>` : ''}
     <div class="agent__contact">
       ${a.tel ? `<a href="tel:${a.tel.replace(/\s/g, '')}">${ico('phone')}<span>${esc(a.tel)}</span></a>` : ''}
-      ${a.mail ? `<a href="mailto:${esc(a.mail)}">${ico('mail')}<span>${esc(a.mail)}</span></a>` : ''}
+      ${a.mail ? `<a href="mailto:${esc(a.mail)}" title="${esc(a.mail)}">${ico('mail')}<span class="agent__mail-full">${esc(a.mail)}</span><span class="agent__mail-short">Napsat e-mail</span></a>` : ''}
     </div>
-  </div></article>`;
+  </div></article>`; };
+// portrét bez průhledného pozadí (široká / neprůhledná fotka) → klasický ořez v obdélníku
+window.flatCheck = img => { if (img.naturalWidth / img.naturalHeight > .85) img.closest('.agent')?.classList.add('is-flat'); };
 const list = () => BROKERS[dataKey(office)] || [];
 const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const plural = (n, one, few, many) => n === 1 ? one : n > 1 && n < 5 ? few : many;
 function draw() {
   const q = norm($('#mk-q').value.trim()), of = $('#mk-office').value;
   const r = list().filter(a => (!q || norm(a.n).includes(q)) && (!of || a.office === of));
   $('#mk-grid').innerHTML = r.map(agentCard).join('');
-  $('#mk-info').textContent = r.length + (r.length === 1 ? ' makléř' : r.length < 5 && r.length ? ' makléři' : ' makléřů');
+  $('#mk-info').textContent = r.length + ' ' + plural(r.length, 'makléř', 'makléři', 'makléřů');
   $('#mk-empty').hidden = !!r.length;
   $('#mk-empty').innerHTML = `<div class="empty__in">${ico('empty', 'icon empty__ico')}<h2 class="t-h3">Takového makléře jsme nenašli</h2><p>Zkuste jiné jméno, nebo vyberte všechny kanceláře.</p><button class="btn btn--secondary" type="button" onclick="$('#mk-q').value='';$('#mk-office').value='';draw()">Zobrazit všechny makléře</button></div>`;
   setTimeout(runChecks, 100);
@@ -78,8 +104,12 @@ window.PAGE = {
     const offices = [...new Set(list().map(a => a.office))];
     $('#mk-office').innerHTML = '<option value="">Všechny kanceláře</option>' + offices.map(o => `<option>${esc(o)}</option>`).join('');
     $('#mk-office-f').hidden = offices.length < 2;
+    multiOffice = offices.length > 1;
+    const n = list().length;
+    $('#mk-stats').innerHTML = [[n, plural(n, 'makléř', 'makléři', 'makléřů')], ...(multiOffice ? [[offices.length, plural(offices.length, 'kancelář', 'kanceláře', 'kanceláří')]] : [])]
+      .map(([v, l]) => `<div><dt data-count="${v}">${v}</dt><dd>${l}</dd></div>`).join('');
     if (qs.get('branch') && offices.includes(qs.get('branch'))) $('#mk-office').value = qs.get('branch');
-    $('#mk-lead').textContent = `${list().length} makléřů${offices.length > 1 ? ` v ${offices.length} kancelářích` : ''}. Vyberte si odborníka, který zná vaši lokalitu.`;
+    $('#mk-lead').textContent = multiOffice ? `Makléři ze ${offices.length} kanceláří. Vyberte si odborníka, který zná vaši lokalitu – zavolejte mu, nebo napište přímo z karty.` : 'Vyberte si odborníka, který zná vaši lokalitu – zavolejte mu, nebo napište přímo z karty.';
     document.title = `Makléři | ${OFFICES[k].name}`;
     draw();
   },
