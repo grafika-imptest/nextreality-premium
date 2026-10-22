@@ -167,3 +167,8 @@
 .mk-hero__photo.is-pop::before { content: ""; position: absolute; inset: 22% 0 0; z-index: -1; border-radius: var(--r-box); background: var(--ink-2); border: 1px solid var(--ink-line); }
 .mk-hero__photo.is-pop img { object-fit: contain; object-position: center bottom; }
 @media (max-width: 599px) { .mk-hero__photo.is-pop { aspect-ratio: 4 / 5; max-width: 360px; justify-self: center; } }
+
+/* všechny karty stejně vysoké: pevný poměr 2 : 3 (většina výřezů 573 × 860), fotka se drží hlavy a spodek se ořízne
+   – užší výřezy (např. 410 × 860) by jinak kartu natáhly */
+.agents-pop .agent__photo { aspect-ratio: 2 / 3; }
+.agents-pop .agent:not(.is-flat) .agent__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
