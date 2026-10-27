@@ -15,20 +15,20 @@
   /* --- Brand --- */
   --brand-green: #85b929;
   --brand-blue: #3187aa;
-  --brand-navy: #0d1a24;
+  --brand-navy: #13233d;   /* brandová modrá NEXT (RGB 19 35 61, CMYK 69/43/0/76) – klient 10/2026, dřív #0d1a24 */
 
   /* --- Atmosféry --- */
-  --ink: #0d1a24;            /* nadpisy na světlé + tmavé plochy */
-  --ink-2: #14242f;          /* karty a panely na tmavé */
-  --ink-line: #2a3c49;       /* 1px linky na tmavé */
+  --ink: #13233d;            /* nadpisy na světlé + tmavé plochy */
+  --ink-2: #1b2e4c;          /* karty a panely na tmavé */
+  --ink-line: #304566;       /* 1px linky na tmavé */
   --on-ink: #f3f4f5;         /* text na tmavé */
   --on-ink-muted: #a9b2b8;   /* popisky na tmavé */
   --paper: #f3f4f5;          /* hlavní světlé pozadí – velmi světlá neutrální šedá */
   --stone: #e8eaec;          /* alternativní světlá sekce */
 
   /* --- Akcenty (stejné názvy jako standardní verze) --- */
-  --accent: #0d1a24;         /* primární tlačítko na světlé = ink */
-  --accent-hover: #1f3442;
+  --accent: #13233d;         /* primární tlačítko na světlé = ink */
+  --accent-hover: #233b60;
   --accent-soft: #e4ebd6;    /* zelený nádech – výběr, štítky */
   --accent-deco: #85b929;    /* brand zelená – akcent, na ink čitelná */
   --accent-2: #2d5e45;       /* odkazy na světlé (tmavá zeleň) */
@@ -42,13 +42,13 @@
   --line-strong: #b4b9bf;
   --surface: #f3f4f5;
   --surface-2: #e8eaec;
-  --surface-dark: #0d1a24;
+  --surface-dark: #13233d;
 
   /* --- Stavy nabídky (fixní pro všechny kanceláře) --- */
   --st-free: #256b29;   --st-free-bg: #e4ebd6;
   --st-reserved: #7a5000; --st-reserved-bg: #f3e7cc;
   --st-sold: #4e5459;   --st-sold-bg: #e2e5e8;
-  --st-top: #0d1a24;    --st-top-bg: #85b929;
+  --st-top: #13233d;    --st-top-bg: #85b929;
   --st-last: #8e2a2a;   --st-last-bg: #f2dfd9;
   --danger: #a3261e;
   --focus: #2f6fed;
@@ -104,7 +104,7 @@
   /* --- Bez stínů: jen jemná hloubka pro plovoucí panely --- */
   --sh-1: none;
   --sh-2: 0 0 0 1px var(--line);
-  --sh-3: 0 30px 80px -30px rgba(13, 26, 36, .35);
+  --sh-3: 0 30px 80px -30px rgba(19, 35, 61, .35);
 
   /* --- Pohyb --- */
   --ease: cubic-bezier(.22, 1, .36, 1);

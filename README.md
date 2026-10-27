@@ -30,7 +30,7 @@ git subtree split --prefix site -b gh-pages && git push -f origin gh-pages
 Soubory navíc oproti standardu: `premium.css` (vizuální vrstva, načítá se poslední), `home.css` (kompozice homepage), `motion.js` (pohyb), `assets/agents/` (portréty makléřů).
 
 ## Pravidla prémiové verze
-1. **Brand zůstává.** Zelená NEXT #85B929 je jediný akcent. Na bílé neprošla kontrastem (2,3 : 1) – na tmavé INK #0D1A24 má **7,3 : 1**, proto je prémiová verze postavená na tmavých kapitolách a zelená je v nich čitelná (kurzíva v nadpisech, čísla, linky).
+1. **Brand zůstává.** Zelená NEXT #85B929 je jediný akcent. Na bílé neprošla kontrastem (2,3 : 1) – na tmavé INK #13233D má **6,6 : 1**, proto je prémiová verze postavená na tmavých kapitolách a zelená je v nich čitelná (kurzíva v nadpisech, čísla, linky).
 2. **Velká typografie jen v editoriálu** (dohoda 6. 10. 2026): hero homepage až 144 px fluidně. **Funkční stránky drží zadání** – H1 ≤ 48 px na všech šířkách (ověřeno měřením), 4 karty v řadě na výpisu, základ 16 px, první nemovitost nad ohybem.
 3. **Pohyb jen s účelem.** Spouštěné animace ease-out (expo / power4), scrubované lineární, stagger 0,06–0,12 s, odhalení 1,1 s. Funkční obsah (výsledky výpisu, filtry, formuláře) se neanimuje – výjimka: jemné prolnutí karet při filtrování projektů (0,32 s, na přání klienta).
 4. **Přístupnost a výkon:** `prefers-reduced-motion` vypne plynulý scroll i odhalování. Když se knihovny z CDN nenačtou, obsah se zobrazí bez animace (pojistka 2,5 s). Mapy, galerie a panely mají vlastní scroll (Lenis do nich nezasahuje). Bez WebGL – kvůli výkonu na mobilu a kolísavé kvalitě fotek z CRM.
