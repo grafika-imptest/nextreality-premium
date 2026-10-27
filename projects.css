@@ -6,7 +6,7 @@
 /* --- Štítky projektu: pilulky s okrajem (dřív bez paddingu a bez okraje) ---------- */
 .pj-tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
 .pj-tag { display: inline-flex; align-items: center; min-height: 28px; padding: 3px 12px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); font-size: 13px; line-height: 20px; font-weight: 500; color: var(--ink); background: transparent; white-space: normal; }
-.pj-status { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: var(--r-pill); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; line-height: 1; background: rgba(243, 244, 245, .92); color: var(--ink); border: 1px solid rgba(13, 26, 36, .12); backdrop-filter: blur(8px); }
+.pj-status { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: var(--r-pill); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; line-height: 1; background: rgba(243, 244, 245, .92); color: var(--ink); border: 1px solid rgba(19, 35, 61, .12); backdrop-filter: blur(8px); }
 .pj-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-deco); }
 .pj-status.is-done::before { background: var(--text-muted); }
 .on-ink .pj-status { background: rgba(243, 244, 245, .12); color: var(--on-ink); border-color: rgba(243, 244, 245, .3); }
@@ -117,7 +117,7 @@
 .pj-gal__item:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 .pj-gal__cap { position: absolute; left: var(--s-3); bottom: var(--s-3); z-index: 2; display: inline-flex; align-items: center; gap: var(--s-2); height: 32px; padding: 0 var(--s-4); border-radius: var(--r-pill); background: rgba(243, 244, 245, .92); color: var(--ink); font-size: 13px; font-weight: 500; backdrop-filter: blur(8px); }
 .pj-gal__item--video { cursor: pointer; }
-.pj-gal__item--video::after { content: ""; position: absolute; inset: 0; background: rgba(13, 26, 36, .25); }
+.pj-gal__item--video::after { content: ""; position: absolute; inset: 0; background: rgba(19, 35, 61, .25); }
 @media (min-width: 768px) {
   .pj-gal { grid-template-columns: repeat(4, 1fr); }
   .pj-gal__item:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
